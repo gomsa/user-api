@@ -1,0 +1,5 @@
+/.idea
+/.vscode
+/.vagrant
+/vendor
+go.sum
