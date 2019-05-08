@@ -9,5 +9,5 @@ require (
 	github.com/micro/go-log v0.1.0
 	github.com/micro/go-micro v1.1.0
 	github.com/micro/kubernetes v0.7.0
-	golang.org/x/net v0.0.0-20190501004415-9ce7a6920f09
+	golang.org/x/net v0.0.0-20190327214358-63eda1eb0650
 )

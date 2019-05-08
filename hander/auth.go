@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gomsa/user-srv/client"
 	pb "github.com/gomsa/user-api/proto/auth"
 )
 
@@ -14,6 +15,7 @@ type Auth struct {
 // Auth 授权认证
 // 返回token
 func (srv *Auth) Auth(ctx context.Context, req *pb.User, res *pb.Token) (err error) {
+	client.
 	fmt.Println(req, res)
 	return err
 }
