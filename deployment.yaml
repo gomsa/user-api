@@ -1,0 +1,47 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: user-api
+  namespace: api
+spec:
+  selector:
+    app: user-api
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      name: micro
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-api
+  namespace: api
+  labels:
+    app: user-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: user-api
+  template:
+    metadata:
+      labels:
+        app: user-api
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: user-api
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        imagePullPolicy: Always
+        command: [
+          "service",
+          "--selector=static",
+          "--server_address=:8080",
+        ]
+        ports:
+        - containerPort: 8080
+          name: micro
+          protocol: TCP
