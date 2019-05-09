@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/gomsa/user-srv/client"
+	"github.com/gomsa/user-api/client"
 	pb "github.com/gomsa/user-api/proto/auth"
 )
 
