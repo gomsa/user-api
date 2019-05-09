@@ -31,7 +31,7 @@ func init() {
 	broker.DefaultBroker = bkr.NewBroker()
 	client.DefaultClient = cli.NewClient()
 	server.DefaultServer = srv.NewServer()
-	cmd.Init()
+	// cmd.Init()
 
 	User = userPB.NewUsersClient(userSrvName, client.DefaultClient)
 	Auth = authPB.NewAuthClient(userSrvName, client.DefaultClient)
