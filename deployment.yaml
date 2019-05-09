@@ -41,6 +41,9 @@ spec:
           "--selector=static",
           "--server_address=:8080",
         ]
+        env:
+          - name: USER_SRV_NAME
+            value: "user-srv.srv"
         ports:
         - containerPort: 8080
           name: micro
