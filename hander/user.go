@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	pb "github.com/gomsa/user-api/proto/user"
+	"github.com/micro/go-log"
 
 	"github.com/gomsa/user-api/client"
 	userPB "github.com/gomsa/user-srv/proto/user"
@@ -34,5 +35,6 @@ func (srv *User) Get(ctx context.Context, req *pb.User, res *pb.Response) (err e
 	}
 	aa, err := client.User.Get(context.TODO(), reqq)
 	fmt.Println(aa, err)
+	log.Log(aa, err)
 	return err
 }
