@@ -24,9 +24,9 @@ var (
 
 func init() {
 	userSrvName := os.Getenv("USER_SRV_NAME")
-	// set values for registry/selector
-	os.Setenv("MICRO_REGISTRY", "kubernetes")
-	os.Setenv("MICRO_SELECTOR", "static")
+	// // set values for registry/selector
+	// os.Setenv("MICRO_REGISTRY", "kubernetes")
+	// os.Setenv("MICRO_SELECTOR", "static")
 	// setup broker/client/server
 	broker.DefaultBroker = bkr.NewBroker()
 	client.DefaultClient = cli.NewClient()
