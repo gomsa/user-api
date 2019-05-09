@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package user;
+
+service Users {
+    // 创建用户
+    rpc Create(User) returns (Response) {}
+    // 用过 用户名、邮箱、手机 查询用户是否存在
+    rpc IsExist(User) returns (Response) {}
+
+    // 根据 唯一 获取用户
+    rpc Get(User) returns (Response) {}
+    // 获取全部用户
+    rpc GetAll(Request) returns (Response) {}
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string mobile = 3;
+    string email = 4;
+    string password = 5;
+    string origin = 6; //用户注册来源
+    string created_at = 7;
+    string updated_at = 8;
+}
+
+message Request {
+}
+
+message Response {
+    User user = 1;
+    repeated User users = 2;
+    repeated Error errors = 3;
+    bool valid = 4;
+}
+
+message Error {
+    string code = 1;
+    string description = 2;
+}
