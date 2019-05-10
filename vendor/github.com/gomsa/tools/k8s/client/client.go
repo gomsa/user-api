@@ -11,7 +11,8 @@ import (
 )
 
 var (
-	DefaultClient client.DefaultClient
+	// DefaultClient 默认客户端
+	DefaultClient client.Client
 )
 
 func init() {
