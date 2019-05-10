@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	Client client.Client
+	DefaultClient client.DefaultClient
 )
 
 func init() {
@@ -20,5 +20,5 @@ func init() {
 	server.DefaultServer = srv.NewServer()
 	cmd.Init()
 
-	Client = client.DefaultClient
+	DefaultClient = client.DefaultClient
 }
