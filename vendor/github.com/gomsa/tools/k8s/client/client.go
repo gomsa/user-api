@@ -10,9 +10,15 @@ import (
 	srv "github.com/micro/go-plugins/server/grpc"
 )
 
+var (
+	Client client.Client
+)
+
 func init() {
 	broker.DefaultBroker = bkr.NewBroker()
 	client.DefaultClient = cli.NewClient()
 	server.DefaultServer = srv.NewServer()
 	cmd.Init()
+
+	Client = client.DefaultClient
 }
