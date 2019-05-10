@@ -4,10 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	pb "github.com/gomsa/user-api/proto/user"
-	"github.com/micro/go-log"
-
+	"github.com/gomsa/tools/uitl"
 	"github.com/gomsa/user-api/client"
+	pb "github.com/gomsa/user-api/proto/user"
 	userPB "github.com/gomsa/user-srv/proto/user"
 )
 
@@ -29,12 +28,18 @@ func (srv *User) IsExist(ctx context.Context, req *pb.User, res *pb.Response) (e
 
 // Get 获取用户
 func (srv *User) Get(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
-
-	reqq := &userPB.User{
-		Name: `bvbv011`,
+	user := &userPB.User{}
+	err = uitl.Data2Data(req, user)
+	if err != nil {
+		return err
 	}
-	aa, err := client.User.Get(context.TODO(), reqq)
-	fmt.Println("aaaaqq111", aa, err)
-	log.Log(aa, err)
+	userRes, err := client.User.Get(context.TODO(), user)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(userRes, res)
+	if err != nil {
+		return err
+	}
 	return err
 }

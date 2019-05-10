@@ -5,7 +5,7 @@ go 1.12
 require (
 	github.com/armon/circbuf v0.0.0-20190214190532-5111143e8da2 // indirect
 	github.com/golang/protobuf v1.3.1
-	github.com/gomsa/tools v0.0.0-20190510062957-5fb803bfa7ad
+	github.com/gomsa/tools v0.0.0-20190510083137-192996f074a2
 	github.com/gomsa/user-srv v0.0.0-20190508091431-9a4b58ee6d65
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/micro/go-log v0.1.0

@@ -8,7 +8,7 @@ import (
 	userPB "github.com/gomsa/user-api/proto/user"
 )
 
-func TestUserCreate(t *testing.T) {
+func TestUserGet(t *testing.T) {
 	h := hander.User{}
 	req := &userPB.User{
 		Name:     `bvbv0111`,
@@ -18,7 +18,7 @@ func TestUserCreate(t *testing.T) {
 		Origin:   `user-api`,
 	}
 	res := &userPB.Response{}
-	err := h.Create(context.TODO(), req, res)
+	err := h.Get(context.TODO(), req, res)
 	// fmt.Println(req, res, err)
 	t.Log(req, res, err)
 }
