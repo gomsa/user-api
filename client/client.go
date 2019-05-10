@@ -3,7 +3,7 @@ package client
 import (
 	"os"
 
-	_ "github.com/gomsa/tools/client/k8s"
+	_ "github.com/gomsa/tools/k8s/client"
 	"github.com/micro/go-micro/client"
 
 	authPB "github.com/gomsa/user-srv/proto/auth"
