@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/gomsa/tools/uitl"
-	"github.com/gomsa/user-api/client"
+	"github.com/gomsa/user-srv/client"
 	pb "github.com/gomsa/user-api/proto/auth"
 	authPB "github.com/gomsa/user-srv/proto/auth"
 )
