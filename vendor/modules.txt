@@ -10,9 +10,10 @@ github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
 # github.com/gomsa/tools v0.0.0-20190510083137-192996f074a2
-github.com/gomsa/tools/k8s/client
 github.com/gomsa/tools/uitl
-# github.com/gomsa/user-srv v0.0.0-20190508091431-9a4b58ee6d65
+github.com/gomsa/tools/k8s/client
+# github.com/gomsa/user-srv v0.0.0-20190512094409-8539c03f2dfd
+github.com/gomsa/user-srv/client
 github.com/gomsa/user-srv/proto/auth
 github.com/gomsa/user-srv/proto/user
 # github.com/google/btree v1.0.0
@@ -91,13 +92,13 @@ github.com/micro/go-micro/registry/gossip/proto
 # github.com/micro/go-plugins v0.25.0
 github.com/micro/go-plugins/registry/kubernetes
 github.com/micro/go-plugins/selector/static
-github.com/micro/go-plugins/broker/grpc
 github.com/micro/go-plugins/client/grpc
 github.com/micro/go-plugins/server/grpc
 github.com/micro/go-plugins/registry/kubernetes/client
 github.com/micro/go-plugins/registry/kubernetes/client/watch
-github.com/micro/go-plugins/broker/grpc/proto
+github.com/micro/go-plugins/broker/grpc
 github.com/micro/go-plugins/registry/kubernetes/client/api
+github.com/micro/go-plugins/broker/grpc/proto
 # github.com/micro/go-rcache v0.3.0
 github.com/micro/go-rcache
 # github.com/micro/kubernetes v0.7.0
@@ -139,10 +140,10 @@ golang.org/x/net/http2/hpack
 golang.org/x/net/idna
 golang.org/x/net/ipv4
 golang.org/x/net/ipv6
-golang.org/x/net/trace
 golang.org/x/net/bpf
 golang.org/x/net/internal/iana
 golang.org/x/net/internal/socket
+golang.org/x/net/trace
 golang.org/x/net/internal/timeseries
 # golang.org/x/sys v0.0.0-20190412213103-97732733099d
 golang.org/x/sys/unix
