@@ -12,7 +12,7 @@ require (
 	github.com/glycerine/go-unsnap-stream v0.0.0-20181221182339-f9677308dec2 // indirect
 	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/golang/protobuf v1.3.1
-	github.com/gomsa/tools v0.0.0-20190510083137-192996f074a2
+	github.com/gomsa/tools v0.0.0-20190515085635-ead2207c60fb
 	github.com/gomsa/user-srv v0.0.0-20190512094409-8539c03f2dfd
 	github.com/google/pprof v0.0.0-20190109223431-e84dfd68c163 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect

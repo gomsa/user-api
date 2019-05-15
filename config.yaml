@@ -1,4 +1,4 @@
-permission:
+permissions:
   - {service: Users,  method: Create,         auth: false,  policy: false, name: 创建用户, description: 创建新用户权限。}
   - {service: Users,  method: Exist,          auth: false,  policy: false, name: 检测用户, description: 检测用户是否存在权限。}
   - {service: Users,  method: Get,            auth: true,   policy: false, name: 用户查询, description: 查询用户信息权限。}
