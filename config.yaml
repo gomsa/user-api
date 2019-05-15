@@ -1,0 +1,8 @@
+permission:
+  - {service: Users, method: Create, auth: false, policy: false, name: 创建用户, description: 创建新用户权限。}
+  - {service: Users, method: Exist, auth: false, policy: false, name: 检测用户, description: 检测用户是否存在权限。}
+  - {service: Users, method: Get, auth: true, policy: false, name: 用户查询, description: 查询用户信息权限。}
+  - {service: Auth, method: Auth, auth: false, policy: false, name: 用户授权, description: 用户登录授权返回 token 权限。}
+  - {service: Auth, method: ValidateToken, auth: false, policy: false, name: 权限认证, description: token 权限相关认证权限。}
+  - {service: Users, method: Get, auth: true, policy: false, name: 用户查询, description: 查询用户信息权限。}
+  - {service: Users, method: Get, auth: true, policy: false, name: 用户查询, description: 查询用户信息权限。}

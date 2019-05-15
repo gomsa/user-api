@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/gomsa/tools/uitl"
-	"github.com/gomsa/user-srv/client"
 	pb "github.com/gomsa/user-api/proto/user"
+	"github.com/gomsa/user-srv/client"
 	userPB "github.com/gomsa/user-srv/proto/user"
 )
 
@@ -31,14 +31,14 @@ func (srv *User) Create(ctx context.Context, req *pb.User, res *pb.Response) (er
 	return err
 }
 
-// IsExist 用户是否存在
-func (srv *User) IsExist(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
+// Exist 用户是否存在
+func (srv *User) Exist(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
 	user := &userPB.User{}
 	err = uitl.Data2Data(req, user)
 	if err != nil {
 		return err
 	}
-	userRes, err := client.User.IsExist(context.TODO(), user)
+	userRes, err := client.User.Exist(context.TODO(), user)
 	if err != nil {
 		return err
 	}
