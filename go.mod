@@ -5,15 +5,18 @@ go 1.12
 require (
 	dmitri.shuralyov.com/app/changes v0.0.0-20181114035150-5af16e21babb // indirect
 	dmitri.shuralyov.com/service/change v0.0.0-20190203025214-430bf650e55a // indirect
+	git.apache.org/thrift.git v0.12.0 // indirect
 	github.com/Azure/azure-storage-blob-go v0.0.0-20190123011202-457680cc0804 // indirect
 	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20190129172621-c8b1d7a94ddf // indirect
 	github.com/anacrolix/tagflag v0.0.0-20180803105420-3a8ff5428f76 // indirect
 	github.com/coreos/bbolt v1.3.2 // indirect
 	github.com/glycerine/go-unsnap-stream v0.0.0-20181221182339-f9677308dec2 // indirect
+	github.com/go-ini/ini v1.41.0 // indirect
 	github.com/go-logfmt/logfmt v0.4.0 // indirect
+	github.com/golang/lint v0.0.0-20181217174547-8f45f776aaf1 // indirect
 	github.com/golang/protobuf v1.3.1
 	github.com/gomsa/tools v0.0.0-20190515085635-ead2207c60fb
-	github.com/gomsa/user-srv v0.0.0-20190512094409-8539c03f2dfd
+	github.com/gomsa/user-srv v0.0.0-20190515063850-b7648dda1e56
 	github.com/google/pprof v0.0.0-20190109223431-e84dfd68c163 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/gregjones/httpcache v0.0.0-20190203031600-7a902570cb17 // indirect

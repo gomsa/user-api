@@ -6,7 +6,7 @@ service Users {
     // 创建用户
     rpc Create(User) returns (Response) {}
     // 用过 用户名、邮箱、手机 查询用户是否存在
-    rpc IsExist(User) returns (Response) {}
+    rpc Exist(User) returns (Response) {}
 
     // 根据 唯一 获取用户
     rpc Get(User) returns (Response) {}
