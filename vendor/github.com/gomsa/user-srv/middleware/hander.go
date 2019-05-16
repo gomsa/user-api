@@ -5,7 +5,6 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/micro/go-log"
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
 
@@ -32,9 +31,8 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				if !ok {
 					return errors.New("no auth meta-data found in request")
 				}
-				log.Log(meta)
 				// Note this is now uppercase (not entirely sure why this is...)
-				token := strings.Split(meta["Authorization"], "Bearer ")[1]
+				token := strings.Split(meta["authorization"], "Bearer ")[1]
 				// Auth here
 				authResp, err := authClient.Auth.ValidateToken(context.Background(), &authPb.Request{
 					Token:   token,
