@@ -31,16 +31,18 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				if !ok {
 					return errors.New("no auth meta-data found in request")
 				}
-				// Note this is now uppercase (not entirely sure why this is...)
-				token := strings.Split(meta["authorization"], "Bearer ")[1]
-				// Auth here
-				authResp, err := authClient.Auth.ValidateToken(context.Background(), &authPb.Request{
-					Token:   token,
-					Service: req.Service(),
-					Method:  req.Method(),
-				})
-				if err != nil || authResp.Valid == false {
-					return err
+				if _, ok := meta["authorization"]; ok {
+					// Note this is now uppercase (not entirely sure why this is...)
+					token := strings.Split(meta["authorization"], "Bearer ")[1]
+					// Auth here
+					authResp, err := authClient.Auth.ValidateToken(context.Background(), &authPb.Request{
+						Token:   token,
+						Service: req.Service(),
+						Method:  req.Method(),
+					})
+					if err != nil || authResp.Valid == false {
+						return err
+					}
 				}
 			}
 		}
