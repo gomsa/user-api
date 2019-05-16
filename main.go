@@ -9,12 +9,15 @@ import (
 	"github.com/gomsa/user-api/hander"
 	authPB "github.com/gomsa/user-api/proto/auth"
 	userPB "github.com/gomsa/user-api/proto/user"
+	m "github.com/gomsa/user-srv/middleware"
 )
 
 func main() {
-
+	// 设置权限
+	w := m.Handler{Permissions()}
 	srv := k8s.NewService(
 		micro.Version("latest"),
+		micro.WrapHandler(w.Wrapper), //验证权限
 	)
 	srv.Init()
 
