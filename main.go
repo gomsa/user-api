@@ -14,7 +14,9 @@ import (
 
 func main() {
 	// 设置权限
-	w := m.Handler{Permissions()}
+	w := m.Handler{
+		Permissions: Permissions(),
+	}
 	srv := k8s.NewService(
 		micro.Version("latest"),
 		micro.WrapHandler(w.Wrapper), //验证权限
