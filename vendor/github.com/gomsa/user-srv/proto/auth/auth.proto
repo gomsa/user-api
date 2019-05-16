@@ -16,7 +16,7 @@ service Auth {
 
 message User {
     string id = 1;
-    string name = 2;
+    string username = 2;
     string mobile = 3;
     string email = 4;
     string password = 5;
