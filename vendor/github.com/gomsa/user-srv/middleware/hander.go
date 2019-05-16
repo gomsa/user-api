@@ -43,6 +43,8 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 					if err != nil || authResp.Valid == false {
 						return err
 					}
+				}else{
+					return errors.New('Empty authorization')
 				}
 			}
 		}
