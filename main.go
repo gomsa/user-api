@@ -14,12 +14,12 @@ import (
 
 func main() {
 	// 设置权限
-	w := m.Handler{
+	h := m.Handler{
 		Permissions: Permissions(),
 	}
 	srv := k8s.NewService(
 		micro.Version("latest"),
-		micro.WrapHandler(w.Wrapper), //验证权限
+		micro.WrapHandler(h.Wrapper), //验证权限
 	)
 	srv.Init()
 
