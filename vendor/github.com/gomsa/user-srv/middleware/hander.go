@@ -31,7 +31,7 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				if !ok {
 					return errors.New("no auth meta-data found in request")
 				}
-				if err, ok := meta["authorization"]; ok {
+				if _, ok := meta["authorization"]; ok {
 					// Note this is now uppercase (not entirely sure why this is...)
 					token := strings.Split(meta["authorization"], "Bearer ")[1]
 					// Auth here
@@ -43,8 +43,8 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 					if err != nil || authResp.Valid == false {
 						return err
 					}
-				} else {
-					return err
+				}else{
+					return errors.New("Empty authorization")
 				}
 			}
 		}
