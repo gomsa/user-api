@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/micro/go-log"
