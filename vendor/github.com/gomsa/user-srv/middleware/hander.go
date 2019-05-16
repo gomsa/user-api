@@ -44,7 +44,7 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 						return err
 					}
 				}else{
-					return errors.New("Empty authorization")
+					return errors.New("Empty Authorization")
 				}
 			}
 		}
