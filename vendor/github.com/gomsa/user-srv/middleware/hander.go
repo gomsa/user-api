@@ -25,16 +25,14 @@ type Handler struct {
 // 认证通过则 fn() 继续执行，否则报错
 func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) (err error) {
-		log.Log(h.Permissions, req.Service(), req.Method())
 		for _, p := range h.Permissions {
-			log.Log(p.Service, req.Service(), p.Method, req.Method(), p.Auth)
 			// 访问的服务和方法匹配时验证 Auth 插件是否需要用户授权 如果需要验证则检测响应权限
 			if p.Service == req.Service() && p.Method == req.Method() && p.Auth == true {
-				log.Log(req.Service(), req.Method(), p.Auth)
 				meta, ok := metadata.FromContext(ctx)
 				if !ok {
 					return errors.New("no auth meta-data found in request")
 				}
+				log.Log(meta)
 				// Note this is now uppercase (not entirely sure why this is...)
 				token := strings.Split(meta["Authorization"], "Bearer ")[1]
 				// Auth here
@@ -43,7 +41,6 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 					Service: req.Service(),
 					Method:  req.Method(),
 				})
-				log.Log(authResp, err)
 				if err != nil || authResp.Valid == false {
 					return err
 				}
