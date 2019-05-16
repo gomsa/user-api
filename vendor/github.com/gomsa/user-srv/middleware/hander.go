@@ -43,7 +43,7 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 					Service: req.Service(),
 					Method:  req.Method(),
 				})
-				if err != nil && authResp.Valid == false {
+				if err != nil || authResp.Valid == false {
 					return err
 				}
 			}
