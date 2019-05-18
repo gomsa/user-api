@@ -25,6 +25,14 @@ func Permissions() []m.Permission {
 		},
 		{
 			Service:     `user-api`,
+			Method:      `Users.Info`,
+			Auth:        true,
+			Policy:      false,
+			Name:        `检测用户`,
+			Description: `检测用户是否存在权限。`,
+		},
+		{
+			Service:     `user-api`,
 			Method:      `Users.Get`,
 			Auth:        true,
 			Policy:      false,

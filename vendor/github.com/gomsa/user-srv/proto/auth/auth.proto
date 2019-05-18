@@ -3,14 +3,15 @@ syntax = "proto3";
 package auth;
 
 service Auth {
-    // 根据用户ID获取授权
-    rpc AuthById(User) returns (Token) {}
-
-
     // 用户验证授权
     rpc Auth(User) returns (Token) {}
     // token 验证
     rpc ValidateToken(Request) returns (Token) {}
+
+    // 只限微服务之间调用
+    // 根据用户ID获取授权
+    rpc AuthById(User) returns (Token) {}
+    
 
 }
 
@@ -31,7 +32,8 @@ message Request{
 message Token {
     string token = 1;
     bool valid = 2;
-    repeated Error errors = 3;
+    User user = 3;
+    repeated Error errors = 4;
 }
 message Error {
     string code = 1;

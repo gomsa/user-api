@@ -15,8 +15,8 @@ require (
 	github.com/go-logfmt/logfmt v0.4.0 // indirect
 	github.com/golang/lint v0.0.0-20181217174547-8f45f776aaf1 // indirect
 	github.com/golang/protobuf v1.3.1
-	github.com/gomsa/tools v0.0.0-20190515085635-ead2207c60fb
-	github.com/gomsa/user-srv v0.0.0-20190516234259-f6ebdb49b2d4
+	github.com/gomsa/tools v0.0.0-20190517032518-6b8a14b58a04
+	github.com/gomsa/user-srv v0.0.0-20190518233431-ceef29859a47
 	github.com/google/pprof v0.0.0-20190109223431-e84dfd68c163 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/gregjones/httpcache v0.0.0-20190203031600-7a902570cb17 // indirect

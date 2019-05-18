@@ -7,6 +7,8 @@ service Users {
     rpc Create(User) returns (Response) {}
     // 用过 用户名、邮箱、手机 查询用户是否存在
     rpc Exist(User) returns (Response) {}
+    // 获取用户基本信息
+    rpc Info(User) returns (Response) {}
      // 根据 唯一 获取用户
     rpc Get(User) returns (Response) {}
 }
@@ -22,11 +24,19 @@ message User {
     string updated_at = 8;
 }
 
+message Info {
+    string name = 1;
+    string avatar = 2;
+    string introduction = 3;
+    repeated string roles = 4;
+}
+
 message Request {
 }
 
 message Response {
     User user = 1;
     repeated User users = 2;
-    bool valid = 3;
+    Info info = 3;
+    bool valid = 4;
 }

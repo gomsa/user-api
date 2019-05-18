@@ -3,13 +3,14 @@ package middleware
 import (
 	"context"
 	"errors"
-	"strings"
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
 
 	authClient "github.com/gomsa/user-srv/client"
 	authPb "github.com/gomsa/user-srv/proto/auth"
+
+	"github.com/micro/go-log"
 )
 
 // Handler 处理器
@@ -25,15 +26,17 @@ type Handler struct {
 func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) (err error) {
 		for _, p := range h.Permissions {
+			log.Log(ctx)
 			// 访问的服务和方法匹配时验证 Auth 插件是否需要用户授权 如果需要验证则检测响应权限
 			if p.Service == req.Service() && p.Method == req.Method() && p.Auth == true {
 				meta, ok := metadata.FromContext(ctx)
+				log.Log(meta)
 				if !ok {
 					return errors.New("no auth meta-data found in request")
 				}
-				if _, ok := meta["authorization"]; ok {
+				if token, ok := meta["X-Token"]; ok {
 					// Note this is now uppercase (not entirely sure why this is...)
-					token := strings.Split(meta["authorization"], "Bearer ")[1]
+					// token := strings.Split(meta["authorization"], "Bearer ")[1]
 					// Auth here
 					authResp, err := authClient.Auth.ValidateToken(context.Background(), &authPb.Request{
 						Token:   token,

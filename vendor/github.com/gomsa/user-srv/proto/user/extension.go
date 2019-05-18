@@ -21,5 +21,13 @@ func (user *User) BeforeCreate(scope *gorm.Scope) (err error) {
 	if err != nil {
 		return err
 	}
+	err = scope.SetColumn("CreatedAt", time.Now().In(local).Format(TimeLayout))
+	if err != nil {
+		return err
+	}
+	err = scope.SetColumn("UpdatedAt", time.Now().In(local).Format(TimeLayout))
+	if err != nil {
+		return err
+	}
 	return nil
 }
