@@ -23,11 +23,10 @@ message User {
     string password = 5;
     string name = 6;
     string avatar = 7;
-    string introduction = 8;
-    string roles = 9;
-    string origin = 10; //用户注册来源
-    string created_at = 11;
-    string updated_at = 12;
+    string roles = 8;
+    string origin = 9; //用户注册来源
+    string created_at = 10;
+    string updated_at = 11;
 }
 message Request {
 }

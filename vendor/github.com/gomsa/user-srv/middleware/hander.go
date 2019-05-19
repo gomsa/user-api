@@ -9,8 +9,6 @@ import (
 
 	authClient "github.com/gomsa/user-srv/client"
 	authPb "github.com/gomsa/user-srv/proto/auth"
-
-	"github.com/micro/go-log"
 )
 
 // Handler 处理器
@@ -26,11 +24,9 @@ type Handler struct {
 func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) (err error) {
 		for _, p := range h.Permissions {
-			log.Log(ctx)
 			// 访问的服务和方法匹配时验证 Auth 插件是否需要用户授权 如果需要验证则检测响应权限
 			if p.Service == req.Service() && p.Method == req.Method() && p.Auth == true {
 				meta, ok := metadata.FromContext(ctx)
-				log.Log(meta)
 				if !ok {
 					return errors.New("no auth meta-data found in request")
 				}
@@ -48,9 +44,7 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 					}
 					// 设置用户 id
 					meta["user_id"] = authResp.User.Id
-					log.Log(meta)
 					ctx = metadata.NewContext(ctx, meta)
-					log.Log(ctx)
 				} else {
 					return errors.New("Empty Authorization")
 				}

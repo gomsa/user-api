@@ -22,3 +22,4 @@ func TestUserGet(t *testing.T) {
 	// fmt.Println(req, res, err)
 	t.Log(req, res, err)
 }
+

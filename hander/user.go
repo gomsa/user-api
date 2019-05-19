@@ -2,6 +2,9 @@ package hander
 
 import (
 	"context"
+	"errors"
+
+	"github.com/micro/go-micro/metadata"
 
 	"github.com/gomsa/tools/uitl"
 	pb "github.com/gomsa/user-api/proto/user"
@@ -50,19 +53,25 @@ func (srv *User) Exist(ctx context.Context, req *pb.User, res *pb.Response) (err
 }
 
 // Info 获取用户
-func (srv *User) Info(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
-	user := &userPB.User{}
-	err = uitl.Data2Data(req, user)
-	if err != nil {
-		return err
+func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	meta, ok := metadata.FromContext(ctx)
+	if !ok {
+		return errors.New("no auth meta-data found in request")
 	}
-	userRes, err := client.User.Get(context.TODO(), user)
-	if err != nil {
-		return err
-	}
-	err = uitl.Data2Data(userRes, res)
-	if err != nil {
-		return err
+	if userId, ok := meta["user_id"]; ok {
+		user := &userPB.User{
+			Id: userId,
+		}
+		userRes, err := client.User.Get(context.TODO(), user)
+		if err != nil {
+			return err
+		}
+		err = uitl.Data2Data(userRes, res)
+		if err != nil {
+			return err
+		}
+	} else {
+		return errors.New("Empty userId")
 	}
 	return err
 }
