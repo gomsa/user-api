@@ -34,7 +34,7 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				if !ok {
 					return errors.New("no auth meta-data found in request")
 				}
-				if token, ok := meta["X-Token"]; ok {
+				if token, ok := meta["x-token"]; ok {
 					// Note this is now uppercase (not entirely sure why this is...)
 					// token := strings.Split(meta["authorization"], "Bearer ")[1]
 					// Auth here
@@ -46,6 +46,11 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 					if err != nil || authResp.Valid == false {
 						return err
 					}
+					// 设置用户 id
+					meta["user_id"] = authResp.User.Id
+					log.Log(meta)
+					ctx = metadata.NewContext(ctx, meta)
+					log.Log(ctx)
 				} else {
 					return errors.New("Empty Authorization")
 				}
