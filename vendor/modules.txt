@@ -12,7 +12,7 @@ github.com/golang/protobuf/ptypes/timestamp
 # github.com/gomsa/tools v0.0.0-20190517032518-6b8a14b58a04
 github.com/gomsa/tools/uitl
 github.com/gomsa/tools/k8s/client
-# github.com/gomsa/user-srv v0.0.0-20190519004052-b198c2b36b0a
+# github.com/gomsa/user-srv v0.0.0-20190519021607-8fd1e31b654f
 github.com/gomsa/user-srv/middleware
 github.com/gomsa/user-srv/client
 github.com/gomsa/user-srv/proto/auth
@@ -61,9 +61,9 @@ github.com/micro/go-grpc/server
 github.com/micro/go-log
 # github.com/micro/go-micro v1.1.0
 github.com/micro/go-micro
+github.com/micro/go-micro/metadata
 github.com/micro/go-micro/client
 github.com/micro/go-micro/server
-github.com/micro/go-micro/metadata
 github.com/micro/go-micro/broker
 github.com/micro/go-micro/cmd
 github.com/micro/go-micro/registry
