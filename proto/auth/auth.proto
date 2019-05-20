@@ -5,6 +5,9 @@ package auth;
 service Auth {
     // 用户验证授权
     rpc Auth(User) returns (Token) {}
+     // 用户退出登录
+    rpc Logout(Request) returns (Token) {}
+    
     // token 验证
     rpc ValidateToken(Request) returns (Token) {}
 
