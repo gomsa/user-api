@@ -39,7 +39,7 @@ func (srv *Auth) Auth(ctx context.Context, req *pb.User, res *pb.Token) (err err
 // 通过存储多种类型的 token 来实现多端登录
 // token id type type=登录类型
 // 过期时间默认还是在 jwt token 中存储
-func (srv *Auth) Logout(ctx context.Context, req *pb.User, res *pb.Token) (err error) {
+func (srv *Auth) Logout(ctx context.Context, req *pb.Request, res *pb.Token) (err error) {
 	return err
 }
 
