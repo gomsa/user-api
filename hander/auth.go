@@ -25,7 +25,6 @@ func (srv *Auth) Auth(ctx context.Context, req *pb.User, res *pb.Token) (err err
 		return err
 	}
 	authRes, err := client.Auth.Auth(context.TODO(), user)
-	log.Log(err)
 	if err.Error() == "record not found" {
 		return errors.New("用户名不存在")
 	}
