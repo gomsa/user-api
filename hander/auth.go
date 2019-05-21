@@ -2,9 +2,10 @@ package hander
 
 import (
 	"context"
+	"errors"
 
 	"github.com/micro/go-log"
-	
+
 	"github.com/gomsa/tools/uitl"
 	pb "github.com/gomsa/user-api/proto/auth"
 	"github.com/gomsa/user-srv/client"
@@ -25,6 +26,9 @@ func (srv *Auth) Auth(ctx context.Context, req *pb.User, res *pb.Token) (err err
 	}
 	authRes, err := client.Auth.Auth(context.TODO(), user)
 	log.Log(err)
+	if err.Error() == "record not found" {
+		return errors.New("用户名不存在")
+	}
 	if err != nil {
 		return err
 	}
