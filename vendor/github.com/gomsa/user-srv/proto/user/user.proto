@@ -3,15 +3,19 @@ syntax = "proto3";
 package user;
 
 service Users {
-    // 创建用户
-    rpc Create(User) returns (Response) {}
     // 用过 用户名、邮箱、手机 查询用户是否存在
     rpc Exist(User) returns (Response) {}
+
+    // 获取用户列表
+    rpc List(Request) returns (Response) {}
     // 根据 唯一 获取用户
     rpc Get(User) returns (Response) {}
-    // 获取全部用户
-    rpc GetAll(Request) returns (Response) {}
-
+    // 创建用户
+    rpc Create(User) returns (Response) {}
+    // 更新用户
+    rpc Update(User) returns (Response) {}
+    // 删除用户
+    rpc Delete(User) returns (Response) {}
     // 微服务之间调用
 }
 
