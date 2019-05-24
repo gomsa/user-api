@@ -48,3 +48,17 @@ spec:
         - containerPort: 8080
           name: micro
           protocol: TCP
+      - name: health
+          command: [
+            "/health",
+            "--health_address=0.0.0.0:8081",
+            "--server_name=user-api",
+            "--server_address=0.0.0.0:8080"
+	        ]
+          image: microhq/health:kubernetes
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 3

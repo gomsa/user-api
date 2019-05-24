@@ -9,6 +9,22 @@ func Permissions() []m.Permission {
 	return []m.Permission{
 		{
 			Service:     `user-api`,
+			Method:      `Auth.Auth`,
+			Auth:        false,
+			Policy:      false,
+			Name:        `用户授权`,
+			Description: `用户登录授权返回 token 权限。`,
+		},
+		{
+			Service:     `user-api`,
+			Method:      `Auth.ValidateToken`,
+			Auth:        false,
+			Policy:      false,
+			Name:        `权限认证`,
+			Description: `权限相关认证权限。`,
+		},
+		{
+			Service:     `user-api`,
 			Method:      `Users.Create`,
 			Auth:        false,
 			Policy:      false,
@@ -38,22 +54,6 @@ func Permissions() []m.Permission {
 			Policy:      false,
 			Name:        `用户查询`,
 			Description: `查询用户信息权限。`,
-		},
-		{
-			Service:     `user-api`,
-			Method:      `Auth.Auth`,
-			Auth:        false,
-			Policy:      false,
-			Name:        `用户授权`,
-			Description: `用户登录授权返回 token 权限。`,
-		},
-		{
-			Service:     `user-api`,
-			Method:      `Auth.ValidateToken`,
-			Auth:        false,
-			Policy:      false,
-			Name:        `权限认证`,
-			Description: `权限相关认证权限。`,
 		},
 	}
 }
