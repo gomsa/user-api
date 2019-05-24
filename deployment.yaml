@@ -52,7 +52,7 @@ spec:
           command: [
             "/health",
             "--health_address=0.0.0.0:8081",
-            "--server_name=user-api",
+            "--server_name=user.api",
             "--server_address=0.0.0.0:8080"
 	        ]
           image: microhq/health:kubernetes
