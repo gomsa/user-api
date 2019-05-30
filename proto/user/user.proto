@@ -5,6 +5,8 @@ package user;
 service Users {
     // 用过 用户名、邮箱、手机 查询用户是否存在
     rpc Exist(User) returns (Response) {}
+     // 根据 唯一 获取用户
+    rpc Info(Request) returns (Response) {}
     // 获取用户列表
     rpc List(ListQuery) returns (Response) {}
     // 根据 唯一 获取用户
