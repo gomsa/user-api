@@ -59,8 +59,8 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 }
 
 // List 用户列表
-func (srv *User) List(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
-	user := &userPB.Request{}
+func (srv *User) List(ctx context.Context, req *pb.ListQuery, res *pb.Response) (err error) {
+	user := &userPB.ListQuery{}
 	err = uitl.Data2Data(req, user)
 	if err != nil {
 		return err
