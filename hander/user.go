@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/micro/go-log"
 	"github.com/micro/go-micro/metadata"
 
 	"github.com/gomsa/tools/uitl"
@@ -66,7 +65,6 @@ func (srv *User) List(ctx context.Context, req *pb.ListQuery, res *pb.Response) 
 	if err != nil {
 		return err
 	}
-	log.Log(query)
 	userRes, err := client.User.List(context.TODO(), query)
 	if err != nil {
 		return err
