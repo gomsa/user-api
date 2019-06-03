@@ -36,5 +36,6 @@ message ListQuery{
 message Response{
     Permission permission = 1;
     repeated Permission permissions = 2;
-    bool valid = 3;
+    int64 total = 3;
+    bool valid = 4;
 }
