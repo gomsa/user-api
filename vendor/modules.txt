@@ -12,11 +12,13 @@ github.com/golang/protobuf/ptypes/timestamp
 # github.com/gomsa/tools v0.0.0-20190517032518-6b8a14b58a04
 github.com/gomsa/tools/uitl
 github.com/gomsa/tools/k8s/client
-# github.com/gomsa/user-srv v0.0.0-20190601085302-c1037108e40c
+# github.com/gomsa/user-srv v0.0.0-20190603021428-f1d07fab57a8
 github.com/gomsa/user-srv/middleware
 github.com/gomsa/user-srv/client
 github.com/gomsa/user-srv/proto/auth
 github.com/gomsa/user-srv/proto/user
+github.com/gomsa/user-srv/proto/permission
+github.com/gomsa/user-srv/proto/role
 # github.com/google/btree v1.0.0
 github.com/google/btree
 # github.com/google/uuid v1.1.1

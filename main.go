@@ -9,6 +9,8 @@ import (
 	"github.com/gomsa/user-api/hander"
 	authPB "github.com/gomsa/user-api/proto/auth"
 	userPB "github.com/gomsa/user-api/proto/user"
+	permissionPB "github.com/gomsa/user-api/proto/permission"
+	rolePB "github.com/gomsa/user-api/proto/role"
 	m "github.com/gomsa/user-srv/middleware"
 )
 
@@ -27,6 +29,10 @@ func main() {
 	userPB.RegisterUsersHandler(srv.Server(), &hander.User{})
 
 	authPB.RegisterAuthHandler(srv.Server(), &hander.Auth{})
+	
+	permissionPB.RegisterPermissionsHandler(srv.Server(), &hander.Permission{})
+
+	rolePB.RegisterRolesHandler(srv.Server(), &hander.Role{})
 	// Run the server
 	if err := srv.Run(); err != nil {
 		log.Log(err)

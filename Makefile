@@ -9,3 +9,5 @@ dev:
 build:
 	protoc -I . --go_out=plugins=micro:. proto/user/user.proto
 	protoc -I . --go_out=plugins=micro:. proto/auth/auth.proto
+	protoc -I . --go_out=plugins=micro:. proto/permission/permission.proto
+	protoc -I . --go_out=plugins=micro:. proto/role/role.proto
