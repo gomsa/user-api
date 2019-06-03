@@ -46,5 +46,6 @@ message Request {
 message Response {
     User user = 1;
     repeated User users = 2;
-    bool valid = 3;
+    int64 total = 3;
+    bool valid = 4;
 }

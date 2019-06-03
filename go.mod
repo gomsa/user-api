@@ -16,7 +16,7 @@ require (
 	github.com/golang/lint v0.0.0-20181217174547-8f45f776aaf1 // indirect
 	github.com/golang/protobuf v1.3.1
 	github.com/gomsa/tools v0.0.0-20190517032518-6b8a14b58a04
-	github.com/gomsa/user-srv v0.0.0-20190603021428-f1d07fab57a8
+	github.com/gomsa/user-srv v0.0.0-20190603032859-3f2032efec71
 	github.com/google/pprof v0.0.0-20190109223431-e84dfd68c163 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/gregjones/httpcache v0.0.0-20190203031600-7a902570cb17 // indirect
