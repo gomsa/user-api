@@ -7,13 +7,13 @@ service Roles {
     // 获取权限列表
     rpc List(ListQuery) returns (Response) {}
     // 根据 唯一 获取权限
-    // rpc Get(Role) returns (Response) {}
-    // // 创建权限
-    // rpc Create(Role) returns (Response) {}
-    // // 更新权限
-    // rpc Update(Role) returns (Response) {}
-    // // 删除权限
-    // rpc Delete(Role) returns (Response) {}
+    rpc Get(Role) returns (Response) {}
+    // 创建权限
+    rpc Create(Role) returns (Response) {}
+    // 更新权限
+    rpc Update(Role) returns (Response) {}
+    // 删除权限
+    rpc Delete(Role) returns (Response) {}
 
 }
 

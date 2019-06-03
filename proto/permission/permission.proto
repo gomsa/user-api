@@ -6,14 +6,14 @@ service Permissions {
     // 权限验证授权
     // 获取权限列表
     rpc List(ListQuery) returns (Response) {}
-    // 根据 唯一 获取权限
-    rpc Get(Permission) returns (Response) {}
-    // 创建权限
-    rpc Create(Permission) returns (Response) {}
-    // 更新权限
-    rpc Update(Permission) returns (Response) {}
-    // 删除权限
-    rpc Delete(Permission) returns (Response) {}
+    // // 根据 唯一 获取权限
+    // rpc Get(Permission) returns (Response) {}
+    // // 创建权限
+    // rpc Create(Permission) returns (Response) {}
+    // // 更新权限
+    // rpc Update(Permission) returns (Response) {}
+    // // 删除权限
+    // rpc Delete(Permission) returns (Response) {}
 
 }
 
