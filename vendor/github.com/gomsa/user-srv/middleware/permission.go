@@ -1,11 +1,20 @@
 package middleware
 
+import (
+	"github.com/micro/go-micro/server"
+)
+
 // Permission 权限
 type Permission struct {
-	Service     string `json:"service"`
-	Method      string `json:"method"`
-	Auth        bool   `json:"auth"`
-	Policy      bool   `json:"policy"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	Data []map[string]interface{}
+}
+
+// IsAuth 检测是否需要检测用户
+func (p *Permission) IsAuth(req server.Request) bool {
+	for _, d := range p.Data {
+		if d["service"] == req.Service() && d["method"] == req.Method() && d["auth"] == true {
+			return true
+		}
+	}
+	return false
 }
