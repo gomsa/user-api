@@ -24,9 +24,7 @@ func main() {
 	}
 	// 设置权限
 	h := m.Handler{
-		P: m.Permission{
-			Data: Pata,
-		},
+		Permissions: Pata
 	}
 	srv := k8s.NewService(
 		micro.Name("user-api"),
