@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
