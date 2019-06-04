@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
@@ -14,7 +15,7 @@ import (
 // Handler 处理器
 // 包含一些高阶函数比如中间件常用的 token 验证等
 type Handler struct {
-	P Permission
+	Permissions []map[string]interface{}
 }
 
 // Wrapper 是一个高阶函数，入参是 ”下一步“ 函数，出参是认证函数
@@ -23,7 +24,7 @@ type Handler struct {
 // 认证通过则 fn() 继续执行，否则报错
 func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) (err error) {
-		if h.P.IsAuth(req) {
+		if h.IsAuth(req) {
 			meta, ok := metadata.FromContext(ctx)
 			if !ok {
 				return errors.New("no auth meta-data found in request")
@@ -50,4 +51,14 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 		err = fn(ctx, req, resp)
 		return err
 	}
+}
+
+// IsAuth 检测是否需要检测用户
+func (h *Handler) IsAuth(req server.Request) bool {
+	for _, p := range h.Permissions {
+		if p["service"] == req.Service() && p["method"] == req.Method() && p["auth"] == true {
+			return true
+		}
+	}
+	return false
 }
