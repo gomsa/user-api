@@ -29,7 +29,7 @@ func main() {
 	h := m.Handler{
 		Permissions: p_data
 	}
-	srv := k8s.New"service"(
+	srv := k8s.NewService(
 		micro.Name("user-api"),
 		micro.Version("latest"),
 		micro.WrapHandler(h.Wrapper), //验证权限
