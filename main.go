@@ -12,6 +12,8 @@ import (
 	rolePB "github.com/gomsa/user-api/proto/role"
 	userPB "github.com/gomsa/user-api/proto/user"
 	m "github.com/gomsa/user-srv/middleware"
+
+	_ "github.com/gomsa/user-api/init"
 )
 
 func main() {
