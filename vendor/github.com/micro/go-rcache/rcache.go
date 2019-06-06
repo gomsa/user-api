@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/micro/go-log"
+	"github.com/micro/go-log"
 	"github.com/micro/go-micro/registry"
 )
 
@@ -40,6 +40,8 @@ type cache struct {
 
 var (
 	DefaultTTL = time.Minute
+
+	r = rand.New(rand.NewSource(time.Now().UnixNano()))
 )
 
 func backoff(attempts int) time.Duration {
@@ -47,27 +49,6 @@ func backoff(attempts int) time.Duration {
 		return time.Duration(0)
 	}
 	return time.Duration(math.Pow(10, float64(attempts))) * time.Millisecond
-}
-
-// isValid checks if the service is valid
-func (c *cache) isValid(services []*registry.Service, ttl time.Time) bool {
-	// no services exist
-	if len(services) == 0 {
-		return false
-	}
-
-	// ttl is invalid
-	if ttl.IsZero() {
-		return false
-	}
-
-	// time since ttl is longer than timeout
-	if time.Since(ttl) > c.opts.TTL {
-		return false
-	}
-
-	// ok
-	return true
 }
 
 func (c *cache) quit() bool {
@@ -120,25 +101,17 @@ func (c *cache) del(service string) {
 }
 
 func (c *cache) get(service string) ([]*registry.Service, error) {
-	// read lock
-	c.RLock()
+	c.Lock()
+	defer c.Unlock()
 
-	// check the cache first
-	services := c.cache[service]
-	// get cache ttl
-	ttl := c.ttls[service]
-
-	// got services && within ttl so return cache
-	if c.isValid(services, ttl) {
-		// make a copy
-		cp := c.cp(services)
-		// unlock the read
-		c.RUnlock()
-		// return servics
-		return cp, nil
+	// watch service if not watched
+	if _, ok := c.watched[service]; !ok {
+		go c.run(service)
+		c.watched[service] = true
 	}
 
-	// get does the actual request for a service and cache it
+	// get does the actual request for a service
+	// it also caches it
 	get := func(service string) ([]*registry.Service, error) {
 		// ask the registry
 		services, err := c.Registry.GetService(service)
@@ -147,23 +120,43 @@ func (c *cache) get(service string) ([]*registry.Service, error) {
 		}
 
 		// cache results
-		c.Lock()
 		c.set(service, c.cp(services))
-		c.Unlock()
-
 		return services, nil
 	}
 
-	// watch service if not watched
-	if _, ok := c.watched[service]; !ok {
-		go c.run(service)
+	// check the cache first
+	services, ok := c.cache[service]
+
+	// cache miss or no services
+	if !ok || len(services) == 0 {
+		return get(service)
 	}
 
-	// unlock the read lock
-	c.RUnlock()
+	// got cache but lets check ttl
+	ttl, kk := c.ttls[service]
 
-	// get and return services
-	return get(service)
+	// within ttl so return cache
+	if kk && time.Since(ttl) < c.opts.TTL {
+		return c.cp(services), nil
+	}
+
+	// expired entry so get service
+	services, err := get(service)
+
+	// no error then return error
+	if err == nil {
+		return services, nil
+	}
+
+	// not found error then return
+	if err == registry.ErrNotFound {
+		return nil, err
+	}
+
+	// other error
+
+	// return expired cache as last resort
+	return c.cp(services), nil
 }
 
 func (c *cache) set(service string, services []*registry.Service) {
@@ -282,18 +275,6 @@ func (c *cache) update(res *registry.Result) {
 // run starts the cache watcher loop
 // it creates a new watcher if there's a problem
 func (c *cache) run(service string) {
-	// set watcher
-	c.Lock()
-	c.watched[service] = true
-	c.Unlock()
-
-	// delete watcher on exit
-	defer func() {
-		c.Lock()
-		delete(c.watched, service)
-		c.Unlock()
-	}()
-
 	var a, b int
 
 	for {
@@ -303,29 +284,21 @@ func (c *cache) run(service string) {
 		}
 
 		// jitter before starting
-		j := rand.Int63n(100)
+		j := r.Int63n(100)
 		time.Sleep(time.Duration(j) * time.Millisecond)
 
 		// create new watcher
 		w, err := c.Registry.Watch(
 			registry.WatchService(service),
 		)
-
 		if err != nil {
 			if c.quit() {
 				return
 			}
-
 			d := backoff(a)
-
-			if a > 3 {
-				log.Log("rcache: ", err, " backing off ", d)
-				a = 0
-			}
-
+			log.Log("rcache: ", err, " backing off ", d)
 			time.Sleep(d)
-			a++
-
+			a += 1
 			continue
 		}
 
@@ -337,17 +310,10 @@ func (c *cache) run(service string) {
 			if c.quit() {
 				return
 			}
-
 			d := backoff(b)
-
-			if b > 3 {
-				log.Log("rcache: ", err, " backing off ", d)
-				b = 0
-			}
-
+			log.Log("rcache: ", err, " backing off ", d)
 			time.Sleep(d)
-			b++
-
+			b += 1
 			continue
 		}
 
@@ -408,7 +374,6 @@ func (c *cache) String() string {
 
 // New returns a new cache
 func New(r registry.Registry, opts ...Option) Cache {
-	rand.Seed(time.Now().UnixNano())
 	options := Options{
 		TTL: DefaultTTL,
 	}
