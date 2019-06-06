@@ -7,6 +7,7 @@ import (
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
 
+	"github.com/gomsa/tools/config"
 	authClient "github.com/gomsa/user-srv/client"
 	authPb "github.com/gomsa/user-srv/proto/auth"
 )
@@ -14,7 +15,7 @@ import (
 // Handler 处理器
 // 包含一些高阶函数比如中间件常用的 token 验证等
 type Handler struct {
-	Permissions []map[string]interface{}
+	Permissions []config.Permission
 }
 
 // Wrapper 是一个高阶函数，入参是 ”下一步“ 函数，出参是认证函数
@@ -55,7 +56,7 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 // IsAuth 检测是否需要检测用户
 func (h *Handler) IsAuth(req server.Request) bool {
 	for _, p := range h.Permissions {
-		if p["service"] == req.Service() && p["method"] == req.Method() && p["auth"] == true {
+		if p.Service == req.Service() && p.Method == req.Method() && p.Auth == true {
 			return true
 		}
 	}

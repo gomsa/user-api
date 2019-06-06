@@ -10,14 +10,13 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/micro/go-log"
 	"github.com/micro/go-micro/broker"
 	"github.com/micro/go-micro/codec"
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/transport"
-
-	"github.com/micro/util/go/lib/addr"
+	"github.com/micro/go-micro/util/addr"
+	log "github.com/micro/go-micro/util/log"
 )
 
 type rpcServer struct {
@@ -31,7 +30,7 @@ type rpcServer struct {
 	// used for first registration
 	registered bool
 	// graceful exit
-	wg sync.WaitGroup
+	wg *sync.WaitGroup
 }
 
 func newRpcServer(opts ...Option) Server {
@@ -42,6 +41,7 @@ func newRpcServer(opts ...Option) Server {
 		handlers:    make(map[string]Handler),
 		subscribers: make(map[*subscriber][]broker.Subscriber),
 		exit:        make(chan chan error),
+		wg:          wait(options.Context),
 	}
 }
 
@@ -63,8 +63,10 @@ func (s *rpcServer) ServeConn(sock transport.Socket) {
 			return
 		}
 
-		// add to wait group
-		s.wg.Add(1)
+		// add to wait group if "wait" is opt-in
+		if s.wg != nil {
+			s.wg.Add(1)
+		}
 
 		// we use this Timeout header to set a server deadline
 		to := msg.Header["Timeout"]
@@ -111,7 +113,9 @@ func (s *rpcServer) ServeConn(sock transport.Socket) {
 					},
 					Body: []byte(err.Error()),
 				})
-				s.wg.Done()
+				if s.wg != nil {
+					s.wg.Done()
+				}
 				return
 			}
 		}
@@ -157,24 +161,26 @@ func (s *rpcServer) ServeConn(sock transport.Socket) {
 
 		// TODO: handle error better
 		if err := handler(ctx, request, response); err != nil {
-			if err != lastStreamResponseError {
-				// write an error response
-				err = rcodec.Write(&codec.Message{
-					Header: msg.Header,
-					Error:  err.Error(),
-					Type:   codec.Error,
-				}, nil)
-				// could not write the error response
-				if err != nil {
-					log.Logf("rpc: unable to write error response: %v", err)
-				}
+			// write an error response
+			err = rcodec.Write(&codec.Message{
+				Header: msg.Header,
+				Error:  err.Error(),
+				Type:   codec.Error,
+			}, nil)
+			// could not write the error response
+			if err != nil {
+				log.Logf("rpc: unable to write error response: %v", err)
 			}
-			s.wg.Done()
+			if s.wg != nil {
+				s.wg.Done()
+			}
 			return
 		}
 
 		// done
-		s.wg.Done()
+		if s.wg != nil {
+			s.wg.Done()
+		}
 	}
 }
 
@@ -365,9 +371,15 @@ func (s *rpcServer) Register() error {
 		if queue := sb.Options().Queue; len(queue) > 0 {
 			opts = append(opts, broker.Queue(queue))
 		}
+
 		if cx := sb.Options().Context; cx != nil {
 			opts = append(opts, broker.SubscribeContext(cx))
 		}
+
+		if !sb.Options().AutoAck {
+			opts = append(opts, broker.DisableAutoAck())
+		}
+
 		sub, err := config.Broker.Subscribe(sb.Topic(), handler, opts...)
 		if err != nil {
 			return err
@@ -468,9 +480,14 @@ func (s *rpcServer) Start() error {
 
 	log.Logf("Broker [%s] Connected to %s", config.Broker.String(), config.Broker.Address())
 
-	// announce self to the world
-	if err := s.Register(); err != nil {
-		log.Log("Server register error: ", err)
+	// use RegisterCheck func before register
+	if err = s.opts.RegisterCheck(s.opts.Context); err != nil {
+		log.Logf("Server %s-%s register check error: %s", config.Name, config.Id, err)
+	} else {
+		// announce self to the world
+		if err = s.Register(); err != nil {
+			log.Log("Server %s-%s register error: %s", config.Name, config.Id, err)
+		}
 	}
 
 	exit := make(chan bool)
@@ -518,8 +535,19 @@ func (s *rpcServer) Start() error {
 			select {
 			// register self on interval
 			case <-t.C:
-				if err := s.Register(); err != nil {
-					log.Log("Server register error: ", err)
+				s.RLock()
+				registered := s.registered
+				s.RUnlock()
+				if err = s.opts.RegisterCheck(s.opts.Context); err != nil && registered {
+					log.Logf("Server %s-%s register check error: %s, deregister it", config.Name, config.Id, err)
+					// deregister self in case of error
+					if err := s.Deregister(); err != nil {
+						log.Logf("Server %s-%s deregister error: %s", config.Name, config.Id, err)
+					}
+				} else {
+					if err := s.Register(); err != nil {
+						log.Logf("Server %s-%s register error: %s", config.Name, config.Id, err)
+					}
 				}
 			// wait for exit
 			case ch = <-s.exit:
@@ -531,11 +559,11 @@ func (s *rpcServer) Start() error {
 
 		// deregister self
 		if err := s.Deregister(); err != nil {
-			log.Log("Server deregister error: ", err)
+			log.Logf("Server %s-%s deregister error: %s", config.Name, config.Id, err)
 		}
 
 		// wait for requests to finish
-		if wait(s.opts.Context) {
+		if s.wg != nil {
 			s.wg.Wait()
 		}
 

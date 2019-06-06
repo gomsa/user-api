@@ -19,19 +19,21 @@ service Permissions {
 
 message Permission {
     int64 id = 1;
-    string name = 2;
-    string display_name = 3;
-    string description = 4;
-    string created_at = 5;
-    string updated_at = 6;
+    string service = 2;
+    string name = 3;
+    string display_name = 4;
+    string description = 5;
+    string created_at = 6;
+    string updated_at = 7;
 }
 
 message ListQuery{
     int64 limit=1; //返回数量
     int64 page=2; //页面
     string sort=3; // 排序
-    string name = 4;
-    string display_name = 5;
+    string service = 4;
+    string name = 5;
+    string display_name = 6;
 }
 message Response{
     Permission permission = 1;

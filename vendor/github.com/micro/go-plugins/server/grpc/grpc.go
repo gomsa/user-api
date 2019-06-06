@@ -66,8 +66,7 @@ func init() {
 func newGRPCServer(opts ...server.Option) server.Server {
 	options := newOptions(opts...)
 
-	// create a grpc server
-	srv := &grpcServer{
+	gsrv := &grpcServer{
 		opts: options,
 		rpc: &rServer{
 			serviceMap: make(map[string]*service),
@@ -77,35 +76,21 @@ func newGRPCServer(opts ...server.Option) server.Server {
 		exit:        make(chan chan error),
 	}
 
-	// configure the grpc server
-	srv.configure()
-
-	return srv
-}
-
-func (g *grpcServer) configure(opts ...server.Option) {
-	// Don't reprocess where there's no config
-	if len(opts) == 0 && g.srv != nil {
-		return
-	}
-
-	for _, o := range opts {
-		o(&g.opts)
-	}
-
-	maxMsgSize := g.getMaxMsgSize()
+	maxMsgSize := gsrv.getMaxMsgSize()
 
 	gopts := []grpc.ServerOption{
 		grpc.MaxRecvMsgSize(maxMsgSize),
 		grpc.MaxSendMsgSize(maxMsgSize),
-		grpc.UnknownServiceHandler(g.handler),
+		grpc.UnknownServiceHandler(gsrv.handler),
 	}
 
-	if creds := g.getCredentials(); creds != nil {
+	if creds := gsrv.getCredentials(); creds != nil {
 		gopts = append(gopts, grpc.Creds(creds))
 	}
 
-	g.srv = grpc.NewServer(gopts...)
+	// set grpc service
+	gsrv.srv = grpc.NewServer(gopts...)
+	return gsrv
 }
 
 func (g *grpcServer) getMaxMsgSize() int {
@@ -348,7 +333,9 @@ func (g *grpcServer) Options() server.Options {
 }
 
 func (g *grpcServer) Init(opts ...server.Option) error {
-	g.configure(opts...)
+	for _, opt := range opts {
+		opt(&g.opts)
+	}
 	return nil
 }
 

@@ -10,14 +10,15 @@ import (
 	"time"
 
 	"github.com/micro/cli"
-	"github.com/micro/go-log"
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/server"
+	"github.com/micro/go-micro/util/log"
 
 	// brokers
 	"github.com/micro/go-micro/broker"
 	"github.com/micro/go-micro/broker/http"
 	"github.com/micro/go-micro/broker/memory"
+	"github.com/micro/go-micro/broker/nats"
 
 	// registries
 	"github.com/micro/go-micro/registry"
@@ -33,6 +34,7 @@ import (
 
 	// transports
 	"github.com/micro/go-micro/transport"
+	tgrpc "github.com/micro/go-micro/transport/grpc"
 	thttp "github.com/micro/go-micro/transport/http"
 	tmem "github.com/micro/go-micro/transport/memory"
 )
@@ -71,6 +73,7 @@ var (
 		cli.IntFlag{
 			Name:   "client_retries",
 			EnvVar: "MICRO_CLIENT_RETRIES",
+			Value:  client.DefaultRetries,
 			Usage:  "Sets the client retries. Default: 1",
 		},
 		cli.IntFlag{
@@ -169,6 +172,7 @@ var (
 	DefaultBrokers = map[string]func(...broker.Option) broker.Broker{
 		"http":   http.NewBroker,
 		"memory": memory.NewBroker,
+		"nats":   nats.NewBroker,
 	}
 
 	DefaultClients = map[string]func(...client.Option) client.Client{
@@ -196,6 +200,7 @@ var (
 	DefaultTransports = map[string]func(...transport.Option) transport.Transport{
 		"memory": tmem.NewTransport,
 		"http":   thttp.NewTransport,
+		"grpc":   tgrpc.NewTransport,
 	}
 
 	// used for default selection as the fall back

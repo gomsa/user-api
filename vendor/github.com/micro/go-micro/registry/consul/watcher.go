@@ -2,10 +2,12 @@ package consul
 
 import (
 	"errors"
+	"log"
+	"os"
 	"sync"
 
 	"github.com/hashicorp/consul/api"
-	"github.com/hashicorp/consul/watch"
+	"github.com/hashicorp/consul/api/watch"
 	"github.com/micro/go-micro/registry"
 )
 
@@ -43,7 +45,7 @@ func newConsulWatcher(cr *consulRegistry, opts ...registry.WatchOption) (registr
 	}
 
 	wp.Handler = cw.handle
-	go wp.Run(cr.Address)
+	go wp.RunWithClientAndLogger(cr.Client, log.New(os.Stderr, "", log.LstdFlags))
 	cw.wp = wp
 
 	return cw, nil
@@ -208,7 +210,7 @@ func (cw *consulWatcher) handle(idx uint64, data interface{}) {
 		})
 		if err == nil {
 			wp.Handler = cw.serviceHandler
-			go wp.Run(cw.r.Address)
+			go wp.RunWithClientAndLogger(cw.r.Client, log.New(os.Stderr, "", log.LstdFlags))
 			cw.watchers[service] = wp
 			cw.next <- &registry.Result{Action: "create", Service: &registry.Service{Name: service}}
 		}

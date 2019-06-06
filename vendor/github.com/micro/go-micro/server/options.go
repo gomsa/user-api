@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"github.com/micro/go-micro/broker"
@@ -25,6 +26,8 @@ type Options struct {
 	HdlrWrappers []HandlerWrapper
 	SubWrappers  []SubscriberWrapper
 
+	// RegisterCheck runs a check function before registering the service
+	RegisterCheck func(context.Context) error
 	// The register expiry time
 	RegisterTTL time.Duration
 	// The interval on which to register
@@ -65,6 +68,10 @@ func newOptions(opt ...Option) Options {
 
 	if opts.DebugHandler == nil {
 		opts.DebugHandler = debug.DefaultDebugHandler
+	}
+
+	if opts.RegisterCheck == nil {
+		opts.RegisterCheck = DefaultRegisterCheck
 	}
 
 	if len(opts.Address) == 0 {
@@ -163,6 +170,13 @@ func Metadata(md map[string]string) Option {
 	}
 }
 
+// RegisterCheck run func before registry service
+func RegisterCheck(fn func(context.Context) error) Option {
+	return func(o *Options) {
+		o.RegisterCheck = fn
+	}
+}
+
 // Register the service with a TTL
 func RegisterTTL(t time.Duration) Option {
 	return func(o *Options) {
@@ -185,12 +199,18 @@ func WithRouter(r Router) Option {
 }
 
 // Wait tells the server to wait for requests to finish before exiting
-func Wait(b bool) Option {
+// If `wg` is nil, server only wait for completion of rpc handler.
+// For user need finer grained control, pass a concrete `wg` here, server will
+// wait against it on stop.
+func Wait(wg *sync.WaitGroup) Option {
 	return func(o *Options) {
 		if o.Context == nil {
 			o.Context = context.Background()
 		}
-		o.Context = context.WithValue(o.Context, "wait", b)
+		if wg == nil {
+			wg = new(sync.WaitGroup)
+		}
+		o.Context = context.WithValue(o.Context, "wait", wg)
 	}
 }
 

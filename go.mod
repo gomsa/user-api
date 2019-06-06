@@ -3,49 +3,87 @@ module github.com/gomsa/user-api
 go 1.12
 
 require (
-	dmitri.shuralyov.com/app/changes v0.0.0-20181114035150-5af16e21babb // indirect
-	dmitri.shuralyov.com/service/change v0.0.0-20190203025214-430bf650e55a // indirect
-	git.apache.org/thrift.git v0.12.0 // indirect
-	github.com/Azure/azure-storage-blob-go v0.0.0-20190123011202-457680cc0804 // indirect
-	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20190129172621-c8b1d7a94ddf // indirect
-	github.com/anacrolix/tagflag v0.0.0-20180803105420-3a8ff5428f76 // indirect
-	github.com/coreos/bbolt v1.3.2 // indirect
-	github.com/glycerine/go-unsnap-stream v0.0.0-20181221182339-f9677308dec2 // indirect
-	github.com/go-ini/ini v1.41.0 // indirect
-	github.com/go-logfmt/logfmt v0.4.0 // indirect
-	github.com/golang/lint v0.0.0-20181217174547-8f45f776aaf1 // indirect
+	github.com/NYTimes/gziphandler v1.1.1 // indirect
+	github.com/SAP/go-hdb v0.14.1 // indirect
+	github.com/StackExchange/wmi v0.0.0-20181212234831-e0a55b97c705 // indirect
+	github.com/aliyun/alibaba-cloud-sdk-go v0.0.0-20190328075325-5887fb5d0027 // indirect
+	github.com/araddon/gou v0.0.0-20190110011759-c797efecbb61 // indirect
+	github.com/aws/aws-sdk-go v1.17.5 // indirect
+	github.com/boombuler/barcode v1.0.0 // indirect
+	github.com/briankassouf/jose v0.9.1 // indirect
+	github.com/centrify/cloud-golang-sdk v0.0.0-20190214225812-119110094d0f // indirect
+	github.com/chrismalek/oktasdk-go v0.0.0-20181212195951-3430665dfaa0 // indirect
+	github.com/coredns/coredns v1.4.0 // indirect
+	github.com/coreos/go-oidc v2.0.0+incompatible // indirect
+	github.com/dancannon/gorethink v4.0.0+incompatible // indirect
+	github.com/dimchansky/utfbom v1.1.0 // indirect
+	github.com/duosecurity/duo_api_golang v0.0.0-20190308151101-6c680f768e74 // indirect
+	github.com/envoyproxy/go-control-plane v0.6.9 // indirect
+	github.com/fullsailor/pkcs7 v0.0.0-20180613152042-8306686428a5 // indirect
+	github.com/gammazero/deque v0.0.0-20190130191400-2afb3858e9c7 // indirect
+	github.com/gammazero/workerpool v0.0.0-20181230203049-86a96b5d5d92 // indirect
+	github.com/garyburd/redigo v1.6.0 // indirect
+	github.com/go-errors/errors v1.0.1 // indirect
+	github.com/go-ldap/ldap v3.0.2+incompatible // indirect
+	github.com/go-ole/go-ole v1.2.4 // indirect
+	github.com/gocql/gocql v0.0.0-20190325140904-fc3925ac2cbd // indirect
+	github.com/gogo/googleapis v1.1.0 // indirect
 	github.com/golang/protobuf v1.3.1
-	github.com/gomsa/tools v0.0.0-20190517032518-6b8a14b58a04
-	github.com/gomsa/user-srv v0.0.0-20190604095001-8ae4e357bf2e
-	github.com/google/pprof v0.0.0-20190109223431-e84dfd68c163 // indirect
-	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
-	github.com/gregjones/httpcache v0.0.0-20190203031600-7a902570cb17 // indirect
-	github.com/huandu/xstrings v1.2.0 // indirect
+	github.com/golang/snappy v0.0.1 // indirect
+	github.com/gomsa/tools v0.0.0-20190606021546-6df98f53add5
+	github.com/gomsa/user-srv v0.0.0-20190606022407-c17774acbc21
+	github.com/gorhill/cronexpr v0.0.0-20180427100037-88b0669f7d75 // indirect
+	github.com/grpc-ecosystem/grpc-gateway v1.8.5 // indirect
+	github.com/hashicorp/consul v1.4.4 // indirect
+	github.com/hashicorp/go-discover v0.0.0-20190319153616-61771d82ff54 // indirect
+	github.com/hashicorp/go-gcp-common v0.5.0 // indirect
+	github.com/hashicorp/go-hclog v0.8.0 // indirect
+	github.com/hashicorp/go-memdb v1.0.0 // indirect
+	github.com/hashicorp/go-plugin v1.0.0 // indirect
+	github.com/hashicorp/hil v0.0.0-20190212132231-97b3a9cdfa93 // indirect
+	github.com/hashicorp/net-rpc-msgpackrpc v0.0.0-20151116020338-a14192a58a69 // indirect
+	github.com/hashicorp/nomad v0.8.7 // indirect
+	github.com/hashicorp/raft-boltdb v0.0.0-20171010151810-6e5ba93211ea // indirect
+	github.com/hashicorp/vault v1.1.0 // indirect
+	github.com/hashicorp/vault-plugin-auth-alicloud v0.0.0-20190320211238-36e70c54375f // indirect
+	github.com/hashicorp/vault-plugin-auth-azure v0.0.0-20190320211138-f34b96803f04 // indirect
+	github.com/hashicorp/vault-plugin-auth-centrify v0.0.0-20190320211357-44eb061bdfd8 // indirect
+	github.com/hashicorp/vault-plugin-auth-gcp v0.0.0-20190320214413-e8308b5e41c9 // indirect
+	github.com/hashicorp/vault-plugin-auth-jwt v0.0.0-20190321042813-9474f90fb1df // indirect
+	github.com/hashicorp/vault-plugin-auth-kubernetes v0.0.0-20190328163920-79931ee7aad5 // indirect
+	github.com/hashicorp/vault-plugin-secrets-ad v0.0.0-20190327182327-ed2c3d4c3d95 // indirect
+	github.com/hashicorp/vault-plugin-secrets-alicloud v0.0.0-20190320213517-3307bdf683cb // indirect
+	github.com/hashicorp/vault-plugin-secrets-azure v0.0.0-20190320211922-2dc8a8a5e490 // indirect
+	github.com/hashicorp/vault-plugin-secrets-gcp v0.0.0-20190320211452-71903323ecb4 // indirect
+	github.com/hashicorp/vault-plugin-secrets-gcpkms v0.0.0-20190320213325-9e326a9e802d // indirect
+	github.com/hashicorp/vault-plugin-secrets-kv v0.0.0-20190320211621-3ccc8684cf25 // indirect
+	github.com/influxdata/influxdb v1.7.5 // indirect
+	github.com/influxdata/platform v0.0.0-20190117200541-d500d3cf5589 // indirect
+	github.com/jeffchao/backoff v0.0.0-20140404060208-9d7fd7aa17f2 // indirect
+	github.com/jefferai/jsonx v1.0.0 // indirect
+	github.com/keybase/go-crypto v0.0.0-20190312101036-b475f2ecc1fe // indirect
+	github.com/lyft/protoc-gen-validate v0.0.14 // indirect
+	github.com/mattbaird/elastigo v0.0.0-20170123220020-2fe47fd29e4b // indirect
+	github.com/michaelklishin/rabbit-hole v1.5.0 // indirect
 	github.com/micro/go-log v0.1.0
-	github.com/micro/go-micro v1.1.0
+	github.com/micro/go-micro v1.5.0
+	github.com/micro/go-rcache v0.3.0 // indirect
 	github.com/micro/kubernetes v0.7.0
-	github.com/microcosm-cc/bluemonday v1.0.2 // indirect
-	github.com/prometheus/client_model v0.0.0-20190129233127-fd36f4220a90 // indirect
-	github.com/russross/blackfriday v2.0.0+incompatible // indirect
-	github.com/shurcooL/go v0.0.0-20190121191506-3fef8c783dec // indirect
-	github.com/shurcooL/gofontwoff v0.0.0-20181114050219-180f79e6909d // indirect
-	github.com/shurcooL/highlight_diff v0.0.0-20181222201841-111da2e7d480 // indirect
-	github.com/shurcooL/highlight_go v0.0.0-20181215221002-9d8641ddf2e1 // indirect
-	github.com/shurcooL/htmlg v0.0.0-20190120222857-1e8a37b806f3 // indirect
-	github.com/shurcooL/httpfs v0.0.0-20181222201310-74dc9339e414 // indirect
-	github.com/shurcooL/issues v0.0.0-20190120000219-08d8dadf8acb // indirect
-	github.com/shurcooL/issuesapp v0.0.0-20181229001453-b8198a402c58 // indirect
-	github.com/shurcooL/notifications v0.0.0-20181111060504-bcc2b3082a7a // indirect
-	github.com/shurcooL/octicon v0.0.0-20181222203144-9ff1a4cf27f4 // indirect
-	github.com/shurcooL/reactions v0.0.0-20181222204718-145cd5e7f3d1 // indirect
-	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
-	github.com/shurcooL/webdavfs v0.0.0-20181215192745-5988b2d638f6 // indirect
-	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
-	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
-	go4.org v0.0.0-20181109185143-00e24f1b2599 // indirect
-	golang.org/x/exp v0.0.0-20190125153040-c74c464bbbf2 // indirect
-	golang.org/x/net v0.0.0-20190509222800-a4d6f7feada5
-	golang.org/x/perf v0.0.0-20190124201629-844a5f5b46f4 // indirect
-	honnef.co/go/tools v0.0.0-20190128043916-71123fcbb8fe // indirect
-	sourcegraph.com/sqs/pbtypes v1.0.0 // indirect
+	github.com/micro/util v0.2.0 // indirect
+	github.com/mitchellh/pointerstructure v0.0.0-20190323210102-2db4bb651397 // indirect
+	github.com/ory-am/common v0.4.0 // indirect
+	github.com/ory/dockertest v3.3.4+incompatible // indirect
+	github.com/pquerna/cachecontrol v0.0.0-20180517163645-1555304b9b35 // indirect
+	github.com/pquerna/otp v1.1.0 // indirect
+	github.com/ryanuber/go-glob v1.0.0 // indirect
+	github.com/shirou/gopsutil v2.18.12+incompatible // indirect
+	github.com/shirou/w32 v0.0.0-20160930032740-bb4de0191aa4 // indirect
+	github.com/streadway/amqp v0.0.0-20190312223743-14f78b41ce6d // indirect
+	github.com/ugorji/go/codec v0.0.0-20190320090025-2dc34c0b8780 // indirect
+	golang.org/x/net v0.0.0-20190603091049-60506f45cf65
+	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
+	gopkg.in/gorethink/gorethink.v4 v4.1.0 // indirect
+	gopkg.in/ini.v1 v1.42.0 // indirect
+	gopkg.in/ory-am/dockertest.v2 v2.2.3 // indirect
+	layeh.com/radius v0.0.0-20190322222518-890bc1058917 // indirect
 )
