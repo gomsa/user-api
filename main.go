@@ -19,7 +19,7 @@ import (
 func main() {
 	// 加载配置
 	conf := &config.Config{}
-	conf.LoadFile("config.yaml")
+	conf.LoadFile("./config.yaml")
 
 	log.Log(conf, conf.GetPermissions())
 	// 设置权限
