@@ -24,24 +24,7 @@ type Config struct {
 	Permissions []Permission `json:"permissions"`
 }
 
-// LoadFile 加载文件
-func (c *Config) LoadFile(file string) *Config {
-	config.LoadFile(file)
+func init() {
+	config.LoadFile("config.yaml")
 	config.Scan(&Conf)
-	return c
-}
-
-// GetApp 获取配置
-func (c *Config) GetApp() string {
-	return Conf.App
-}
-
-// GetVersion 获取配置
-func (c *Config) GetVersion() string {
-	return Conf.Version
-}
-
-// GetPermissions 获取配置
-func (c *Config) GetPermissions() []Permission {
-	return Conf.Permissions
 }
