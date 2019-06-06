@@ -7,7 +7,6 @@ import (
 	k8s "github.com/micro/kubernetes/go/micro"
 
 	"github.com/gomsa/user-api/hander"
-	_ "github.com/gomsa/user-api/init"
 	authPB "github.com/gomsa/user-api/proto/auth"
 	permissionPB "github.com/gomsa/user-api/proto/permission"
 	rolePB "github.com/gomsa/user-api/proto/role"
@@ -22,7 +21,7 @@ func main() {
 	conf := &config.Config{}
 	conf.LoadFile("config.yaml")
 
-	log.Log(conf,conf.GetPermissions())
+	log.Log(conf, conf.GetPermissions())
 	// 设置权限
 	h := m.Handler{
 		Permissions: conf.GetPermissions(),
