@@ -17,6 +17,7 @@ import (
 
 func main() {
 	// 设置权限
+	log.Log(Conf.Permissions)
 	h := m.Handler{
 		Permissions: Conf.Permissions,
 	}
