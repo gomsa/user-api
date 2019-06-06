@@ -1,12 +1,5 @@
 package config
 
-import (
-	"github.com/micro/go-micro/config"
-)
-
-// Conf 配置
-var Conf Config
-
 // Permission 权限
 type Permission struct {
 	Service     string `json:"service"`
@@ -22,9 +15,4 @@ type Config struct {
 	App         string
 	Version     string
 	Permissions []Permission `json:"permissions"`
-}
-
-func init() {
-	config.LoadFile("config.yaml")
-	config.Scan(&Conf)
 }

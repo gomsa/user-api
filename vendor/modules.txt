@@ -1,13 +1,5 @@
-# github.com/BurntSushi/toml v0.3.1
-github.com/BurntSushi/toml
 # github.com/armon/go-metrics v0.0.0-20190430140413-ec5e00d3c878
 github.com/armon/go-metrics
-# github.com/bitly/go-simplejson v0.5.0
-github.com/bitly/go-simplejson
-# github.com/fsnotify/fsnotify v1.4.7
-github.com/fsnotify/fsnotify
-# github.com/ghodss/yaml v1.0.0
-github.com/ghodss/yaml
 # github.com/go-log/log v0.1.0
 github.com/go-log/log
 github.com/go-log/log/log
@@ -17,7 +9,7 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/gomsa/tools v0.0.0-20190606070119-92dd46d93229
+# github.com/gomsa/tools v0.0.0-20190606080540-9ed537ebad22
 github.com/gomsa/tools/config
 github.com/gomsa/tools/uitl
 github.com/gomsa/tools/k8s/client
@@ -51,22 +43,10 @@ github.com/hashicorp/go-rootcerts
 github.com/hashicorp/go-sockaddr
 # github.com/hashicorp/golang-lru v0.5.1
 github.com/hashicorp/golang-lru/simplelru
-# github.com/hashicorp/hcl v1.0.0
-github.com/hashicorp/hcl
-github.com/hashicorp/hcl/hcl/ast
-github.com/hashicorp/hcl/hcl/parser
-github.com/hashicorp/hcl/hcl/token
-github.com/hashicorp/hcl/json/parser
-github.com/hashicorp/hcl/hcl/scanner
-github.com/hashicorp/hcl/hcl/strconv
-github.com/hashicorp/hcl/json/scanner
-github.com/hashicorp/hcl/json/token
 # github.com/hashicorp/memberlist v0.1.4
 github.com/hashicorp/memberlist
 # github.com/hashicorp/serf v0.8.3
 github.com/hashicorp/serf/coordinate
-# github.com/imdario/mergo v0.3.7
-github.com/imdario/mergo
 # github.com/jinzhu/gorm v1.9.8
 github.com/jinzhu/gorm
 # github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a
@@ -87,7 +67,6 @@ github.com/micro/go-micro
 github.com/micro/go-micro/metadata
 github.com/micro/go-micro/client
 github.com/micro/go-micro/server
-github.com/micro/go-micro/config
 github.com/micro/go-micro/broker
 github.com/micro/go-micro/cmd
 github.com/micro/go-micro/registry
@@ -104,12 +83,6 @@ github.com/micro/go-micro/errors
 github.com/micro/go-micro/server/debug
 github.com/micro/go-micro/util/addr
 github.com/micro/go-micro/util/log
-github.com/micro/go-micro/config/loader
-github.com/micro/go-micro/config/loader/memory
-github.com/micro/go-micro/config/reader
-github.com/micro/go-micro/config/reader/json
-github.com/micro/go-micro/config/source
-github.com/micro/go-micro/config/source/file
 github.com/micro/go-micro/registry/cache
 github.com/micro/go-micro/util/net
 github.com/micro/go-micro/util/tls
@@ -126,12 +99,6 @@ github.com/micro/go-micro/transport/grpc
 github.com/micro/go-micro/transport/http
 github.com/micro/go-micro/transport/memory
 github.com/micro/go-micro/server/debug/proto
-github.com/micro/go-micro/config/encoder
-github.com/micro/go-micro/config/encoder/hcl
-github.com/micro/go-micro/config/encoder/json
-github.com/micro/go-micro/config/encoder/toml
-github.com/micro/go-micro/config/encoder/xml
-github.com/micro/go-micro/config/encoder/yaml
 github.com/micro/go-micro/registry/gossip/proto
 github.com/micro/go-micro/transport/grpc/proto
 # github.com/micro/go-plugins v0.24.1
@@ -241,5 +208,3 @@ google.golang.org/grpc/credentials/internal
 google.golang.org/grpc/balancer/base
 google.golang.org/grpc/binarylog/grpc_binarylog_v1
 google.golang.org/grpc/internal/syscall
-# gopkg.in/yaml.v2 v2.2.2
-gopkg.in/yaml.v2
