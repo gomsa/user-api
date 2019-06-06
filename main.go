@@ -12,20 +12,17 @@ import (
 	rolePB "github.com/gomsa/user-api/proto/role"
 	userPB "github.com/gomsa/user-api/proto/user"
 
-	"github.com/gomsa/tools/config"
 	m "github.com/gomsa/user-srv/middleware"
 )
 
 func main() {
-	// 加载配置
-	log.Log(config.Conf.Permissions)
 	// 设置权限
 	h := m.Handler{
-		Permissions: config.Conf.Permissions,
+		Permissions: Conf.Permissions,
 	}
 	srv := k8s.NewService(
-		micro.Name(config.Conf.App),
-		micro.Version(config.Conf.Version),
+		micro.Name(Conf.App),
+		micro.Version(Conf.Version),
 		micro.WrapHandler(h.Wrapper), //验证权限
 	)
 	srv.Init()
