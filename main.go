@@ -22,11 +22,11 @@ func main() {
 	conf := &config.Config{}
 	conf.LoadFile("config.yaml")
 
+	log.Log(conf,conf.GetPermissions())
 	// 设置权限
 	h := m.Handler{
 		Permissions: conf.GetPermissions(),
 	}
-	log.Log(conf.GetPermissions())
 	srv := k8s.NewService(
 		micro.Name(conf.GetApp()),
 		micro.Version(conf.GetVersion()),
