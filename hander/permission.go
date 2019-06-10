@@ -13,6 +13,24 @@ import (
 type Permission struct {
 }
 
+// All 权限列表
+func (srv *Permission) All(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	query := &permissionPB.Request{}
+	err = uitl.Data2Data(req, query)
+	if err != nil {
+		return err
+	}
+	permissionRes, err := client.Permission.All(context.TODO(), query)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(permissionRes, res)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
 // List 权限列表
 func (srv *Permission) List(ctx context.Context, req *pb.ListQuery, res *pb.Response) (err error) {
 	query := &permissionPB.ListQuery{}

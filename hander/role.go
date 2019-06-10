@@ -13,6 +13,24 @@ import (
 type Role struct {
 }
 
+// All 权限列表
+func (srv *Role) All(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	query := &rolePB.Request{}
+	err = uitl.Data2Data(req, query)
+	if err != nil {
+		return err
+	}
+	roleRes, err := client.Role.All(context.TODO(), query)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(roleRes, res)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
 // List 角色列表
 func (srv *Role) List(ctx context.Context, req *pb.ListQuery, res *pb.Response) (err error) {
 	query := &rolePB.ListQuery{}
