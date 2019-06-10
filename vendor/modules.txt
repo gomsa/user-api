@@ -13,9 +13,9 @@ github.com/golang/protobuf/ptypes/timestamp
 github.com/gomsa/tools/config
 github.com/gomsa/tools/uitl
 github.com/gomsa/tools/k8s/client
-# github.com/gomsa/user-srv v0.0.0-20190606022407-c17774acbc21
-github.com/gomsa/user-srv/middleware
+# github.com/gomsa/user-srv v0.0.0-20190610001139-1c8b9f4ffa39
 github.com/gomsa/user-srv/client
+github.com/gomsa/user-srv/middleware
 github.com/gomsa/user-srv/proto/auth
 github.com/gomsa/user-srv/proto/permission
 github.com/gomsa/user-srv/proto/role
@@ -104,13 +104,13 @@ github.com/micro/go-micro/transport/grpc/proto
 # github.com/micro/go-plugins v0.24.1
 github.com/micro/go-plugins/registry/kubernetes
 github.com/micro/go-plugins/selector/static
+github.com/micro/go-plugins/broker/grpc
 github.com/micro/go-plugins/client/grpc
 github.com/micro/go-plugins/server/grpc
 github.com/micro/go-plugins/registry/kubernetes/client
 github.com/micro/go-plugins/registry/kubernetes/client/watch
-github.com/micro/go-plugins/broker/grpc
-github.com/micro/go-plugins/registry/kubernetes/client/api
 github.com/micro/go-plugins/broker/grpc/proto
+github.com/micro/go-plugins/registry/kubernetes/client/api
 # github.com/micro/go-rcache v0.1.0
 github.com/micro/go-rcache
 # github.com/micro/kubernetes v0.7.0
@@ -119,9 +119,9 @@ github.com/micro/kubernetes/go/micro
 github.com/micro/mdns
 # github.com/micro/util v0.1.0
 github.com/micro/util/go/lib/addr
-github.com/micro/util/go/lib/grpc
 github.com/micro/util/go/lib/net
 github.com/micro/util/go/lib/tls
+github.com/micro/util/go/lib/grpc
 # github.com/miekg/dns v1.1.13
 github.com/miekg/dns
 # github.com/mitchellh/go-homedir v1.1.0
@@ -178,11 +178,11 @@ google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.21.1
 google.golang.org/grpc
 google.golang.org/grpc/credentials
-google.golang.org/grpc/peer
 google.golang.org/grpc/encoding
 google.golang.org/grpc/metadata
 google.golang.org/grpc/status
 google.golang.org/grpc/codes
+google.golang.org/grpc/peer
 google.golang.org/grpc/balancer
 google.golang.org/grpc/balancer/roundrobin
 google.golang.org/grpc/connectivity

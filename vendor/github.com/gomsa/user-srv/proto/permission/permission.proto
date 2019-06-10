@@ -14,13 +14,16 @@ service Permissions {
     rpc Update(Permission) returns (Response) {}
     // 删除权限
     rpc Delete(Permission) returns (Response) {}
+    // 微服务内部调用
+    // 同步
+    rpc UpdateOrCreate(Permission) returns (Response) {}
 
 }
 
 message Permission {
     int64 id = 1;
     string service = 2;
-    string name = 3;
+    string method = 3;
     string display_name = 4;
     string description = 5;
     string created_at = 6;
@@ -35,6 +38,11 @@ message ListQuery{
     string name = 5;
     string display_name = 6;
 }
+
+message Request{
+    bytes permissions = 1;
+}
+
 message Response{
     Permission permission = 1;
     repeated Permission permissions = 2;

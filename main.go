@@ -42,6 +42,6 @@ func main() {
 		log.Log(err)
 	}
 	// 同步权限
-	client.Permission.SyncPermission(Conf.Permissions)
+	client.SyncPermission(Conf.Permissions)
 	log.Log("serviser run ...")
 }

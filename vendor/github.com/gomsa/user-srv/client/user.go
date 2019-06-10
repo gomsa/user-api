@@ -1,8 +1,10 @@
 package client
 
 import (
+	"context"
 	"os"
 
+	"github.com/gomsa/tools/config"
 	"github.com/gomsa/tools/k8s/client"
 
 	authPB "github.com/gomsa/user-srv/proto/auth"
@@ -29,4 +31,22 @@ func init() {
 	Auth = authPB.NewAuthClient(userSrvName, client.DefaultClient)
 	Permission = permissionPB.NewPermissionsClient(userSrvName, client.DefaultClient)
 	Role = rolePB.NewRolesClient(userSrvName, client.DefaultClient)
+}
+
+// SyncPermission 同步权限
+func SyncPermission(permission []config.Permission) error {
+	for _, p := range permission {
+		if p.Policy {
+			req := permissionPB.Permission{}
+			req.Service = p.Service
+			req.Method = p.Method
+			req.DisplayName = p.DisplayName
+			req.Description = p.Description
+			_, err := Permission.UpdateOrCreate(context.TODO(), &req)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
