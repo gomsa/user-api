@@ -4,6 +4,8 @@ package role;
 
 service Roles {
     // 权限验证授权
+    // 全部权限
+    rpc All(Request) returns (Response) {}
     // 获取权限列表
     rpc List(ListQuery) returns (Response) {}
     // 根据 唯一 获取权限
@@ -32,6 +34,8 @@ message ListQuery{
     string sort=3; // 排序
     string name = 4;
     string display_name = 5;
+}
+message Request{
 }
 message Response{
     Role role = 1;

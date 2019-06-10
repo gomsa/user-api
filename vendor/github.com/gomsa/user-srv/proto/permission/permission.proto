@@ -4,6 +4,8 @@ package permission;
 
 service Permissions {
     // 权限验证授权
+    // 全部权限
+    rpc All(Request) returns (Response) {}
     // 获取权限列表
     rpc List(ListQuery) returns (Response) {}
     // 根据 唯一 获取权限
@@ -40,7 +42,6 @@ message ListQuery{
 }
 
 message Request{
-    bytes permissions = 1;
 }
 
 message Response{
