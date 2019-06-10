@@ -2,12 +2,19 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/gomsa/user-api/hander"
 	userPB "github.com/gomsa/user-api/proto/user"
 )
 
+func TestPermissions(t *testing.T) {
+	// Sync 同步权限
+	permissions, _ := json.Marshal(Conf.Permissions)
+	fmt.Println(permissions)
+}
 func TestUserGet(t *testing.T) {
 	h := hander.User{}
 	req := &userPB.User{
@@ -22,4 +29,3 @@ func TestUserGet(t *testing.T) {
 	// fmt.Println(req, res, err)
 	t.Log(req, res, err)
 }
-

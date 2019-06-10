@@ -19,11 +19,12 @@ service Permissions {
 
 message Permission {
     int64 id = 1;
-    string name = 2;
-    string display_name = 3;
-    string description = 4;
-    string created_at = 5;
-    string updated_at = 6;
+    string service = 2;
+    string method = 3;
+    string display_name = 4;
+    string description = 5;
+    string created_at = 6;
+    string updated_at = 7;
 }
 
 message ListQuery{
