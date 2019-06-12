@@ -4,8 +4,9 @@ package casbin;
 
 service Casbin {
     // 全部权限
-    rpc AddPermissions(Request) returns (Response) {}
+    rpc AddPermission(Request) returns (Response) {}
     rpc DeletePermissions(Request) returns (Response) {}
+    rpc UpdatePermissions(Request) returns (Response) {}
     rpc GetPermissions(Request) returns (Response) {}
 }
 

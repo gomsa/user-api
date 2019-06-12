@@ -13,7 +13,7 @@ github.com/golang/protobuf/ptypes/timestamp
 github.com/gomsa/tools/config
 github.com/gomsa/tools/uitl
 github.com/gomsa/tools/k8s/client
-# github.com/gomsa/user-srv v0.0.0-20190612094615-960b4e560995
+# github.com/gomsa/user-srv v0.0.0-20190612234531-3a2f981539cc
 github.com/gomsa/user-srv/client
 github.com/gomsa/user-srv/middleware
 github.com/gomsa/user-srv/proto/auth

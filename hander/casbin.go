@@ -13,14 +13,14 @@ import (
 type Casbin struct {
 }
 
-// AddPermissions 增加权限
-func (srv *Casbin) AddPermissions(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+// AddPermission 增加权限
+func (srv *Casbin) AddPermission(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	reqCasbin := &casbinPB.Request{}
 	err = uitl.Data2Data(req, reqCasbin)
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.AddPermissions(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.AddPermission(context.TODO(), reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -39,6 +39,24 @@ func (srv *Casbin) DeletePermissions(ctx context.Context, req *pb.Request, res *
 		return err
 	}
 	resCasbin, err := client.Casbin.DeletePermissions(context.TODO(), reqCasbin)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(resCasbin, res)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+// UpdatePermissions 更新角色权限
+func (srv *Casbin) UpdatePermissions(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	reqCasbin := &casbinPB.Request{}
+	err = uitl.Data2Data(req, reqCasbin)
+	if err != nil {
+		return err
+	}
+	resCasbin, err := client.Casbin.UpdatePermissions(context.TODO(), reqCasbin)
 	if err != nil {
 		return err
 	}
