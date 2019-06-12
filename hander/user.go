@@ -40,9 +40,9 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 	if !ok {
 		return errors.New("no auth meta-data found in request")
 	}
-	if userId, ok := meta["user_id"]; ok {
+	if userID, ok := meta["user_id"]; ok {
 		user := &userPB.User{
-			Id: userId,
+			Id: userID,
 		}
 		userRes, err := client.User.Get(context.TODO(), user)
 		if err != nil {
@@ -53,7 +53,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 			return err
 		}
 	} else {
-		return errors.New("Empty userId")
+		return errors.New("Empty userID")
 	}
 	return err
 }
