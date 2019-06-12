@@ -8,6 +8,7 @@ import (
 	"github.com/gomsa/tools/k8s/client"
 
 	authPB "github.com/gomsa/user-srv/proto/auth"
+	casbinPB "github.com/gomsa/user-srv/proto/casbin"
 	permissionPB "github.com/gomsa/user-srv/proto/permission"
 	rolePB "github.com/gomsa/user-srv/proto/role"
 	userPB "github.com/gomsa/user-srv/proto/user"
@@ -22,6 +23,8 @@ var (
 	Permission permissionPB.PermissionsClient
 	// Role 角色客户端
 	Role rolePB.RolesClient
+	// Casbin 权限管理客户端
+	Casbin casbinPB.CasbinClient
 )
 
 func init() {
@@ -31,6 +34,7 @@ func init() {
 	Auth = authPB.NewAuthClient(userSrvName, client.DefaultClient)
 	Permission = permissionPB.NewPermissionsClient(userSrvName, client.DefaultClient)
 	Role = rolePB.NewRolesClient(userSrvName, client.DefaultClient)
+	Casbin = casbinPB.NewCasbinClient(userSrvName, client.DefaultClient)
 }
 
 // SyncPermission 同步权限

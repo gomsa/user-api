@@ -5,7 +5,7 @@ go 1.12
 require (
 	github.com/golang/protobuf v1.3.1
 	github.com/gomsa/tools v0.0.0-20190606080540-9ed537ebad22
-	github.com/gomsa/user-srv v0.0.0-20190610234639-55c8c4dc1ead
+	github.com/gomsa/user-srv v0.0.0-20190612093127-a90665cb8a5e
 	github.com/micro/go-log v0.1.0
 	github.com/micro/go-micro v1.5.0
 	github.com/micro/kubernetes v0.7.0

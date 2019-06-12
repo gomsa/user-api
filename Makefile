@@ -11,3 +11,4 @@ build:
 	protoc -I . --go_out=plugins=micro:. proto/auth/auth.proto
 	protoc -I . --go_out=plugins=micro:. proto/permission/permission.proto
 	protoc -I . --go_out=plugins=micro:. proto/role/role.proto
+	protoc -I . --go_out=plugins=micro:. proto/casbin/casbin.proto
