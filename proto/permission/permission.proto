@@ -16,9 +16,6 @@ service Permissions {
     rpc Update(Permission) returns (Response) {}
     // 删除权限
     rpc Delete(Permission) returns (Response) {}
-    // 微服务内部调用
-    // 同步
-    rpc UpdateOrCreate(Permission) returns (Response) {}
 
 }
 
