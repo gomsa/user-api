@@ -26,7 +26,7 @@ message Permission {
     int64 id = 1;
     string service = 2;
     string method = 3;
-    string display_name = 4;
+    string name = 4;
     string description = 5;
     string created_at = 6;
     string updated_at = 7;
@@ -37,8 +37,8 @@ message ListQuery{
     int64 page=2; //页面
     string sort=3; // 排序
     string service = 4;
-    string name = 5;
-    string display_name = 6;
+    string method = 5;
+    string name = 6;
 }
 
 message Request{
