@@ -9,11 +9,11 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/gomsa/tools v0.0.0-20190606080540-9ed537ebad22
+# github.com/gomsa/tools v0.0.0-20190613075826-da44a12e14f7
 github.com/gomsa/tools/config
 github.com/gomsa/tools/uitl
 github.com/gomsa/tools/k8s/client
-# github.com/gomsa/user-srv v0.0.0-20190613072738-1175013def64
+# github.com/gomsa/user-srv v0.0.0-20190613075914-6375efc3b494
 github.com/gomsa/user-srv/client
 github.com/gomsa/user-srv/middleware
 github.com/gomsa/user-srv/proto/auth

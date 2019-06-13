@@ -44,7 +44,7 @@ func SyncPermission(permission []config.Permission) error {
 			req := permissionPB.Permission{}
 			req.Service = p.Service
 			req.Method = p.Method
-			req.DisplayName = p.DisplayName
+			req.Name = p.Name
 			req.Description = p.Description
 			_, err := Permission.UpdateOrCreate(context.TODO(), &req)
 			if err != nil {

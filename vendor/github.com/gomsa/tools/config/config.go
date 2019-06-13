@@ -6,7 +6,7 @@ type Permission struct {
 	Method      string `json:"method"`
 	Auth        bool   `json:"auth"`
 	Policy      bool   `json:"policy"`
-	DisplayName string `json:"display_name"`
+	Name        string `json:"display_name"`
 	Description string `json:"description"`
 }
 
