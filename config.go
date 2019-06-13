@@ -29,5 +29,10 @@ var Conf config.Config = config.Config{
 
 		{Service: "user-api", Method: "Permissions.List", Auth: true, Policy: true, DisplayName: "权限列表", Description: "查询权限列表"},
 		{Service: "user-api", Method: "Permissions.All", Auth: true, Policy: true, DisplayName: "全部权限", Description: "查询全部权限。"},
+
+		{Service: "user-api", Method: "Casbin.AddPermission", Auth: true, Policy: true, DisplayName: "添加角色权限", Description: "添加角色权限"},
+		{Service: "user-api", Method: "Casbin.DeletePermissions", Auth: true, Policy: true, DisplayName: "删除角色权限", Description: "删除角色权限"},
+		{Service: "user-api", Method: "Casbin.UpdatePermissions", Auth: true, Policy: true, DisplayName: "更新角色权限", Description: "更新角色权限"},
+		{Service: "user-api", Method: "Casbin.GetPermissions", Auth: true, Policy: true, DisplayName: "获取角色权限", Description: "获取角色权限"},
 	},
 }
