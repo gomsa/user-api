@@ -84,3 +84,75 @@ func (srv *Casbin) GetPermissions(ctx context.Context, req *pb.Request, res *pb.
 	}
 	return err
 }
+
+// AddRole 增加权限
+func (srv *Casbin) AddRole(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	reqCasbin := &casbinPB.Request{}
+	err = uitl.Data2Data(req, reqCasbin)
+	if err != nil {
+		return err
+	}
+	resCasbin, err := client.Casbin.AddRole(context.TODO(), reqCasbin)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(resCasbin, res)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+// DeleteRoles 删除角色全部权限
+func (srv *Casbin) DeleteRoles(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	reqCasbin := &casbinPB.Request{}
+	err = uitl.Data2Data(req, reqCasbin)
+	if err != nil {
+		return err
+	}
+	resCasbin, err := client.Casbin.DeleteRoles(context.TODO(), reqCasbin)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(resCasbin, res)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+// UpdateRoles 更新角色权限
+func (srv *Casbin) UpdateRoles(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	reqCasbin := &casbinPB.Request{}
+	err = uitl.Data2Data(req, reqCasbin)
+	if err != nil {
+		return err
+	}
+	resCasbin, err := client.Casbin.UpdateRoles(context.TODO(), reqCasbin)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(resCasbin, res)
+	if err != nil {
+		return err
+	}
+	return err
+}
+
+// GetRoles 获取指定角色全部权限
+func (srv *Casbin) GetRoles(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	reqCasbin := &casbinPB.Request{}
+	err = uitl.Data2Data(req, reqCasbin)
+	if err != nil {
+		return err
+	}
+	resCasbin, err := client.Casbin.GetRoles(context.TODO(), reqCasbin)
+	if err != nil {
+		return err
+	}
+	err = uitl.Data2Data(resCasbin, res)
+	if err != nil {
+		return err
+	}
+	return err
+}

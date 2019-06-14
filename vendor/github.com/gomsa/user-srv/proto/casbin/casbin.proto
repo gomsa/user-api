@@ -21,7 +21,7 @@ message Permission{
 }
 
 message Request{
-    string user = 1;
+    string userID = 1;
     string role = 2;
     repeated string roles = 3;
     Permission permission = 4;
@@ -30,7 +30,7 @@ message Request{
 
 message Response{
     bool valid = 1;
-    string user = 2;
+    string userID = 2;
     string role = 3;
     repeated string roles = 4;
     Permission permission = 5;
