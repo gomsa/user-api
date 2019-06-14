@@ -27,9 +27,10 @@ message User {
     string password = 5;
     string name = 6;
     string avatar = 7;
-    string origin = 8; //用户注册来源
-    string created_at = 9;
-    string updated_at = 10;
+    string roles = 8;
+    string origin = 9; //用户注册来源
+    string created_at = 10;
+    string updated_at = 11;
 }
 message ListQuery{
     int64 limit=1; //返回数量
