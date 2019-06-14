@@ -3,11 +3,16 @@ syntax = "proto3";
 package casbin;
 
 service Casbin {
-    // 全部权限
+    // 角色权限管理
     rpc AddPermission(Request) returns (Response) {}
     rpc DeletePermissions(Request) returns (Response) {}
     rpc UpdatePermissions(Request) returns (Response) {}
     rpc GetPermissions(Request) returns (Response) {}
+    // 用户角色管理
+    rpc AddRole(Request) returns (Response) {}
+    rpc DeleteRoles(Request) returns (Response) {}
+    rpc UpdateRoles(Request) returns (Response) {}
+    rpc GetRoles(Request) returns (Response) {}
 }
 
 message Permission{
@@ -16,16 +21,18 @@ message Permission{
 }
 
 message Request{
-    string role = 1;
-    string user = 2;
-    Permission permission = 3;
-    repeated Permission permissions = 4;
+    string user = 1;
+    string role = 2;
+    repeated string roles = 3;
+    Permission permission = 4;
+    repeated Permission permissions = 5;
 }
 
 message Response{
     bool valid = 1;
-    string role = 2;
-    string user = 3;
-    Permission permission = 4;
-    repeated Permission permissions = 5;
+    string user = 2;
+    string role = 3;
+    repeated string roles = 4;
+    Permission permission = 5;
+    repeated Permission permissions = 6;
 }
