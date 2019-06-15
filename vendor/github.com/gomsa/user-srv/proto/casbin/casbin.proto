@@ -13,6 +13,10 @@ service Casbin {
     rpc DeleteRoles(Request) returns (Response) {}
     rpc UpdateRoles(Request) returns (Response) {}
     rpc GetRoles(Request) returns (Response) {}
+
+    // 微服务内部调用
+    // 验证用户权限
+    rpc Validate(Request) returns (Response) {}
 }
 
 message Permission{

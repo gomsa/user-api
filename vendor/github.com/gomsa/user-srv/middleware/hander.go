@@ -6,11 +6,11 @@ import (
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
-	"github.com/micro/go-micro/util/log"
 
 	"github.com/gomsa/tools/config"
-	authClient "github.com/gomsa/user-srv/client"
+	"github.com/gomsa/user-srv/client"
 	authPb "github.com/gomsa/user-srv/proto/auth"
+	casbinPb "github.com/gomsa/user-srv/proto/casbin"
 )
 
 // Handler 处理器
@@ -27,8 +27,6 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) (err error) {
 		if h.IsAuth(req) {
 			meta, ok := metadata.FromContext(ctx)
-
-			log.Log(meta)
 			if !ok {
 				return errors.New("no auth meta-data found in request")
 			}
@@ -36,17 +34,22 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				// Note this is now uppercase (not entirely sure why this is...)
 				// token := strings.Split(meta["authorization"], "Bearer ")[1]
 				// Auth here
-				authResp, err := authClient.Auth.ValidateToken(context.Background(), &authPb.Request{
-					Token:   token,
-					Service: req.Service(),
-					Method:  req.Method(),
+				authResp, err := client.Auth.ValidateToken(ctx, &authPb.Request{
+					Token: token,
 				})
 				if err != nil || authResp.Valid == false {
 					return err
 				}
 				// 设置用户 id
 				meta["user_id"] = authResp.User.Id
+				meta["service"] = req.Service()
+				meta["method"] = req.Method()
 				ctx = metadata.NewContext(ctx, meta)
+
+				casbinResp, err := client.Casbin.Validate(ctx, &casbinPb.Request{})
+				if err != nil || casbinResp.Valid == false {
+					return err
+				}
 			} else {
 				return errors.New("Empty Authorization")
 			}
