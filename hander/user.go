@@ -58,6 +58,10 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		if err != nil {
 			return err
 		}
+		// 增加默认角色
+		if len(casbinRes.Roles) == 0 {
+			casbinRes.Roles = append(casbinRes.Roles,"user")
+		}
 		res.Roles = casbinRes.Roles
 	} else {
 		return errors.New("Empty userID")
