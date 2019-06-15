@@ -10,6 +10,7 @@ import (
 	pb "github.com/gomsa/user-api/proto/user"
 	"github.com/gomsa/user-srv/client"
 	userPB "github.com/gomsa/user-srv/proto/user"
+	casbinPB "github.com/gomsa/user-srv/proto/casbin"
 )
 
 // User 用户结构
@@ -23,7 +24,7 @@ func (srv *User) Exist(ctx context.Context, req *pb.User, res *pb.Response) (err
 	if err != nil {
 		return err
 	}
-	userRes, err := client.User.Exist(context.TODO(), user)
+	userRes, err := client.User.Exist(ctx, user)
 	if err != nil {
 		return err
 	}
@@ -41,10 +42,9 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		return errors.New("no auth meta-data found in request")
 	}
 	if userID, ok := meta["user_id"]; ok {
-		user := &userPB.User{
+		userRes, err := client.User.Get(ctx, &userPB.User{
 			Id: userID,
-		}
-		userRes, err := client.User.Get(context.TODO(), user)
+		})
 		if err != nil {
 			return err
 		}
@@ -52,6 +52,13 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		if err != nil {
 			return err
 		}
+		casbinRes, err := client.Casbin.GetRoles(ctx, &casbinPB.Request{
+			UserID: userID,
+		})
+		if err != nil {
+			return err
+		}
+		res.Roles = casbinRes.Roles
 	} else {
 		return errors.New("Empty userID")
 	}
@@ -65,7 +72,7 @@ func (srv *User) List(ctx context.Context, req *pb.ListQuery, res *pb.Response) 
 	if err != nil {
 		return err
 	}
-	userRes, err := client.User.List(context.TODO(), query)
+	userRes, err := client.User.List(ctx, query)
 	if err != nil {
 		return err
 	}
@@ -83,7 +90,7 @@ func (srv *User) Get(ctx context.Context, req *pb.User, res *pb.Response) (err e
 	if err != nil {
 		return err
 	}
-	userRes, err := client.User.Get(context.TODO(), user)
+	userRes, err := client.User.Get(ctx, user)
 	if err != nil {
 		return err
 	}
@@ -101,7 +108,7 @@ func (srv *User) Create(ctx context.Context, req *pb.User, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
-	userRes, err := client.User.Create(context.TODO(), user)
+	userRes, err := client.User.Create(ctx, user)
 	if err != nil {
 		return err
 	}
@@ -119,7 +126,7 @@ func (srv *User) Update(ctx context.Context, req *pb.User, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
-	userRes, err := client.User.Update(context.TODO(), user)
+	userRes, err := client.User.Update(ctx, user)
 	if err != nil {
 		return err
 	}
@@ -138,7 +145,7 @@ func (srv *User) Delete(ctx context.Context, req *pb.User, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
-	userRes, err := client.User.Delete(context.TODO(), user)
+	userRes, err := client.User.Delete(ctx, user)
 	if err != nil {
 		return err
 	}

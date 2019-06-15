@@ -21,7 +21,7 @@ func (srv *Auth) Auth(ctx context.Context, req *pb.User, res *pb.Token) (err err
 	if err != nil {
 		return err
 	}
-	authRes, err := client.Auth.Auth(context.TODO(), user)
+	authRes, err := client.Auth.Auth(ctx, user)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func (srv *Auth) ValidateToken(ctx context.Context, req *pb.Request, res *pb.Tok
 	if err != nil {
 		return err
 	}
-	authRes, err := client.Auth.ValidateToken(context.TODO(), authReq)
+	authRes, err := client.Auth.ValidateToken(ctx, authReq)
 	if err != nil {
 		return err
 	}

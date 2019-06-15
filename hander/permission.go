@@ -20,7 +20,7 @@ func (srv *Permission) All(ctx context.Context, req *pb.Request, res *pb.Respons
 	if err != nil {
 		return err
 	}
-	permissionRes, err := client.Permission.All(context.TODO(), query)
+	permissionRes, err := client.Permission.All(ctx, query)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (srv *Permission) List(ctx context.Context, req *pb.ListQuery, res *pb.Resp
 	if err != nil {
 		return err
 	}
-	permissionRes, err := client.Permission.List(context.TODO(), query)
+	permissionRes, err := client.Permission.List(ctx, query)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (srv *Permission) Get(ctx context.Context, req *pb.Permission, res *pb.Resp
 	if err != nil {
 		return err
 	}
-	permissionRes, err := client.Permission.Get(context.TODO(), permission)
+	permissionRes, err := client.Permission.Get(ctx, permission)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (srv *Permission) Create(ctx context.Context, req *pb.Permission, res *pb.R
 	if err != nil {
 		return err
 	}
-	permissionRes, err := client.Permission.Create(context.TODO(), permission)
+	permissionRes, err := client.Permission.Create(ctx, permission)
 	if err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func (srv *Permission) Update(ctx context.Context, req *pb.Permission, res *pb.R
 	if err != nil {
 		return err
 	}
-	permissionRes, err := client.Permission.Update(context.TODO(), permission)
+	permissionRes, err := client.Permission.Update(ctx, permission)
 	if err != nil {
 		return err
 	}
@@ -111,7 +111,7 @@ func (srv *Permission) Delete(ctx context.Context, req *pb.Permission, res *pb.R
 	if err != nil {
 		return err
 	}
-	permissionRes, err := client.Permission.Delete(context.TODO(), permission)
+	permissionRes, err := client.Permission.Delete(ctx, permission)
 	if err != nil {
 		return err
 	}

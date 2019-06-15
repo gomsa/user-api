@@ -20,7 +20,7 @@ func (srv *Casbin) AddPermission(ctx context.Context, req *pb.Request, res *pb.R
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.AddPermission(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.AddPermission(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (srv *Casbin) DeletePermissions(ctx context.Context, req *pb.Request, res *
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.DeletePermissions(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.DeletePermissions(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (srv *Casbin) UpdatePermissions(ctx context.Context, req *pb.Request, res *
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.UpdatePermissions(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.UpdatePermissions(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (srv *Casbin) GetPermissions(ctx context.Context, req *pb.Request, res *pb.
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.GetPermissions(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.GetPermissions(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func (srv *Casbin) AddRole(ctx context.Context, req *pb.Request, res *pb.Respons
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.AddRole(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.AddRole(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -110,7 +110,7 @@ func (srv *Casbin) DeleteRoles(ctx context.Context, req *pb.Request, res *pb.Res
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.DeleteRoles(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.DeleteRoles(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -128,7 +128,7 @@ func (srv *Casbin) UpdateRoles(ctx context.Context, req *pb.Request, res *pb.Res
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.UpdateRoles(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.UpdateRoles(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (srv *Casbin) GetRoles(ctx context.Context, req *pb.Request, res *pb.Respon
 	if err != nil {
 		return err
 	}
-	resCasbin, err := client.Casbin.GetRoles(context.TODO(), reqCasbin)
+	resCasbin, err := client.Casbin.GetRoles(ctx, reqCasbin)
 	if err != nil {
 		return err
 	}

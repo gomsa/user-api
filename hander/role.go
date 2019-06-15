@@ -20,7 +20,7 @@ func (srv *Role) All(ctx context.Context, req *pb.Request, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
-	roleRes, err := client.Role.All(context.TODO(), query)
+	roleRes, err := client.Role.All(ctx, query)
 	if err != nil {
 		return err
 	}
@@ -38,7 +38,7 @@ func (srv *Role) List(ctx context.Context, req *pb.ListQuery, res *pb.Response) 
 	if err != nil {
 		return err
 	}
-	roleRes, err := client.Role.List(context.TODO(), query)
+	roleRes, err := client.Role.List(ctx, query)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (srv *Role) Get(ctx context.Context, req *pb.Role, res *pb.Response) (err e
 	if err != nil {
 		return err
 	}
-	roleRes, err := client.Role.Get(context.TODO(), role)
+	roleRes, err := client.Role.Get(ctx, role)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (srv *Role) Create(ctx context.Context, req *pb.Role, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
-	roleRes, err := client.Role.Create(context.TODO(), role)
+	roleRes, err := client.Role.Create(ctx, role)
 	if err != nil {
 		return err
 	}
@@ -92,7 +92,7 @@ func (srv *Role) Update(ctx context.Context, req *pb.Role, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
-	roleRes, err := client.Role.Update(context.TODO(), role)
+	roleRes, err := client.Role.Update(ctx, role)
 	if err != nil {
 		return err
 	}
@@ -111,7 +111,7 @@ func (srv *Role) Delete(ctx context.Context, req *pb.Role, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
-	roleRes, err := client.Role.Delete(context.TODO(), role)
+	roleRes, err := client.Role.Delete(ctx, role)
 	if err != nil {
 		return err
 	}
