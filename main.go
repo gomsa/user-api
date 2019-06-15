@@ -3,7 +3,7 @@ package main
 import (
 	// 公共引入
 
-	"github.com/micro/go-log"
+	"github.com/micro/go-micro/util/log"
 	micro "github.com/micro/go-micro"
 	k8s "github.com/micro/kubernetes/go/micro"
 

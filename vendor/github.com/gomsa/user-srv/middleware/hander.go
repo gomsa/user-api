@@ -6,6 +6,7 @@ import (
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
+	"github.com/micro/go-micro/util/log"
 
 	"github.com/gomsa/tools/config"
 	authClient "github.com/gomsa/user-srv/client"
@@ -26,6 +27,8 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) (err error) {
 		if h.IsAuth(req) {
 			meta, ok := metadata.FromContext(ctx)
+
+			log.Log(meta)
 			if !ok {
 				return errors.New("no auth meta-data found in request")
 			}
