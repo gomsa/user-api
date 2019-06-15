@@ -45,10 +45,11 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				meta["service"] = req.Service()
 				meta["method"] = req.Method()
 				ctx = metadata.NewContext(ctx, meta)
-
-				casbinResp, err := client.Casbin.Validate(ctx, &casbinPb.Request{})
-				if err != nil || casbinResp.Valid == false {
-					return err
+				if h.IsPolicy(req) {
+					casbinResp, err := client.Casbin.Validate(ctx, &casbinPb.Request{})
+					if err != nil || casbinResp.Valid == false {
+						return err
+					}	
 				}
 			} else {
 				return errors.New("Empty Authorization")
@@ -59,10 +60,19 @@ func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	}
 }
 
-// IsAuth 检测是否需要检测用户
+// IsAuth 检测用户授权
 func (h *Handler) IsAuth(req server.Request) bool {
 	for _, p := range h.Permissions {
 		if p.Service == req.Service() && p.Method == req.Method() && p.Auth == true {
+			return true
+		}
+	}
+	return false
+}
+// IsPolicy 检查用户权限
+func (h *Handler) IsPolicy(req server.Request) bool {
+	for _, p := range h.Permissions {
+		if p.Service == req.Service() && p.Method == req.Method() && p.Policy == true {
 			return true
 		}
 	}
