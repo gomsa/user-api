@@ -12,7 +12,7 @@ type Permission struct {
 
 // Config 配置结构
 type Config struct {
-	App         string
+	Service     string
 	Version     string
 	Permissions []Permission `json:"permissions"`
 }

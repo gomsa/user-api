@@ -6,7 +6,7 @@ import (
 
 // Conf 配置
 var Conf config.Config = config.Config{
-	App:     "user-api",
+	Service: "user-api",
 	Version: "latest",
 	Permissions: []config.Permission{
 		{Service: "user-api", Method: "Auth.Auth", Auth: false, Policy: false, Name: "用户授权", Description: "用户登录授权返回 token 权限。"},
