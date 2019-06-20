@@ -14,7 +14,7 @@ var Conf config.Config = config.Config{
 
 		{Service: "user-api", Method: "Users.Exist", Auth: false, Policy: false, Name: "检测用户", Description: "检测用户是否存在权限。"},
 		{Service: "user-api", Method: "Users.Info", Auth: true, Policy: false, Name: "检测用户", Description: "检测用户是否存在权限。"},
-		{Service: "user-api", Method: "Users.Create", Auth: false, Policy: false, Name: "创建用户", Description: "创建新用户权限。"},
+		{Service: "user-api", Method: "Users.Create", Auth: true, Policy: true, Name: "创建用户", Description: "创建新用户权限。"},
 		{Service: "user-api", Method: "Users.Get", Auth: true, Policy: true, Name: "查询用户", Description: "查询用户信息权限。"},
 		{Service: "user-api", Method: "Users.Update", Auth: true, Policy: true, Name: "更新用户", Description: "更新用户信息。"},
 		{Service: "user-api", Method: "Users.Delete", Auth: true, Policy: true, Name: "删除用户", Description: "删除用户。"},
