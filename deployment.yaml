@@ -44,6 +44,13 @@ spec:
           env:
             - name: USER_SRV_NAME
               value: "user-srv.srv"
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: redis
           ports:
           - containerPort: 8080
             name: micro
