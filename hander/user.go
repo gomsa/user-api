@@ -4,13 +4,16 @@ import (
 	"context"
 	"errors"
 
+	"github.com/micro/go-micro/util/log"
 	"github.com/micro/go-micro/metadata"
 
 	"github.com/gomsa/tools/uitl"
-	pb "github.com/gomsa/user-api/proto/user"
 	"github.com/gomsa/user-srv/client"
 	casbinPB "github.com/gomsa/user-srv/proto/casbin"
 	userPB "github.com/gomsa/user-srv/proto/user"
+
+	pb "github.com/gomsa/user-api/proto/user"
+	"github.com/gomsa/user-api/providers/redis"
 )
 
 // User 用户结构
@@ -38,6 +41,17 @@ func (srv *User) Exist(ctx context.Context, req *pb.User, res *pb.Response) (err
 // MobileBuild 绑定手机
 func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	// 通过 uuid 获取存储的验证码进行验证 req.Uuid req.Verify
+	redis := redis.Client
+	verify,err := redis.Get(req.Uuid).Result()
+	if err != nil {
+		log.Log(err)
+		err = errors.New("绑定手机时,验证码未找到")
+		return err
+	}
+	if verify != req.Verify {
+		err = errors.New("验证码错误")
+		return err
+	}
 	// meta["user_id"] 通过 meta 获取用户 id --- So this function needs token to use
 	meta, _ := metadata.FromContext(ctx)
 	if userID, ok := meta["user_id"]; ok {
@@ -52,11 +66,13 @@ func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Respo
 		if err != nil {
 			res.Valid = false
 			err = errors.New("绑定手机时,更新用户信息失败")
+			return err
 		}
 		res.Valid = userRes.Valid
 	} else {
 		res.Valid = false
 		err = errors.New("绑定手机时,未找到用户ID")
+		return err
 	}
 	// 返回是否绑定成功 res.Valid
 	return err
