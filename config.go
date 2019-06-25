@@ -13,6 +13,7 @@ var Conf config.Config = config.Config{
 		{Service: "user-api", Method: "Auth.ValidateToken", Auth: false, Policy: false, Name: "权限认证", Description: "权限相关认证权限。"},
 
 		{Service: "user-api", Method: "Users.Exist", Auth: false, Policy: false, Name: "检测用户", Description: "检测用户是否存在权限。"},
+		{Service: "user-api", Method: "Users.MobileBuild", Auth: true, Policy: false, Name: "绑定手机", Description: "通过手机验证码绑定用户手机登信息。"},
 		{Service: "user-api", Method: "Users.Info", Auth: true, Policy: false, Name: "检测用户", Description: "检测用户是否存在权限。"},
 		{Service: "user-api", Method: "Users.Create", Auth: true, Policy: true, Name: "创建用户", Description: "创建新用户权限。"},
 		{Service: "user-api", Method: "Users.Get", Auth: true, Policy: true, Name: "查询用户", Description: "查询用户信息权限。"},
