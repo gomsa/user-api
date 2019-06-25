@@ -6,20 +6,16 @@ import (
 	"github.com/micro/go-micro/util/log"
 )
 
-// redis 连接
-var (
-	// redis 连接
-	Client *redis.Client
-)
-
-func init() {
-	Client := redis.NewClient(&redis.Options{
-		Addr:     env.Getenv("REDIS_HOST", "127.0.0.1"),
+// NewClient 创建新的 redis 连接
+func NewClient() (client *redis.Client) {
+	client = redis.NewClient(&redis.Options{
+		Addr:     env.Getenv("REDIS_HOST", "127.0.0.1:6379"),
 		Password: env.Getenv("REDIS_PASSWORD", ""),
 		DB:       0, // use default DB
 	})
-	pong, err := Client.Ping().Result()
+	pong, err := client.Ping().Result()
 	if err != nil {
 		log.Log(pong, err)
 	}
+	return
 }
