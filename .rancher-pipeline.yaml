@@ -15,6 +15,13 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: user-api:${CICD_EXECUTION_SEQUENCE}
+- name: Redis
+  steps:
+  - applyAppConfig:
+      catalogTemplate: cattle-global-data:library-redis
+      version: 3.0.3
+      name: redis
+      targetNamespace: api
 - name: Deploy
   steps:
   - applyYamlConfig:

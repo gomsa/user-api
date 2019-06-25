@@ -5,6 +5,8 @@ package user;
 service Users {
     // 用过 用户名、邮箱、手机 查询用户是否存在
     rpc Exist(User) returns (Response) {}
+    // 绑定手机 更新同时更新其他用户信息
+    rpc MobileBuild(Request) returns (Response) {}
      // 根据 唯一 获取用户
     rpc Info(Request) returns (Response) {}
     // 获取用户列表
@@ -40,6 +42,9 @@ message ListQuery{
     string email = 6;
 }
 message Request {
+    User user = 1;
+    string verify = 2;  // 验证码
+    string uuid = 3;  // 手机验证码对应的 唯一识别码
 }
 
 message Response {
