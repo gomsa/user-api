@@ -3,6 +3,14 @@ github.com/armon/go-metrics
 # github.com/go-log/log v0.1.0
 github.com/go-log/log
 github.com/go-log/log/log
+# github.com/go-redis/redis v6.15.2+incompatible
+github.com/go-redis/redis
+github.com/go-redis/redis/internal
+github.com/go-redis/redis/internal/consistenthash
+github.com/go-redis/redis/internal/hashtag
+github.com/go-redis/redis/internal/pool
+github.com/go-redis/redis/internal/proto
+github.com/go-redis/redis/internal/util
 # github.com/golang/protobuf v1.3.1
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/ptypes
@@ -12,6 +20,7 @@ github.com/golang/protobuf/ptypes/timestamp
 # github.com/gomsa/tools v0.0.0-20190615000832-56bbd6704f6b
 github.com/gomsa/tools/config
 github.com/gomsa/tools/uitl
+github.com/gomsa/tools/env
 github.com/gomsa/tools/k8s/client
 # github.com/gomsa/user-srv v0.0.0-20190615014948-b4776d6cb783
 github.com/gomsa/user-srv/client
