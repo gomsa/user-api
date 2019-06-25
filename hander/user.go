@@ -42,7 +42,7 @@ func (srv *User) Exist(ctx context.Context, req *pb.User, res *pb.Response) (err
 func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	// 通过 uuid 获取存储的验证码进行验证 req.Uuid req.Verify
 	redis := redis.Client
-	verify,err := redis.Get("req.Uuid").Result()
+	verify,err := redis.Get(req.Uuid).Result()
 	if err != nil {
 		log.Log(err)
 		err = errors.New("绑定手机时,验证码未找到")
