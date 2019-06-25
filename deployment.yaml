@@ -45,7 +45,7 @@ spec:
             - name: USER_SRV_NAME
               value: "user-srv.srv"
             - name: REDIS_HOST
-              value: "redis"
+              value: "redis-master"
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
