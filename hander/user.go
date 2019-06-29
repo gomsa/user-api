@@ -45,7 +45,7 @@ func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Respo
 	verify,err := redis.Get(req.Uuid).Result()
 	if err != nil {
 		log.Log(err)
-		err = errors.New("绑定手机时,验证码未找到")
+		err = errors.New("绑定手机时,验证码超时!")
 		return err
 	}
 	if verify != req.Verify {
