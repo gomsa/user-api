@@ -42,7 +42,7 @@ spec:
             "--server_address=:8080",
           ]
           env:
-            - name: USER_SRV_NAME
+            - name: USER_NAME
               value: "user.srv"
             - name: REDIS_HOST
               value: "redis-master"

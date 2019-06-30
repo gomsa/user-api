@@ -28,7 +28,7 @@ var (
 )
 
 func init() {
-	userSrvName := os.Getenv("USER_SRV_NAME")
+	userSrvName := os.Getenv("USER_NAME")
 
 	User = userPB.NewUsersClient(userSrvName, client.DefaultClient)
 	Auth = authPB.NewAuthClient(userSrvName, client.DefaultClient)
