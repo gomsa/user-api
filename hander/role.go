@@ -5,8 +5,8 @@ import (
 
 	"github.com/gomsa/tools/uitl"
 	pb "github.com/gomsa/user-api/proto/role"
-	"github.com/gomsa/user-srv/client"
-	rolePB "github.com/gomsa/user-srv/proto/role"
+	"github.com/gomsa/user/client"
+	rolePB "github.com/gomsa/user/proto/role"
 )
 
 // Role 角色结构

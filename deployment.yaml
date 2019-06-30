@@ -43,7 +43,7 @@ spec:
           ]
           env:
             - name: USER_SRV_NAME
-              value: "user-srv.srv"
+              value: "user.srv"
             - name: REDIS_HOST
               value: "redis-master"
             - name: REDIS_PASSWORD

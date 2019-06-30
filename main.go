@@ -14,8 +14,8 @@ import (
 	userPB "github.com/gomsa/user-api/proto/user"
 	casbinPB "github.com/gomsa/user-api/proto/casbin"
 
-	"github.com/gomsa/user-srv/client"
-	m "github.com/gomsa/user-srv/middleware"
+	"github.com/gomsa/user/client"
+	m "github.com/gomsa/user/middleware"
 )
 
 func main() {

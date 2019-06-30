@@ -8,9 +8,9 @@ import (
 	"github.com/micro/go-micro/server"
 
 	"github.com/gomsa/tools/config"
-	"github.com/gomsa/user-srv/client"
-	authPb "github.com/gomsa/user-srv/proto/auth"
-	casbinPb "github.com/gomsa/user-srv/proto/casbin"
+	"github.com/gomsa/user/client"
+	authPb "github.com/gomsa/user/proto/auth"
+	casbinPb "github.com/gomsa/user/proto/casbin"
 )
 
 // Handler 处理器
@@ -21,7 +21,7 @@ type Handler struct {
 
 // Wrapper 是一个高阶函数，入参是 ”下一步“ 函数，出参是认证函数
 // 在返回的函数内部处理完认证逻辑后，再手动调用 fn() 进行下一步处理
-// token 是从 consignment-ci 上下文中取出的，再调用 user-srv 将其做验证
+// token 是从 consignment-ci 上下文中取出的，再调用 user 将其做验证
 // 认证通过则 fn() 继续执行，否则报错
 func (h *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) (err error) {

@@ -7,11 +7,11 @@ import (
 	"github.com/gomsa/tools/config"
 	"github.com/gomsa/tools/k8s/client"
 
-	authPB "github.com/gomsa/user-srv/proto/auth"
-	casbinPB "github.com/gomsa/user-srv/proto/casbin"
-	permissionPB "github.com/gomsa/user-srv/proto/permission"
-	rolePB "github.com/gomsa/user-srv/proto/role"
-	userPB "github.com/gomsa/user-srv/proto/user"
+	authPB "github.com/gomsa/user/proto/auth"
+	casbinPB "github.com/gomsa/user/proto/casbin"
+	permissionPB "github.com/gomsa/user/proto/permission"
+	rolePB "github.com/gomsa/user/proto/role"
+	userPB "github.com/gomsa/user/proto/user"
 )
 
 var (

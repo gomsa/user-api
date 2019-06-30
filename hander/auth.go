@@ -5,8 +5,8 @@ import (
 
 	"github.com/gomsa/tools/uitl"
 	pb "github.com/gomsa/user-api/proto/auth"
-	"github.com/gomsa/user-srv/client"
-	authPB "github.com/gomsa/user-srv/proto/auth"
+	"github.com/gomsa/user/client"
+	authPB "github.com/gomsa/user/proto/auth"
 )
 
 // Auth 授权服务处理

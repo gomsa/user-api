@@ -8,9 +8,9 @@ import (
 	"github.com/micro/go-micro/metadata"
 
 	"github.com/gomsa/tools/uitl"
-	"github.com/gomsa/user-srv/client"
-	casbinPB "github.com/gomsa/user-srv/proto/casbin"
-	userPB "github.com/gomsa/user-srv/proto/user"
+	"github.com/gomsa/user/client"
+	casbinPB "github.com/gomsa/user/proto/casbin"
+	userPB "github.com/gomsa/user/proto/user"
 
 	pb "github.com/gomsa/user-api/proto/user"
 	"github.com/gomsa/user-api/providers/redis"

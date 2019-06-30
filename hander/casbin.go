@@ -5,8 +5,8 @@ import (
 
 	"github.com/gomsa/tools/uitl"
 	pb "github.com/gomsa/user-api/proto/casbin"
-	"github.com/gomsa/user-srv/client"
-	casbinPB "github.com/gomsa/user-srv/proto/casbin"
+	"github.com/gomsa/user/client"
+	casbinPB "github.com/gomsa/user/proto/casbin"
 )
 
 // Casbin 授权服务处理

@@ -190,6 +190,11 @@ func (s *service) call(ctx context.Context, router *router, sending *sync.Mutex,
 		body:        req.msg.Body,
 	}
 
+	// only set if not nil
+	if argv.IsValid() {
+		r.rawBody = argv.Interface()
+	}
+
 	if !mtype.stream {
 		fn := func(ctx context.Context, req Request, rsp interface{}) error {
 			returnValues = function.Call([]reflect.Value{s.rcvr, mtype.prepareContext(ctx), reflect.ValueOf(argv.Interface()), reflect.ValueOf(rsp)})
@@ -200,6 +205,11 @@ func (s *service) call(ctx context.Context, router *router, sending *sync.Mutex,
 			}
 
 			return nil
+		}
+
+		// wrap the handler
+		for i := len(router.hdlrWrappers); i > 0; i-- {
+			fn = router.hdlrWrappers[i-1](fn)
 		}
 
 		// execute handler
@@ -233,6 +243,11 @@ func (s *service) call(ctx context.Context, router *router, sending *sync.Mutex,
 			// no error, we send the special EOS error
 			return lastStreamResponseError
 		}
+	}
+
+	// wrap the handler
+	for i := len(router.hdlrWrappers); i > 0; i-- {
+		fn = router.hdlrWrappers[i-1](fn)
 	}
 
 	// client.Stream request

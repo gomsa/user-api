@@ -5,8 +5,8 @@ import (
 
 	"github.com/gomsa/tools/uitl"
 	pb "github.com/gomsa/user-api/proto/permission"
-	"github.com/gomsa/user-srv/client"
-	permissionPB "github.com/gomsa/user-srv/proto/permission"
+	"github.com/gomsa/user/client"
+	permissionPB "github.com/gomsa/user/proto/permission"
 )
 
 // Permission 权限结构
