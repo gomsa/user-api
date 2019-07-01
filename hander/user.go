@@ -91,6 +91,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		if err != nil {
 			return err
 		}
+		userRes.User.Password = ""
 		err = uitl.Data2Data(userRes, res)
 		if err != nil {
 			return err
@@ -137,6 +138,7 @@ func (srv *User) Get(ctx context.Context, req *pb.User, res *pb.Response) (err e
 	if err != nil {
 		return err
 	}
+	userRes.User.Password = ""
 	err = uitl.Data2Data(userRes, res)
 	if err != nil {
 		return err
@@ -157,6 +159,7 @@ func (srv *User) Create(ctx context.Context, req *pb.User, res *pb.Response) (er
 	if err != nil {
 		return err
 	}
+	userRes.User.Password = ""
 	err = uitl.Data2Data(userRes, res)
 	if err != nil {
 		return err
