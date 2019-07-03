@@ -154,6 +154,7 @@ func (srv *User) Create(ctx context.Context, req *pb.User, res *pb.Response) (er
 		return err
 	}
 	meta, _ := metadata.FromContext(ctx)
+	log.Log(meta)
 	user.Origin = meta["service"]
 	userRes, err := client.User.Create(ctx, user)
 	if err != nil {
