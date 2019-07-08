@@ -77,7 +77,31 @@ func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Respo
 	// 返回是否绑定成功 res.Valid
 	return err
 }
-
+// SelfUpdate 用户通过 token 自己更新数据 只可以更改 用户名、昵称、头像
+func (srv *User) SelfUpdate(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
+	// meta["user_id"] 通过 meta 获取用户 id --- So this function needs token to use
+	meta, _ := metadata.FromContext(ctx)
+	if userID, ok := meta["user_id"]; ok {
+		user := &userPB.User{
+			Id: userID,
+			Username: req.Username,
+			Name: req.Name,
+			Avatar: req.Avatar,
+		}
+		userRes, err := client.User.Update(ctx, user)
+		if err != nil {
+			return err
+		}
+		err = uitl.Data2Data(userRes, res)
+		if err != nil {
+			return err
+		}
+	} else {
+		err = errors.New("更新用户失败,未找到用户ID")
+		return err
+	}
+	return err
+}
 // Info 获取用户
 func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	meta, ok := metadata.FromContext(ctx)

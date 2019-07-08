@@ -7,6 +7,9 @@ service Users {
     rpc Exist(User) returns (Response) {}
     // 绑定手机 更新同时更新其他用户信息
     rpc MobileBuild(Request) returns (Response) {}
+    // 用户通过 token 自己更新数据 只可以更改 用户名、昵称、头像
+    rpc SelfUpdate(User) returns (Response) {}
+
      // 根据 唯一 获取用户
     rpc Info(Request) returns (Response) {}
     // 获取用户列表
