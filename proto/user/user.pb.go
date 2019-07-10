@@ -396,7 +396,7 @@ type UsersClient interface {
 	Exist(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error)
 	// 绑定手机 更新同时更新其他用户信息
 	MobileBuild(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
-	// 用户通过 token 自己更新数据 只可以更改 用户名、昵称、手机、头像
+	// 用户通过 token 自己更新数据 只可以更改 用户名、昵称、头像
 	SelfUpdate(ctx context.Context, in *User, opts ...client.CallOption) (*Response, error)
 	// 根据 唯一 获取用户
 	Info(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
@@ -527,7 +527,7 @@ type UsersHandler interface {
 	Exist(context.Context, *User, *Response) error
 	// 绑定手机 更新同时更新其他用户信息
 	MobileBuild(context.Context, *Request, *Response) error
-	// 用户通过 token 自己更新数据 只可以更改 用户名、昵称、手机、头像
+	// 用户通过 token 自己更新数据 只可以更改 用户名、昵称、头像
 	SelfUpdate(context.Context, *User, *Response) error
 	// 根据 唯一 获取用户
 	Info(context.Context, *Request, *Response) error
