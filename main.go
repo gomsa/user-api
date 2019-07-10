@@ -3,16 +3,17 @@ package main
 import (
 	// 公共引入
 
-	"github.com/micro/go-micro/util/log"
 	micro "github.com/micro/go-micro"
+	"github.com/micro/go-micro/util/log"
 	k8s "github.com/micro/kubernetes/go/micro"
 
 	"github.com/gomsa/user-api/hander"
 	authPB "github.com/gomsa/user-api/proto/auth"
+	casbinPB "github.com/gomsa/user-api/proto/casbin"
+	frontPermitPB "github.com/gomsa/user-api/proto/frontPermit"
 	permissionPB "github.com/gomsa/user-api/proto/permission"
 	rolePB "github.com/gomsa/user-api/proto/role"
 	userPB "github.com/gomsa/user-api/proto/user"
-	casbinPB "github.com/gomsa/user-api/proto/casbin"
 
 	"github.com/gomsa/user/client"
 	m "github.com/gomsa/user/middleware"
@@ -34,12 +35,14 @@ func main() {
 
 	authPB.RegisterAuthHandler(srv.Server(), &hander.Auth{})
 
+	frontPermitPB.RegisterFrontPermitsHandler(srv.Server(), &hander.FrontPermit{})
+
 	permissionPB.RegisterPermissionsHandler(srv.Server(), &hander.Permission{})
 
 	rolePB.RegisterRolesHandler(srv.Server(), &hander.Role{})
 
 	// 权限管理服务实现
-	casbinPB.RegisterCasbinHandler(srv.Server(),&hander.Casbin{})
+	casbinPB.RegisterCasbinHandler(srv.Server(), &hander.Casbin{})
 
 	// Run the server
 	if err := srv.Run(); err != nil {

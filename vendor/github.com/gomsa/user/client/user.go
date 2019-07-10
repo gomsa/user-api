@@ -9,6 +9,7 @@ import (
 
 	authPB "github.com/gomsa/user/proto/auth"
 	casbinPB "github.com/gomsa/user/proto/casbin"
+	frontPermitPB "github.com/gomsa/user/proto/frontPermit"
 	permissionPB "github.com/gomsa/user/proto/permission"
 	rolePB "github.com/gomsa/user/proto/role"
 	userPB "github.com/gomsa/user/proto/user"
@@ -19,6 +20,8 @@ var (
 	User userPB.UsersClient
 	// Auth 认证客户端
 	Auth authPB.AuthClient
+	// FrontPermit 前端权限客户端
+	FrontPermit frontPermitPB.FrontPermitsClient
 	// Permission 权限客户端
 	Permission permissionPB.PermissionsClient
 	// Role 角色客户端
@@ -28,13 +31,14 @@ var (
 )
 
 func init() {
-	userSrvName := os.Getenv("USER_NAME")
+	srvName := os.Getenv("USER_NAME")
 
-	User = userPB.NewUsersClient(userSrvName, client.DefaultClient)
-	Auth = authPB.NewAuthClient(userSrvName, client.DefaultClient)
-	Permission = permissionPB.NewPermissionsClient(userSrvName, client.DefaultClient)
-	Role = rolePB.NewRolesClient(userSrvName, client.DefaultClient)
-	Casbin = casbinPB.NewCasbinClient(userSrvName, client.DefaultClient)
+	User = userPB.NewUsersClient(srvName, client.DefaultClient)
+	Auth = authPB.NewAuthClient(srvName, client.DefaultClient)
+	FrontPermit = frontPermitPB.NewFrontPermitsClient(srvName, client.DefaultClient)
+	Permission = permissionPB.NewPermissionsClient(srvName, client.DefaultClient)
+	Role = rolePB.NewRolesClient(srvName, client.DefaultClient)
+	Casbin = casbinPB.NewCasbinClient(srvName, client.DefaultClient)
 }
 
 // SyncPermission 同步权限

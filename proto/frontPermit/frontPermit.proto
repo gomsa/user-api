@@ -20,6 +20,10 @@ service FrontPermits {
     rpc UpdateOrCreate(FrontPermit) returns (Response) {}
 
 }
+message Permission {
+    string service = 2;
+    string method = 3;
+}
 
 message FrontPermit {
     int64 id = 1;
@@ -28,7 +32,7 @@ message FrontPermit {
     string method = 4;
     string name = 5;
     string description = 6;
-    repeated string permission = 7;
+    repeated Permission permissions = 7;
     string created_at = 8;
     string updated_at = 9;
 }

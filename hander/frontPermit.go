@@ -6,11 +6,46 @@ import (
 	"github.com/gomsa/tools/uitl"
 	pb "github.com/gomsa/user-api/proto/frontPermit"
 	"github.com/gomsa/user/client"
+	casbinPB "github.com/gomsa/user/proto/casbin"
 	frontPermitPB "github.com/gomsa/user/proto/frontPermit"
 )
 
 // FrontPermit 权限结构
 type FrontPermit struct {
+}
+
+// UpdateOrCreate 最高权限同步前端权限列表
+func (srv *FrontPermit) UpdateOrCreate(ctx context.Context, req *pb.FrontPermit, res *pb.Response) (err error) {
+	front := &frontPermitPB.FrontPermit{
+		App:         req.App,
+		Service:     req.Service,
+		Method:      req.Method,
+		Name:        req.Name,
+		Description: req.Description,
+	}
+	frontPermitRes, err := client.FrontPermit.UpdateOrCreate(ctx, front)
+	if err != nil {
+		return err
+	}
+	// 计算包含权限 对权前端权限分组增加需要的权限
+	permissions := []*casbinPB.Permission{}
+	for _, permission := range req.Permissions {
+		permissions = append(permissions, &casbinPB.Permission{
+			Service: permission.Service,
+			Method:  permission.Method,
+		})
+	}
+	// 更新权限
+	client.Casbin.UpdatePermissions(ctx, &casbinPB.Request{
+		Role:        req.App + req.Service + req.Method,
+		Permissions: permissions,
+	})
+	// UpdatePermissions
+	err = uitl.Data2Data(frontPermitRes, res)
+	if err != nil {
+		return err
+	}
+	return err
 }
 
 // All 权限列表

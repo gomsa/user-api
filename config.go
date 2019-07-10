@@ -43,7 +43,7 @@ var Conf config.Config = config.Config{
 		{Service: "user-api", Method: "FrontPermits.Delete", Auth: true, Policy: true, Name: "删除前端权限", Description: "删除前端权限。"},
 		{Service: "user-api", Method: "FrontPermits.Update", Auth: true, Policy: true, Name: "更新前端权限", Description: "更新前端权限信息。"},
 		{Service: "user-api", Method: "FrontPermits.Get", Auth: true, Policy: true, Name: "查询前端权限", Description: "查询前端权限信息。"},
-		{Service: "user-api", Method: "FrontPermits.UpdateOrCreate", Auth: true, Policy: true, Name: "同步前端权限", Description: "同步前端权限"},
+		{Service: "user-api", Method: "FrontPermits.UpdateOrCreate", Auth: true, Policy: true, Name: "同步前端权限【高危请勿分配】", Description: "高危同步前端权限"},
 		// 权限认证管理
 		{Service: "user-api", Method: "Casbin.AddPermission", Auth: true, Policy: true, Name: "添加角色权限", Description: "添加角色权限"},
 		{Service: "user-api", Method: "Casbin.DeletePermissions", Auth: true, Policy: true, Name: "删除角色权限", Description: "删除角色权限"},
