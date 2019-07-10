@@ -37,7 +37,7 @@ func (srv *FrontPermit) UpdateOrCreate(ctx context.Context, req *pb.FrontPermit,
 	}
 	// 更新权限
 	client.Casbin.UpdatePermissions(ctx, &casbinPB.Request{
-		Role:        req.App + req.Service + req.Method,
+		Role:        req.App + "_" + req.Service + "_" + req.Method,
 		Permissions: permissions,
 	})
 	// UpdatePermissions
