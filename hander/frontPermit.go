@@ -40,7 +40,7 @@ func (srv *FrontPermit) UpdateOrCreate(ctx context.Context, req *pb.FrontPermit,
 		Role:        req.App + "_" + req.Service + "_" + req.Method,
 		Permissions: permissions,
 	})
-	// UpdatePermissions
+	res.Valid = true
 	err = uitl.Data2Data(frontPermitRes, res)
 	if err != nil {
 		return err
