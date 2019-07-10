@@ -16,6 +16,7 @@ type FrontPermit struct {
 
 // UpdateOrCreate 最高权限同步前端权限列表
 func (srv *FrontPermit) UpdateOrCreate(ctx context.Context, req *pb.FrontPermit, res *pb.Response) (err error) {
+	// 前端权限写入数据库
 	front := &frontPermitPB.FrontPermit{
 		App:         req.App,
 		Service:     req.Service,
@@ -27,7 +28,7 @@ func (srv *FrontPermit) UpdateOrCreate(ctx context.Context, req *pb.FrontPermit,
 	if err != nil {
 		return err
 	}
-	// 计算包含权限 对权前端权限分组增加需要的权限
+	// 计算包含权限 对前端权限分组增加需要的后端权限
 	permissions := []*casbinPB.Permission{}
 	for _, permission := range req.Permissions {
 		permissions = append(permissions, &casbinPB.Permission{
