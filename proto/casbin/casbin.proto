@@ -21,7 +21,7 @@ message Permission{
 }
 
 message Request{
-    string userID = 1;
+    string group = 1; // 角色归属分组  可以是 userId 也可以是前端分组
     string role = 2;
     repeated string roles = 3;
     Permission permission = 4;
