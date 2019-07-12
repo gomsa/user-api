@@ -57,7 +57,6 @@ func (srv *Casbin) UpdatePermissions(ctx context.Context, req *pb.Request, res *
 	if err != nil {
 		return err
 	}
-	log.Log(reqCasbin, req)
 	resCasbin, err := client.Casbin.UpdatePermissions(ctx, reqCasbin)
 	if err != nil {
 		return err
@@ -130,6 +129,7 @@ func (srv *Casbin) UpdateRoles(ctx context.Context, req *pb.Request, res *pb.Res
 	if err != nil {
 		return err
 	}
+	log.Log(reqCasbin, req)
 	resCasbin, err := client.Casbin.UpdateRoles(ctx, reqCasbin)
 	if err != nil {
 		return err
