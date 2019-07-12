@@ -52,8 +52,9 @@ message Request {
 
 message Response {
     bool valid = 1;
-    repeated string roles = 2;
-    User user = 3;
-    repeated User users = 4;
-    int64 total = 5;
+    User user = 2;
+    repeated User users = 3;
+    repeated string roles = 4;      // 用户包含的角色
+    repeated string permissions = 5;// 用户包含的权限
+    int64 total = 6;
 }
