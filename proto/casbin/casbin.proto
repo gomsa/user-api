@@ -15,12 +15,17 @@ service Casbin {
     rpc GetRoles(Request) returns (Response) {}
 }
 
+message Permission{
+    string service = 1;
+    string method = 2;
+}
+
 message Request{
     string userID = 1;
     string role = 2;
     repeated string roles = 3;
-    string permission = 4;
-    repeated string permissions = 5;
+    Permission permission = 4;
+    repeated Permission permissions = 5;
 }
 
 message Response{
@@ -28,6 +33,6 @@ message Response{
     string userID = 2;
     string role = 3;
     repeated string roles = 4;
-    string permission = 5;
-    repeated string permissions = 6;
+    Permission permission = 5;
+    repeated Permission permissions = 6;
 }
