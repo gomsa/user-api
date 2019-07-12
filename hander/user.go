@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/micro/go-micro/util/log"
 	"github.com/micro/go-micro/metadata"
+	"github.com/micro/go-micro/util/log"
 
 	"github.com/gomsa/tools/uitl"
 	"github.com/gomsa/user/client"
@@ -42,7 +42,7 @@ func (srv *User) Exist(ctx context.Context, req *pb.User, res *pb.Response) (err
 func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	// 通过 uuid 获取存储的验证码进行验证 req.Uuid req.Verify
 	redis := redis.NewClient()
-	verify,err := redis.Get(req.Uuid).Result()
+	verify, err := redis.Get(req.Uuid).Result()
 	if err != nil {
 		log.Log(err)
 		err = errors.New("绑定手机时,验证码超时!")
@@ -77,16 +77,17 @@ func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Respo
 	// 返回是否绑定成功 res.Valid
 	return err
 }
+
 // SelfUpdate 用户通过 token 自己更新数据 只可以更改 用户名、昵称、头像
 func (srv *User) SelfUpdate(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
 	// meta["user_id"] 通过 meta 获取用户 id --- So this function needs token to use
 	meta, _ := metadata.FromContext(ctx)
 	if userID, ok := meta["user_id"]; ok {
 		user := &userPB.User{
-			Id: userID,
+			Id:       userID,
 			Username: req.Username,
-			Name: req.Name,
-			Avatar: req.Avatar,
+			Name:     req.Name,
+			Avatar:   req.Avatar,
 		}
 		userRes, err := client.User.Update(ctx, user)
 		if err != nil {
@@ -102,6 +103,7 @@ func (srv *User) SelfUpdate(ctx context.Context, req *pb.User, res *pb.Response)
 	}
 	return err
 }
+
 // Info 获取用户
 func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	meta, ok := metadata.FromContext(ctx)
@@ -121,7 +123,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 			return err
 		}
 		casbinRes, err := client.Casbin.GetRoles(ctx, &casbinPB.Request{
-			UserID: userID,
+			Group: userID,
 		})
 		if err != nil {
 			return err
