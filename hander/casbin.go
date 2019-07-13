@@ -7,7 +7,6 @@ import (
 	pb "github.com/gomsa/user-api/proto/casbin"
 	"github.com/gomsa/user/client"
 	casbinPB "github.com/gomsa/user/proto/casbin"
-	"github.com/micro/go-micro/util/log"
 )
 
 // Casbin 授权服务处理
@@ -57,7 +56,6 @@ func (srv *Casbin) UpdatePermissions(ctx context.Context, req *pb.Request, res *
 	if err != nil {
 		return err
 	}
-	log.Log(reqCasbin, req)
 	resCasbin, err := client.Casbin.UpdatePermissions(ctx, reqCasbin)
 	if err != nil {
 		return err
