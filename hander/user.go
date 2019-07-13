@@ -111,6 +111,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		return errors.New("no auth meta-data found in request")
 	}
 	if userID, ok := meta["user_id"]; ok {
+		// 获取用户信息
 		userRes, err := client.User.Get(ctx, &userPB.User{
 			Id: userID,
 		})
@@ -122,11 +123,23 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		if err != nil {
 			return err
 		}
+		// 获取角色信息
 		casbinRes, err := client.Casbin.GetRoles(ctx, &casbinPB.Request{
 			Label: userID,
 		})
 		if err != nil {
 			return err
+		}
+		// 获取前端权限
+		frontPermit := []string{}
+		for _, roles := range casbinRes.Roles {
+			frontPermitRes, err := client.Casbin.GetRoles(ctx, &casbinPB.Request{
+				Label: roles,
+			})
+			if err != nil {
+				return err
+			}
+			frontPermit = append(frontPermit, frontPermitRes.Roles...)
 		}
 		res.Roles = casbinRes.Roles
 	} else {
