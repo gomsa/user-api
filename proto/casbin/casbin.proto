@@ -21,7 +21,7 @@ message Permission{
 }
 
 message Request{
-    string group = 1; // 角色归属分组  可以是 userId 也可以是 角色 role
+    string label = 1; // 角色归属分组  可以是 userId 也可以是 角色 role
     string role = 2;
     repeated string roles = 3;
     Permission permission = 4;
@@ -30,7 +30,7 @@ message Request{
 
 message Response{
     bool valid = 1;
-    string group = 2;
+    string label = 2;
     string role = 3;
     repeated string roles = 4;
     Permission permission = 5;
