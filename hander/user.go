@@ -123,7 +123,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 			return err
 		}
 		casbinRes, err := client.Casbin.GetRoles(ctx, &casbinPB.Request{
-			Group: userID,
+			Label: userID,
 		})
 		if err != nil {
 			return err
