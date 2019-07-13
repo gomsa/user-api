@@ -141,6 +141,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 			}
 			frontPermit = append(frontPermit, frontPermitRes.Roles...)
 		}
+		res.FrontPermits = frontPermit
 		res.Roles = casbinRes.Roles
 	} else {
 		return errors.New("Empty userID")

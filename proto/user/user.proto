@@ -55,6 +55,6 @@ message Response {
     User user = 2;
     repeated User users = 3;
     repeated string roles = 4;      // 用户包含的角色
-    repeated string front_permit = 5;// 用户包含的前端权限
+    repeated string front_permits = 5;// 用户包含的前端权限
     int64 total = 6;
 }
