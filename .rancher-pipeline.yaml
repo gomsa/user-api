@@ -12,7 +12,7 @@ stages:
 - name: Publish
   steps:
   - publishImageConfig:
-      dockerfilePath: ./Dockerfile
+      dockerfilePath: ./rancher/Dockerfile
       buildContext: .
       tag: user-api:${CICD_EXECUTION_SEQUENCE}
 - name: Deploy
