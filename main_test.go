@@ -24,7 +24,7 @@ func TestMobileBuild(t *testing.T) {
 	}
 	res := &userPB.Response{}
 	err := h.MobileBuild(context.TODO(), req, res)
-	fmt.Println(req, res, err)
+	// fmt.Println(req, res, err)
 	t.Log(req, res, err)
 }
 
