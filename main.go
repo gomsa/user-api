@@ -2,10 +2,11 @@ package main
 
 import (
 	// 公共引入
+	"os"
 
+	k8s "github.com/micro/examples/kubernetes/go/micro"
 	micro "github.com/micro/go-micro"
 	"github.com/micro/go-micro/util/log"
-	k8s "github.com/micro/examples/kubernetes/go/micro"
 
 	"github.com/gomsa/user-api/hander"
 	authPB "github.com/gomsa/user-api/proto/auth"
@@ -20,9 +21,12 @@ import (
 )
 
 func main() {
+	ServiceName := os.Getenv("USER_NAME")
+
 	// 设置权限
 	h := m.Handler{
 		Permissions: Conf.Permissions,
+		UserService: ServiceName,
 	}
 	srv := k8s.NewService(
 		micro.Name(Conf.Service),
@@ -30,7 +34,6 @@ func main() {
 		micro.WrapHandler(h.Wrapper), //验证权限
 	)
 	srv.Init()
-	ServiceName := os.Getenv("USER_NAME")
 
 	userPB.RegisterUsersHandler(srv.Server(), &hander.User{ServiceName})
 
@@ -50,7 +53,8 @@ func main() {
 		log.Log(err)
 	}
 	// 同步权限
-	if err := client.SyncPermission(Conf.Permissions); err != nil {
+	user := &client.User{ServiceName}
+	if err := user.SyncPermission(Conf.Permissions); err != nil {
 		log.Log(err)
 	}
 	log.Log("serviser run ...")
