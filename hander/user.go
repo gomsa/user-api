@@ -124,7 +124,7 @@ func (srv *User) List(ctx context.Context, req *pb.Request, res *pb.Response) (e
 }
 
 // Get 获取用户
-func (srv *User) Get(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
+func (srv *User) Get(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	err = client.Call(ctx, srv.ServiceName, "User.Get", req, res)
 	res.User.Password = ""
 	return err
