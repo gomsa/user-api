@@ -25,7 +25,7 @@ github.com/golang/protobuf/ptypes/timestamp
 github.com/gomsa/tools/config
 github.com/gomsa/tools/k8s/client
 github.com/gomsa/tools/env
-# github.com/gomsa/user v0.0.0-20191004074007-9b99918d9b52
+# github.com/gomsa/user v0.0.0-20191004081027-ff4dadea45a4
 github.com/gomsa/user/client
 github.com/gomsa/user/middleware
 github.com/gomsa/user/proto/permission
@@ -137,7 +137,7 @@ github.com/micro/go-micro/router/proto
 github.com/micro/go-micro/registry/gossip/proto
 github.com/micro/go-micro/registry/proto
 github.com/micro/go-micro/transport/grpc/proto
-# github.com/micro/go-plugins v1.3.0
+# github.com/micro/go-plugins v1.1.2-0.20190710094942-bf407858372c
 github.com/micro/go-plugins/client/selector/static
 github.com/micro/go-plugins/registry/kubernetes
 github.com/micro/go-plugins/registry/kubernetes/client
