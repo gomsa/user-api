@@ -21,7 +21,7 @@ type User struct {
 
 // Exist 用户是否存在
 func (srv *User) Exist(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
-	return client.Call(ctx, srv.ServiceName, "Users.Exist", req.User, res)
+	return client.Call(ctx, srv.ServiceName, "Users.Exist", req, res)
 }
 
 // MobileBuild 绑定手机
