@@ -2,21 +2,20 @@ package client
 
 import (
 	"context"
-	"os"
 
-	client "github.com/gomsa/tools/k8s/client"
 	"github.com/gomsa/tools/config"
+	client "github.com/gomsa/tools/k8s/client"
 
 	permissionPB "github.com/gomsa/user/proto/permission"
 )
-
 
 // User 用户客户端
 type User struct {
 	ServiceName string
 }
+
 // SyncPermission 同步权限
-func (srv *User)SyncPermission(permission []config.Permission) error {
+func (srv *User) SyncPermission(permission []config.Permission) error {
 	for _, p := range permission {
 		if p.Policy {
 			req := permissionPB.Permission{}
