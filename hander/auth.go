@@ -16,7 +16,7 @@ type Auth struct {
 // Auth 授权认证
 // 返回token
 func (srv *Auth) Auth(ctx context.Context, req *pb.Request, res *pb.Request) (err error) {
-	return client.Call(ctx, srv.ServiceName, "Auth.Auth", req.User, res)
+	return client.Call(ctx, srv.ServiceName, "Auth.Auth", req, res)
 }
 
 // Logout 登录退出
