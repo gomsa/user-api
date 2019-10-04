@@ -14,16 +14,16 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/micro/go-log"
 	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-micro/cmd"
+	"github.com/micro/go-micro/config/cmd"
 	merr "github.com/micro/go-micro/errors"
 	"github.com/micro/go-micro/registry"
+	"github.com/micro/go-micro/registry/cache"
+	maddr "github.com/micro/go-micro/util/addr"
+	"github.com/micro/go-micro/util/log"
+	mnet "github.com/micro/go-micro/util/net"
+	mls "github.com/micro/go-micro/util/tls"
 	proto "github.com/micro/go-plugins/broker/grpc/proto"
-	"github.com/micro/go-rcache"
-	maddr "github.com/micro/util/go/lib/addr"
-	mnet "github.com/micro/util/go/lib/net"
-	mls "github.com/micro/util/go/lib/tls"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -55,7 +55,7 @@ type grpcSubscriber struct {
 	hb    *grpcBroker
 }
 
-type grpcPublication struct {
+type grpcEvent struct {
 	m *broker.Message
 	t string
 }
@@ -120,15 +120,15 @@ func newGRPCBroker(opts ...broker.Option) broker.Broker {
 	return h
 }
 
-func (h *grpcPublication) Ack() error {
+func (h *grpcEvent) Ack() error {
 	return nil
 }
 
-func (h *grpcPublication) Message() *broker.Message {
+func (h *grpcEvent) Message() *broker.Message {
 	return h.m
 }
 
-func (h *grpcPublication) Topic() string {
+func (h *grpcEvent) Topic() string {
 	return h.t
 }
 
@@ -155,7 +155,7 @@ func (h *grpcHandler) Publish(ctx context.Context, msg *proto.Message) (*proto.E
 		Body:   msg.Body,
 	}
 
-	p := &grpcPublication{m: m, t: msg.Topic}
+	p := &grpcEvent{m: m, t: msg.Topic}
 
 	h.g.RLock()
 	for _, subscriber := range h.g.subscribers[msg.Topic] {
@@ -311,8 +311,8 @@ func (h *grpcBroker) Connect() error {
 	if !ok {
 		reg = registry.DefaultRegistry
 	}
-	// set rcache
-	h.r = rcache.New(reg)
+	// set cache
+	h.r = cache.New(reg)
 
 	// set running
 	h.running = true
@@ -331,8 +331,8 @@ func (h *grpcBroker) Disconnect() error {
 	h.Lock()
 	defer h.Unlock()
 
-	// stop rcache
-	rc, ok := h.r.(rcache.Cache)
+	// stop cache
+	rc, ok := h.r.(cache.Cache)
 	if ok {
 		rc.Stop()
 	}
@@ -376,13 +376,13 @@ func (h *grpcBroker) Init(opts ...broker.Option) error {
 		reg = registry.DefaultRegistry
 	}
 
-	// get rcache
-	if rc, ok := h.r.(rcache.Cache); ok {
+	// get cache
+	if rc, ok := h.r.(cache.Cache); ok {
 		rc.Stop()
 	}
 
 	// set registry
-	h.r = rcache.New(reg)
+	h.r = cache.New(reg)
 
 	return nil
 }
@@ -418,6 +418,8 @@ func (h *grpcBroker) Publish(topic string, msg *broker.Message, opts ...broker.P
 		// check if secure is added in metadata
 		if node.Metadata["secure"] == "true" {
 			opts = append(opts, grpc.WithTransportCredentials(credentials.NewTLS(config)))
+		} else {
+			opts = append(opts, grpc.WithInsecure())
 		}
 
 		m := &proto.Message{
@@ -428,8 +430,9 @@ func (h *grpcBroker) Publish(topic string, msg *broker.Message, opts ...broker.P
 		}
 
 		// dial grpc connection
-		c, err := grpc.Dial(fmt.Sprintf("%s:%d", node.Address, node.Port), opts...)
-		if err == nil {
+		c, err := grpc.Dial(node.Address, opts...)
+		if err != nil {
+			log.Logf(err.Error())
 			return
 		}
 
@@ -487,8 +490,7 @@ func (h *grpcBroker) Subscribe(topic string, handler broker.Handler, opts ...bro
 	// register service
 	node := &registry.Node{
 		Id:      id,
-		Address: addr,
-		Port:    port,
+		Address: fmt.Sprintf("%s:%d", addr, port),
 		Metadata: map[string]string{
 			"secure": fmt.Sprintf("%t", secure),
 		},

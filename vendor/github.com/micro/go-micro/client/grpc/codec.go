@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"strings"
 
+	b "bytes"
+
+	"github.com/golang/protobuf/jsonpb"
 	"github.com/golang/protobuf/proto"
-	"github.com/json-iterator/go"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/micro/go-micro/codec"
 	"github.com/micro/go-micro/codec/bytes"
 	"github.com/micro/go-micro/codec/jsonrpc"
@@ -19,12 +22,15 @@ type protoCodec struct{}
 type bytesCodec struct{}
 type wrapCodec struct{ encoding.Codec }
 
+var jsonpbMarshaler = &jsonpb.Marshaler{}
+
 var (
 	defaultGRPCCodecs = map[string]encoding.Codec{
 		"application/json":         jsonCodec{},
 		"application/proto":        protoCodec{},
 		"application/protobuf":     protoCodec{},
 		"application/octet-stream": protoCodec{},
+		"application/grpc":         protoCodec{},
 		"application/grpc+json":    jsonCodec{},
 		"application/grpc+proto":   protoCodec{},
 		"application/grpc+bytes":   bytesCodec{},
@@ -110,10 +116,20 @@ func (bytesCodec) Name() string {
 }
 
 func (jsonCodec) Marshal(v interface{}) ([]byte, error) {
+	if pb, ok := v.(proto.Message); ok {
+		s, err := jsonpbMarshaler.MarshalToString(pb)
+
+		return []byte(s), err
+	}
+
 	return json.Marshal(v)
 }
 
 func (jsonCodec) Unmarshal(data []byte, v interface{}) error {
+	if pb, ok := v.(proto.Message); ok {
+		return jsonpb.Unmarshal(b.NewReader(data), pb)
+	}
+
 	return json.Unmarshal(data, v)
 }
 

@@ -4,24 +4,24 @@ package user;
 
 service Users {
     // 用过 用户名、邮箱、手机 查询用户是否存在
-    rpc Exist(User) returns (Response) {}
+    rpc Exist(Request) returns (Response) {}
     // 绑定手机 更新同时更新其他用户信息
     rpc MobileBuild(Request) returns (Response) {}
     // 用户通过 token 自己更新数据 只可以更改 用户名、昵称、头像
-    rpc SelfUpdate(User) returns (Response) {}
+    rpc SelfUpdate(Request) returns (Response) {}
 
      // 根据 唯一 获取用户
     rpc Info(Request) returns (Response) {}
     // 获取用户列表
-    rpc List(ListQuery) returns (Response) {}
+    rpc List(Request) returns (Response) {}
     // 根据 唯一 获取用户
-    rpc Get(User) returns (Response) {}
+    rpc Get(Request) returns (Response) {}
     // 创建用户
-    rpc Create(User) returns (Response) {}
+    rpc Create(Request) returns (Response) {}
     // 更新用户
-    rpc Update(User) returns (Response) {}
+    rpc Update(Request) returns (Response) {}
     // 删除用户
-    rpc Delete(User) returns (Response) {}
+    rpc Delete(Request) returns (Response) {}
 }
 
 message User {
@@ -32,29 +32,30 @@ message User {
     string password = 5;
     string name = 6;
     string avatar = 7;
-    string origin = 8; //用户注册来源
+    string origin = 8;                      //用户注册来源
     string created_at = 9;
     string updated_at = 10;
 }
 message ListQuery{
-    int64 limit=1; //返回数量
-    int64 page=2; //页面
-    string sort=3; // 排序
+    int64 limit=1;                          //返回数量
+    int64 page=2;                           //页面
+    string sort=3;                          //排序
     string username = 4;
     string mobile = 5;
     string email = 6;
 }
 message Request {
-    User user = 1;
-    string verify = 2;  // 验证码
-    string uuid = 3;  // 手机验证码对应的 唯一识别码
+    ListQuery list_query = 1;           // 列表分页请求
+    User user = 2;
+    string verify = 3;                      // 验证码
+    string uuid = 4;                        // 手机验证码对应的 唯一识别码
 }
 
 message Response {
     bool valid = 1;
-    User user = 2;
-    repeated User users = 3;
-    repeated string roles = 4;      // 用户包含的角色
-    repeated string front_permits = 5;// 用户包含的前端权限
-    int64 total = 6;
+    int64 total = 2;
+    User user = 3;
+    repeated User users = 4;
+    repeated string roles = 5;              // 用户包含的角色
+    repeated string front_permits = 6;      // 用户包含的前端权限
 }

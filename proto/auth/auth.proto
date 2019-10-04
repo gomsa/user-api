@@ -4,12 +4,12 @@ package auth;
 
 service Auth {
     // 用户验证授权
-    rpc Auth(User) returns (Token) {}
+    rpc Auth(Request) returns (Request) {}
      // 用户退出登录
-    rpc Logout(Request) returns (Token) {}
+    rpc Logout(Request) returns (Request) {}
     
     // token 验证
-    rpc ValidateToken(Request) returns (Token) {}
+    rpc ValidateToken(Request) returns (Request) {}
 
 }
 
@@ -23,11 +23,13 @@ message User {
 
 message Request{
     string token = 1;
-    string service = 2;
-    string method = 3;
+    User user = 2;
+    string service = 3;
+    string method = 4;
 }
 
-message Token {
-    string token = 1;
-    bool valid = 2;
+message Response {
+    bool valid = 1;
+    string token = 2;
+    User user = 3; 
 }

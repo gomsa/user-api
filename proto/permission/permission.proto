@@ -7,15 +7,15 @@ service Permissions {
     // 全部权限
     rpc All(Request) returns (Response) {}
     // 获取权限列表
-    rpc List(ListQuery) returns (Response) {}
+    rpc List(Request) returns (Response) {}
     // 根据 唯一 获取权限
-    rpc Get(Permission) returns (Response) {}
+    rpc Get(Request) returns (Response) {}
     // 创建权限
-    rpc Create(Permission) returns (Response) {}
+    rpc Create(Request) returns (Response) {}
     // 更新权限
-    rpc Update(Permission) returns (Response) {}
+    rpc Update(Request) returns (Response) {}
     // 删除权限
-    rpc Delete(Permission) returns (Response) {}
+    rpc Delete(Request) returns (Response) {}
 
 }
 
@@ -39,11 +39,13 @@ message ListQuery{
 }
 
 message Request{
+    ListQuery list_query = 1;           // 列表分页请求
+    Permission permission = 2;
 }
 
 message Response{
-    Permission permission = 1;
-    repeated Permission permissions = 2;
-    int64 total = 3;
-    bool valid = 4;
+    bool valid = 1;
+    int64 total = 2;
+    Permission permission = 3;
+    repeated Permission permissions = 4;
 }

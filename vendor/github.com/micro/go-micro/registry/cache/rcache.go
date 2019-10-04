@@ -36,7 +36,13 @@ type cache struct {
 	ttls    map[string]time.Time
 	watched map[string]bool
 
+	// used to stop the cache
 	exit chan bool
+
+	// status of the registry
+	// used to hold onto the cache
+	// in failure state
+	status error
 }
 
 var (
@@ -48,6 +54,18 @@ func backoff(attempts int) time.Duration {
 		return time.Duration(0)
 	}
 	return time.Duration(math.Pow(10, float64(attempts))) * time.Millisecond
+}
+
+func (c *cache) getStatus() error {
+	c.RLock()
+	defer c.RUnlock()
+	return c.status
+}
+
+func (c *cache) setStatus(err error) {
+	c.Lock()
+	c.status = err
+	c.Unlock()
 }
 
 // isValid checks if the service is valid
@@ -80,42 +98,12 @@ func (c *cache) quit() bool {
 	}
 }
 
-// cp copies a service. Because we're caching handing back pointers would
-// create a race condition, so we do this instead its fast enough
-func (c *cache) cp(current []*registry.Service) []*registry.Service {
-	var services []*registry.Service
-
-	for _, service := range current {
-		// copy service
-		s := new(registry.Service)
-		*s = *service
-
-		// copy nodes
-		var nodes []*registry.Node
-		for _, node := range service.Nodes {
-			n := new(registry.Node)
-			*n = *node
-			nodes = append(nodes, n)
-		}
-		s.Nodes = nodes
-
-		// copy endpoints
-		var eps []*registry.Endpoint
-		for _, ep := range service.Endpoints {
-			e := new(registry.Endpoint)
-			*e = *ep
-			eps = append(eps, e)
-		}
-		s.Endpoints = eps
-
-		// append service
-		services = append(services, s)
-	}
-
-	return services
-}
-
 func (c *cache) del(service string) {
+	// don't blow away cache in error state
+	if err := c.getStatus(); err != nil {
+		return
+	}
+	// otherwise delete entries
 	delete(c.cache, service)
 	delete(c.ttls, service)
 }
@@ -132,7 +120,7 @@ func (c *cache) get(service string) ([]*registry.Service, error) {
 	// got services && within ttl so return cache
 	if c.isValid(services, ttl) {
 		// make a copy
-		cp := c.cp(services)
+		cp := registry.Copy(services)
 		// unlock the read
 		c.RUnlock()
 		// return servics
@@ -140,16 +128,29 @@ func (c *cache) get(service string) ([]*registry.Service, error) {
 	}
 
 	// get does the actual request for a service and cache it
-	get := func(service string) ([]*registry.Service, error) {
+	get := func(service string, cached []*registry.Service) ([]*registry.Service, error) {
 		// ask the registry
 		services, err := c.Registry.GetService(service)
 		if err != nil {
+			// check the cache
+			if len(cached) > 0 {
+				// set the error status
+				c.setStatus(err)
+				// return the stale cache
+				return registry.Copy(cached), nil
+			}
+			// otherwise return error
 			return nil, err
+		}
+
+		// reset the status
+		if c.getStatus(); err != nil {
+			c.setStatus(nil)
 		}
 
 		// cache results
 		c.Lock()
-		c.set(service, c.cp(services))
+		c.set(service, registry.Copy(services))
 		c.Unlock()
 
 		return services, nil
@@ -164,7 +165,7 @@ func (c *cache) get(service string) ([]*registry.Service, error) {
 	c.RUnlock()
 
 	// get and return services
-	return get(service)
+	return get(service, services)
 }
 
 func (c *cache) set(service string, services []*registry.Service) {
@@ -318,6 +319,7 @@ func (c *cache) run(service string) {
 			}
 
 			d := backoff(a)
+			c.setStatus(err)
 
 			if a > 3 {
 				log.Log("rcache: ", err, " backing off ", d)
@@ -340,6 +342,7 @@ func (c *cache) run(service string) {
 			}
 
 			d := backoff(b)
+			c.setStatus(err)
 
 			if b > 3 {
 				log.Log("rcache: ", err, " backing off ", d)
@@ -360,20 +363,36 @@ func (c *cache) run(service string) {
 // watch loops the next event and calls update
 // it returns if there's an error
 func (c *cache) watch(w registry.Watcher) error {
-	defer w.Stop()
+	// used to stop the watch
+	stop := make(chan bool)
 
 	// manage this loop
 	go func() {
+		defer w.Stop()
+
+		select {
 		// wait for exit
-		<-c.exit
-		w.Stop()
+		case <-c.exit:
+			return
+		// we've been stopped
+		case <-stop:
+			return
+		}
 	}()
 
 	for {
 		res, err := w.Next()
 		if err != nil {
+			close(stop)
 			return err
 		}
+
+		// reset the error status since we succeeded
+		if err := c.getStatus(); err != nil {
+			// reset status
+			c.setStatus(nil)
+		}
+
 		c.update(res)
 	}
 }

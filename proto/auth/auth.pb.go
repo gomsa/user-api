@@ -99,8 +99,9 @@ func (m *User) GetPassword() string {
 
 type Request struct {
 	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	Service              string   `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
-	Method               string   `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
+	User                 *User    `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	Service              string   `protobuf:"bytes,3,opt,name=service,proto3" json:"service,omitempty"`
+	Method               string   `protobuf:"bytes,4,opt,name=method,proto3" json:"method,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -138,6 +139,13 @@ func (m *Request) GetToken() string {
 	return ""
 }
 
+func (m *Request) GetUser() *User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
 func (m *Request) GetService() string {
 	if m != nil {
 		return m.Service
@@ -152,79 +160,88 @@ func (m *Request) GetMethod() string {
 	return ""
 }
 
-type Token struct {
-	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	Valid                bool     `protobuf:"varint,2,opt,name=valid,proto3" json:"valid,omitempty"`
+type Response struct {
+	Valid                bool     `protobuf:"varint,1,opt,name=valid,proto3" json:"valid,omitempty"`
+	Token                string   `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	User                 *User    `protobuf:"bytes,3,opt,name=user,proto3" json:"user,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Token) Reset()         { *m = Token{} }
-func (m *Token) String() string { return proto.CompactTextString(m) }
-func (*Token) ProtoMessage()    {}
-func (*Token) Descriptor() ([]byte, []int) {
+func (m *Response) Reset()         { *m = Response{} }
+func (m *Response) String() string { return proto.CompactTextString(m) }
+func (*Response) ProtoMessage()    {}
+func (*Response) Descriptor() ([]byte, []int) {
 	return fileDescriptor_82b5829f48cfb8e5, []int{2}
 }
 
-func (m *Token) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Token.Unmarshal(m, b)
+func (m *Response) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Response.Unmarshal(m, b)
 }
-func (m *Token) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Token.Marshal(b, m, deterministic)
+func (m *Response) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Response.Marshal(b, m, deterministic)
 }
-func (m *Token) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Token.Merge(m, src)
+func (m *Response) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Response.Merge(m, src)
 }
-func (m *Token) XXX_Size() int {
-	return xxx_messageInfo_Token.Size(m)
+func (m *Response) XXX_Size() int {
+	return xxx_messageInfo_Response.Size(m)
 }
-func (m *Token) XXX_DiscardUnknown() {
-	xxx_messageInfo_Token.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Token proto.InternalMessageInfo
-
-func (m *Token) GetToken() string {
-	if m != nil {
-		return m.Token
-	}
-	return ""
+func (m *Response) XXX_DiscardUnknown() {
+	xxx_messageInfo_Response.DiscardUnknown(m)
 }
 
-func (m *Token) GetValid() bool {
+var xxx_messageInfo_Response proto.InternalMessageInfo
+
+func (m *Response) GetValid() bool {
 	if m != nil {
 		return m.Valid
 	}
 	return false
 }
 
+func (m *Response) GetToken() string {
+	if m != nil {
+		return m.Token
+	}
+	return ""
+}
+
+func (m *Response) GetUser() *User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*User)(nil), "auth.User")
 	proto.RegisterType((*Request)(nil), "auth.Request")
-	proto.RegisterType((*Token)(nil), "auth.Token")
+	proto.RegisterType((*Response)(nil), "auth.Response")
 }
 
 func init() { proto.RegisterFile("proto/auth/auth.proto", fileDescriptor_82b5829f48cfb8e5) }
 
 var fileDescriptor_82b5829f48cfb8e5 = []byte{
-	// 256 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x91, 0x3d, 0x4f, 0xc3, 0x30,
-	0x10, 0x86, 0x49, 0x48, 0xd2, 0x72, 0xa8, 0x0c, 0xa7, 0x82, 0xac, 0x4e, 0x90, 0x01, 0xb1, 0x50,
-	0x24, 0xfa, 0x0b, 0xd8, 0x59, 0x88, 0x80, 0xdd, 0xc5, 0x27, 0x62, 0x91, 0xd4, 0xc5, 0x1f, 0x65,
-	0x61, 0xe0, 0xa7, 0x23, 0x9f, 0x93, 0x0e, 0x08, 0x75, 0xb1, 0xef, 0xb9, 0x8f, 0x57, 0xaf, 0xcf,
-	0x70, 0xbe, 0xb5, 0xc6, 0x9b, 0x3b, 0x19, 0x7c, 0xcb, 0xc7, 0x92, 0x19, 0x8b, 0x18, 0xd7, 0xdf,
-	0x50, 0xbc, 0x38, 0xb2, 0x78, 0x06, 0xb9, 0x56, 0x22, 0xbb, 0xcc, 0x6e, 0x4e, 0x9a, 0x5c, 0x2b,
-	0x5c, 0xc0, 0x34, 0x38, 0xb2, 0x1b, 0xd9, 0x93, 0xc8, 0x39, 0xbb, 0x67, 0xbc, 0x80, 0xaa, 0x37,
-	0x6b, 0xdd, 0x91, 0x38, 0xe6, 0xca, 0x40, 0x38, 0x87, 0x92, 0x7a, 0xa9, 0x3b, 0x51, 0x70, 0x3a,
-	0x41, 0x54, 0xda, 0x4a, 0xe7, 0xbe, 0x8c, 0x55, 0xa2, 0x4c, 0x4a, 0x23, 0xd7, 0x4f, 0x30, 0x69,
-	0xe8, 0x33, 0x90, 0xf3, 0x71, 0xd8, 0x9b, 0x0f, 0xda, 0x0c, 0x1e, 0x12, 0xa0, 0x80, 0x89, 0x23,
-	0xbb, 0xd3, 0x6f, 0xa3, 0x8b, 0x11, 0xd9, 0x04, 0xf9, 0xd6, 0xa8, 0xbd, 0x09, 0xa6, 0x7a, 0x05,
-	0xe5, 0x33, 0x8f, 0xfe, 0x2f, 0x38, 0x87, 0x72, 0x27, 0x3b, 0xad, 0x58, 0x6e, 0xda, 0x24, 0xb8,
-	0xff, 0xc9, 0xa0, 0x78, 0x08, 0xbe, 0xc5, 0xab, 0xe1, 0x86, 0x25, 0x6f, 0x2a, 0xae, 0x66, 0x71,
-	0x9a, 0x62, 0x56, 0xad, 0x8f, 0xf0, 0x1a, 0xaa, 0x47, 0xf3, 0x6e, 0x82, 0xc7, 0x59, 0x2a, 0x0c,
-	0x2f, 0xf8, 0xdb, 0x77, 0x0b, 0xb3, 0xd7, 0x28, 0x2e, 0x3d, 0x25, 0x43, 0x07, 0xdb, 0xd7, 0x15,
-	0xff, 0xca, 0xea, 0x37, 0x00, 0x00, 0xff, 0xff, 0x56, 0xdc, 0xf5, 0x94, 0xae, 0x01, 0x00, 0x00,
+	// 272 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x91, 0xbd, 0x4e, 0xc3, 0x30,
+	0x10, 0x80, 0x49, 0x9a, 0xa6, 0xe1, 0x50, 0x19, 0x2c, 0x40, 0x56, 0x07, 0x84, 0x32, 0xa0, 0x4e,
+	0xad, 0x54, 0x9e, 0x80, 0x9d, 0x29, 0x82, 0xee, 0x2e, 0x39, 0x11, 0x8b, 0x24, 0x4e, 0xfd, 0x53,
+	0x16, 0x5e, 0x80, 0xb7, 0x46, 0x3e, 0x3b, 0xa0, 0x4a, 0x95, 0xba, 0xd8, 0xfe, 0xce, 0x77, 0xe7,
+	0xef, 0x64, 0xb8, 0x1d, 0xb4, 0xb2, 0x6a, 0x2d, 0x9c, 0x6d, 0x68, 0x59, 0x11, 0xb3, 0xcc, 0x9f,
+	0xcb, 0x6f, 0xc8, 0xde, 0x0c, 0x6a, 0x76, 0x0d, 0xa9, 0xac, 0x79, 0xf2, 0x90, 0x2c, 0x2f, 0xab,
+	0x54, 0xd6, 0x6c, 0x01, 0x85, 0x33, 0xa8, 0x7b, 0xd1, 0x21, 0x4f, 0x29, 0xfa, 0xc7, 0xec, 0x0e,
+	0xf2, 0x4e, 0xed, 0x64, 0x8b, 0x7c, 0x42, 0x37, 0x91, 0xd8, 0x0d, 0x4c, 0xb1, 0x13, 0xb2, 0xe5,
+	0x19, 0x85, 0x03, 0xf8, 0x4e, 0x83, 0x30, 0xe6, 0x4b, 0xe9, 0x9a, 0x4f, 0x43, 0xa7, 0x91, 0xcb,
+	0x3d, 0xcc, 0x2a, 0xdc, 0x3b, 0x34, 0xd6, 0x17, 0x5b, 0xf5, 0x89, 0x7d, 0x74, 0x08, 0xc0, 0xee,
+	0x21, 0xf3, 0xcf, 0x92, 0xc2, 0xd5, 0x06, 0x56, 0xe4, 0xef, 0x85, 0x2b, 0x8a, 0x33, 0x0e, 0x33,
+	0x83, 0xfa, 0x20, 0xdf, 0x47, 0x97, 0x11, 0x49, 0x12, 0x6d, 0xa3, 0xea, 0x68, 0x13, 0xa9, 0xdc,
+	0x42, 0x51, 0xa1, 0x19, 0x54, 0x6f, 0x48, 0xf8, 0x20, 0xda, 0x38, 0x77, 0x51, 0x05, 0xf8, 0x37,
+	0x49, 0x4f, 0x99, 0x4c, 0x4e, 0x9b, 0x6c, 0x7e, 0x12, 0xc8, 0x9e, 0x9d, 0x6d, 0xd8, 0x63, 0xdc,
+	0xe7, 0x21, 0x25, 0xce, 0xb7, 0x38, 0xc6, 0xf2, 0x82, 0x2d, 0x21, 0x7f, 0x51, 0x1f, 0xca, 0xd9,
+	0xb3, 0x99, 0x6b, 0x98, 0x6f, 0xbd, 0x99, 0xb0, 0xf8, 0x4a, 0x2e, 0x67, 0x0a, 0x76, 0x39, 0xfd,
+	0xf0, 0xd3, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x38, 0xc5, 0xf4, 0xa0, 0xfa, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -236,11 +253,11 @@ var _ server.Option
 
 type AuthClient interface {
 	// 用户验证授权
-	Auth(ctx context.Context, in *User, opts ...client.CallOption) (*Token, error)
+	Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Request, error)
 	// 用户退出登录
-	Logout(ctx context.Context, in *Request, opts ...client.CallOption) (*Token, error)
+	Logout(ctx context.Context, in *Request, opts ...client.CallOption) (*Request, error)
 	// token 验证
-	ValidateToken(ctx context.Context, in *Request, opts ...client.CallOption) (*Token, error)
+	ValidateToken(ctx context.Context, in *Request, opts ...client.CallOption) (*Request, error)
 }
 
 type authClient struct {
@@ -261,9 +278,9 @@ func NewAuthClient(serviceName string, c client.Client) AuthClient {
 	}
 }
 
-func (c *authClient) Auth(ctx context.Context, in *User, opts ...client.CallOption) (*Token, error) {
+func (c *authClient) Auth(ctx context.Context, in *Request, opts ...client.CallOption) (*Request, error) {
 	req := c.c.NewRequest(c.serviceName, "Auth.Auth", in)
-	out := new(Token)
+	out := new(Request)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -271,9 +288,9 @@ func (c *authClient) Auth(ctx context.Context, in *User, opts ...client.CallOpti
 	return out, nil
 }
 
-func (c *authClient) Logout(ctx context.Context, in *Request, opts ...client.CallOption) (*Token, error) {
+func (c *authClient) Logout(ctx context.Context, in *Request, opts ...client.CallOption) (*Request, error) {
 	req := c.c.NewRequest(c.serviceName, "Auth.Logout", in)
-	out := new(Token)
+	out := new(Request)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -281,9 +298,9 @@ func (c *authClient) Logout(ctx context.Context, in *Request, opts ...client.Cal
 	return out, nil
 }
 
-func (c *authClient) ValidateToken(ctx context.Context, in *Request, opts ...client.CallOption) (*Token, error) {
+func (c *authClient) ValidateToken(ctx context.Context, in *Request, opts ...client.CallOption) (*Request, error) {
 	req := c.c.NewRequest(c.serviceName, "Auth.ValidateToken", in)
-	out := new(Token)
+	out := new(Request)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -295,11 +312,11 @@ func (c *authClient) ValidateToken(ctx context.Context, in *Request, opts ...cli
 
 type AuthHandler interface {
 	// 用户验证授权
-	Auth(context.Context, *User, *Token) error
+	Auth(context.Context, *Request, *Request) error
 	// 用户退出登录
-	Logout(context.Context, *Request, *Token) error
+	Logout(context.Context, *Request, *Request) error
 	// token 验证
-	ValidateToken(context.Context, *Request, *Token) error
+	ValidateToken(context.Context, *Request, *Request) error
 }
 
 func RegisterAuthHandler(s server.Server, hdlr AuthHandler, opts ...server.HandlerOption) {
@@ -310,14 +327,14 @@ type Auth struct {
 	AuthHandler
 }
 
-func (h *Auth) Auth(ctx context.Context, in *User, out *Token) error {
+func (h *Auth) Auth(ctx context.Context, in *Request, out *Request) error {
 	return h.AuthHandler.Auth(ctx, in, out)
 }
 
-func (h *Auth) Logout(ctx context.Context, in *Request, out *Token) error {
+func (h *Auth) Logout(ctx context.Context, in *Request, out *Request) error {
 	return h.AuthHandler.Logout(ctx, in, out)
 }
 
-func (h *Auth) ValidateToken(ctx context.Context, in *Request, out *Token) error {
+func (h *Auth) ValidateToken(ctx context.Context, in *Request, out *Request) error {
 	return h.AuthHandler.ValidateToken(ctx, in, out)
 }

@@ -5,7 +5,7 @@ import (
 
 	micro "github.com/micro/go-micro"
 	"github.com/micro/go-micro/util/log"
-	k8s "github.com/micro/kubernetes/go/micro"
+	k8s "github.com/micro/examples/kubernetes/go/micro"
 
 	"github.com/gomsa/user-api/hander"
 	authPB "github.com/gomsa/user-api/proto/auth"
@@ -30,19 +30,20 @@ func main() {
 		micro.WrapHandler(h.Wrapper), //验证权限
 	)
 	srv.Init()
+	ServiceName := os.Getenv("USER_NAME")
 
-	userPB.RegisterUsersHandler(srv.Server(), &hander.User{})
+	userPB.RegisterUsersHandler(srv.Server(), &hander.User{ServiceName})
 
-	authPB.RegisterAuthHandler(srv.Server(), &hander.Auth{})
+	authPB.RegisterAuthHandler(srv.Server(), &hander.Auth{ServiceName})
 
-	frontPermitPB.RegisterFrontPermitsHandler(srv.Server(), &hander.FrontPermit{})
+	frontPermitPB.RegisterFrontPermitsHandler(srv.Server(), &hander.FrontPermit{ServiceName})
 
-	permissionPB.RegisterPermissionsHandler(srv.Server(), &hander.Permission{})
+	permissionPB.RegisterPermissionsHandler(srv.Server(), &hander.Permission{ServiceName})
 
-	rolePB.RegisterRolesHandler(srv.Server(), &hander.Role{})
+	rolePB.RegisterRolesHandler(srv.Server(), &hander.Role{ServiceName})
 
 	// 权限管理服务实现
-	casbinPB.RegisterCasbinHandler(srv.Server(), &hander.Casbin{})
+	casbinPB.RegisterCasbinHandler(srv.Server(), &hander.Casbin{ServiceName})
 
 	// Run the server
 	if err := srv.Run(); err != nil {

@@ -1,14 +1,12 @@
 package grpc
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"reflect"
 	"strings"
 
 	"github.com/micro/go-micro/broker"
-	"github.com/micro/go-micro/codec"
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/server"
@@ -167,14 +165,14 @@ func validateSubscriber(sub server.Subscriber) error {
 }
 
 func (g *grpcServer) createSubHandler(sb *subscriber, opts server.Options) broker.Handler {
-	return func(p broker.Publication) error {
+	return func(p broker.Event) error {
 		msg := p.Message()
 		ct := msg.Header["Content-Type"]
 		if len(ct) == 0 {
 			msg.Header["Content-Type"] = defaultContentType
 			ct = defaultContentType
 		}
-		cf, err := g.newCodec(ct)
+		cf, err := g.newGRPCCodec(ct)
 		if err != nil {
 			return err
 		}
@@ -204,15 +202,7 @@ func (g *grpcServer) createSubHandler(sb *subscriber, opts server.Options) broke
 				req = req.Elem()
 			}
 
-			b := &buffer{bytes.NewBuffer(msg.Body)}
-			co := cf(b)
-			defer co.Close()
-
-			if err := co.ReadHeader(&codec.Message{}, codec.Publication); err != nil {
-				return err
-			}
-
-			if err := co.ReadBody(req.Interface()); err != nil {
+			if err := cf.Unmarshal(msg.Body, req.Interface()); err != nil {
 				return err
 			}
 

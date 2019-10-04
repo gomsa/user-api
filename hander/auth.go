@@ -3,33 +3,20 @@ package hander
 import (
 	"context"
 
-	"github.com/gomsa/tools/uitl"
+	client "github.com/gomsa/tools/k8s/client"
+
 	pb "github.com/gomsa/user-api/proto/auth"
-	"github.com/gomsa/user/client"
-	authPB "github.com/gomsa/user/proto/auth"
 )
 
 // Auth 授权服务处理
 type Auth struct {
+	ServiceName string
 }
 
 // Auth 授权认证
 // 返回token
-func (srv *Auth) Auth(ctx context.Context, req *pb.User, res *pb.Token) (err error) {
-	user := &authPB.User{}
-	err = uitl.Data2Data(req, user)
-	if err != nil {
-		return err
-	}
-	authRes, err := client.Auth.Auth(ctx, user)
-	if err != nil {
-		return err
-	}
-	err = uitl.Data2Data(authRes, res)
-	if err != nil {
-		return err
-	}
-	return err
+func (srv *Auth) Auth(ctx context.Context, req *pb.Request, res *pb.Request) (err error) {
+	return client.Call(ctx, srv.ServiceName, "Auth.Auth", req.User, res)
 }
 
 // Logout 登录退出
@@ -39,25 +26,12 @@ func (srv *Auth) Auth(ctx context.Context, req *pb.User, res *pb.Token) (err err
 // 通过存储多种类型的 token 来实现多端登录
 // token id type type=登录类型
 // 过期时间默认还是在 jwt token 中存储
-func (srv *Auth) Logout(ctx context.Context, req *pb.Request, res *pb.Token) (err error) {
+func (srv *Auth) Logout(ctx context.Context, req *pb.Request, res *pb.Request) (err error) {
 	return err
 }
 
 // ValidateToken 验证 token
 // 并且验证 token 所属用户相关权限
-func (srv *Auth) ValidateToken(ctx context.Context, req *pb.Request, res *pb.Token) (err error) {
-	authReq := &authPB.Request{}
-	err = uitl.Data2Data(req, authReq)
-	if err != nil {
-		return err
-	}
-	authRes, err := client.Auth.ValidateToken(ctx, authReq)
-	if err != nil {
-		return err
-	}
-	err = uitl.Data2Data(authRes, res)
-	if err != nil {
-		return err
-	}
-	return err
+func (srv *Auth) ValidateToken(ctx context.Context, req *pb.Request, res *pb.Request) (err error) {
+	return client.Call(ctx, srv.ServiceName, "Auth.ValidateToken", req, res)
 }

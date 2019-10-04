@@ -4,13 +4,13 @@ package auth;
 
 service Auth {
     // 用户验证授权
-    rpc Auth(User) returns (Token) {}
+    rpc Auth(Request) returns (Response) {}
     // token 验证
-    rpc ValidateToken(Request) returns (Token) {}
+    rpc ValidateToken(Request) returns (Response) {}
 
     // 只限微服务之间调用
     // 根据用户ID获取授权
-    rpc AuthById(User) returns (Token) {}
+    rpc AuthById(Request) returns (Response) {}
     
 
 }
@@ -23,19 +23,13 @@ message User {
     string password = 5;
 }
 
-message Request{
-    string token = 1;
-    string service = 2;
-    string method = 3;
+message Request {
+    User user = 1;                  // 用户
+    string token = 2;               // token
 }
 
-message Token {
-    string token = 1;
-    bool valid = 2;
-    User user = 3;
-    repeated Error errors = 4;
-}
-message Error {
-    string code = 1;
-    string description = 2;
+message Response {
+    bool valid = 1;                 // 操作状态返回
+    string token = 2;               // token
+    User user = 3;                  // 用户
 }

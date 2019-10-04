@@ -7,15 +7,15 @@ service Roles {
     // 全部权限
     rpc All(Request) returns (Response) {}
     // 获取权限列表
-    rpc List(ListQuery) returns (Response) {}
+    rpc List(Request) returns (Response) {}
     // 根据 唯一 获取权限
-    rpc Get(Role) returns (Response) {}
+    rpc Get(Request) returns (Response) {}
     // 创建权限
-    rpc Create(Role) returns (Response) {}
+    rpc Create(Request) returns (Response) {}
     // 更新权限
-    rpc Update(Role) returns (Response) {}
+    rpc Update(Request) returns (Response) {}
     // 删除权限
-    rpc Delete(Role) returns (Response) {}
+    rpc Delete(Request) returns (Response) {}
 
 }
 
@@ -29,17 +29,19 @@ message Role {
 }
 
 message ListQuery{
-    int64 limit=1; //返回数量
-    int64 page=2; //页面
-    string sort=3; // 排序
+    int64 limit=1;                      //返回数量
+    int64 page=2;                       //页面
+    string sort=3;                      // 排序
     string label = 4;
     string name = 5;
 }
-message Request{
+message Request{    
+    ListQuery list_query = 1;           // 列表分页请求
+    Role role = 2;
 }
 message Response{
-    Role role = 1;
-    repeated Role roles = 2;
-    int64 total = 3;
-    bool valid = 4;
+    bool valid = 1;
+    int64 total = 2;
+    Role role = 3;
+    repeated Role roles = 4;
 }

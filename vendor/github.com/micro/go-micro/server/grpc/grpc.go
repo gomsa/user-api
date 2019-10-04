@@ -22,12 +22,14 @@ import (
 	"github.com/micro/go-micro/util/addr"
 	mgrpc "github.com/micro/go-micro/util/grpc"
 	"github.com/micro/go-micro/util/log"
+	mnet "github.com/micro/go-micro/util/net"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/encoding"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/status"
 )
 
@@ -51,13 +53,15 @@ type grpcServer struct {
 	opts        server.Options
 	handlers    map[string]server.Handler
 	subscribers map[*subscriber][]broker.Subscriber
+	// marks the serve as started
+	started bool
 	// used for first registration
 	registered bool
 }
 
 func init() {
-	encoding.RegisterCodec(wrapCodec{protoCodec{}})
 	encoding.RegisterCodec(wrapCodec{jsonCodec{}})
+	encoding.RegisterCodec(wrapCodec{protoCodec{}})
 	encoding.RegisterCodec(wrapCodec{bytesCodec{}})
 }
 
@@ -203,6 +207,12 @@ func (g *grpcServer) handler(srv interface{}, stream grpc.ServerStream) error {
 	// create new context
 	ctx := meta.NewContext(stream.Context(), md)
 
+	// get peer from context
+	if p, ok := peer.FromContext(stream.Context()); ok {
+		md["Remote"] = p.Addr.String()
+		ctx = peer.NewContext(ctx, p)
+	}
+
 	// set the timeout if we have it
 	if len(to) > 0 {
 		if n, err := strconv.ParseUint(to, 10, 64); err == nil {
@@ -263,12 +273,12 @@ func (g *grpcServer) handler(srv interface{}, stream grpc.ServerStream) error {
 	g.rpc.mu.Unlock()
 
 	if service == nil {
-		return status.New(codes.Unimplemented, fmt.Sprintf("unknown service %v", service)).Err()
+		return status.New(codes.Unimplemented, fmt.Sprintf("unknown service %s", serviceName)).Err()
 	}
 
 	mtype := service.method[methodName]
 	if mtype == nil {
-		return status.New(codes.Unimplemented, fmt.Sprintf("unknown service %v", service)).Err()
+		return status.New(codes.Unimplemented, fmt.Sprintf("unknown service %s.%s", serviceName, methodName)).Err()
 	}
 
 	// process unary
@@ -328,6 +338,11 @@ func (g *grpcServer) processRequest(stream grpc.ServerStream, service *service, 
 
 		// define the handler func
 		fn := func(ctx context.Context, req server.Request, rsp interface{}) error {
+			defer func() {
+				if r := recover(); r != nil {
+					log.Logf("handler %s panic recovered, err: %s", mtype.method.Name, r)
+				}
+			}()
 			returnValues = function.Call([]reflect.Value{service.rcvr, mtype.prepareContext(ctx), reflect.ValueOf(argv.Interface()), reflect.ValueOf(rsp)})
 
 			// The return value for the method is an error.
@@ -446,7 +461,10 @@ func (g *grpcServer) newCodec(contentType string) (codec.NewCodec, error) {
 }
 
 func (g *grpcServer) Options() server.Options {
+	g.RLock()
 	opts := g.opts
+	g.RUnlock()
+
 	return opts
 }
 
@@ -497,10 +515,11 @@ func (g *grpcServer) Subscribe(sb server.Subscriber) error {
 }
 
 func (g *grpcServer) Register() error {
+	var err error
+	var advt, host, port string
+
 	// parse address for host, port
 	config := g.opts
-	var advt, host string
-	var port int
 
 	// check the advertise address first
 	// if it exists then use it, otherwise
@@ -511,12 +530,14 @@ func (g *grpcServer) Register() error {
 		advt = config.Address
 	}
 
-	parts := strings.Split(advt, ":")
-	if len(parts) > 1 {
-		host = strings.Join(parts[:len(parts)-1], ":")
-		port, _ = strconv.Atoi(parts[len(parts)-1])
+	if cnt := strings.Count(advt, ":"); cnt >= 1 {
+		// ipv6 address in format [host]:port or ipv4 host:port
+		host, port, err = net.SplitHostPort(advt)
+		if err != nil {
+			return err
+		}
 	} else {
-		host = parts[0]
+		host = advt
 	}
 
 	addr, err := addr.Extract(host)
@@ -527,8 +548,7 @@ func (g *grpcServer) Register() error {
 	// register service
 	node := &registry.Node{
 		Id:       config.Name + "-" + config.Id,
-		Address:  addr,
-		Port:     port,
+		Address:  mnet.HostPort(addr, port),
 		Metadata: config.Metadata,
 	}
 
@@ -623,9 +643,10 @@ func (g *grpcServer) Register() error {
 }
 
 func (g *grpcServer) Deregister() error {
+	var err error
+	var advt, host, port string
+
 	config := g.opts
-	var advt, host string
-	var port int
 
 	// check the advertise address first
 	// if it exists then use it, otherwise
@@ -636,12 +657,14 @@ func (g *grpcServer) Deregister() error {
 		advt = config.Address
 	}
 
-	parts := strings.Split(advt, ":")
-	if len(parts) > 1 {
-		host = strings.Join(parts[:len(parts)-1], ":")
-		port, _ = strconv.Atoi(parts[len(parts)-1])
+	if cnt := strings.Count(advt, ":"); cnt >= 1 {
+		// ipv6 address in format [host]:port or ipv4 host:port
+		host, port, err = net.SplitHostPort(advt)
+		if err != nil {
+			return err
+		}
 	} else {
-		host = parts[0]
+		host = advt
 	}
 
 	addr, err := addr.Extract(host)
@@ -651,8 +674,7 @@ func (g *grpcServer) Deregister() error {
 
 	node := &registry.Node{
 		Id:      config.Name + "-" + config.Id,
-		Address: addr,
-		Port:    port,
+		Address: mnet.HostPort(addr, port),
 	}
 
 	service := &registry.Service{
@@ -688,8 +710,14 @@ func (g *grpcServer) Deregister() error {
 }
 
 func (g *grpcServer) Start() error {
-	registerDebugHandler(g)
-	config := g.opts
+	g.RLock()
+	if g.started {
+		g.RUnlock()
+		return nil
+	}
+	g.RUnlock()
+
+	config := g.Options()
 
 	// micro: config.Transport.Listen(config.Address)
 	ts, err := net.Listen("tcp", config.Address)
@@ -707,7 +735,10 @@ func (g *grpcServer) Start() error {
 		return err
 	}
 
-	log.Logf("Broker [%s] Listening on %s", config.Broker.String(), config.Broker.Address())
+	baddr := config.Broker.Address()
+	bname := config.Broker.String()
+
+	log.Logf("Broker [%s] Connected to %s", bname, baddr)
 
 	// announce self to the world
 	if err := g.Register(); err != nil {
@@ -767,13 +798,34 @@ func (g *grpcServer) Start() error {
 		config.Broker.Disconnect()
 	}()
 
+	// mark the server as started
+	g.Lock()
+	g.started = true
+	g.Unlock()
+
 	return nil
 }
 
 func (g *grpcServer) Stop() error {
+	g.RLock()
+	if !g.started {
+		g.RUnlock()
+		return nil
+	}
+	g.RUnlock()
+
 	ch := make(chan error)
 	g.exit <- ch
-	return <-ch
+
+	var err error
+	select {
+	case err = <-ch:
+		g.Lock()
+		g.started = false
+		g.Unlock()
+	}
+
+	return err
 }
 
 func (g *grpcServer) String() string {

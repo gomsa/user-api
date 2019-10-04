@@ -7,17 +7,17 @@ service FrontPermits {
     // 全部权限
     rpc All(Request) returns (Response) {}
     // 获取权限列表
-    rpc List(ListQuery) returns (Response) {}
+    rpc List(Request) returns (Response) {}
     // 根据 唯一 获取权限
-    rpc Get(FrontPermit) returns (Response) {}
+    rpc Get(Request) returns (Response) {}
     // 创建权限
-    rpc Create(FrontPermit) returns (Response) {}
+    rpc Create(Request) returns (Response) {}
     // 更新权限
-    rpc Update(FrontPermit) returns (Response) {}
+    rpc Update(Request) returns (Response) {}
     // 删除权限
-    rpc Delete(FrontPermit) returns (Response) {}
+    rpc Delete(Request) returns (Response) {}
     // 同步前端权限 允许外部权限  需要最高 root 权限  *********高危 调用慎重*********
-    rpc UpdateOrCreate(FrontPermit) returns (Response) {}
+    rpc UpdateOrCreate(Request) returns (Response) {}
 
 }
 message Permission {
@@ -47,11 +47,13 @@ message ListQuery{
 }
 
 message Request{
+    ListQuery list_query = 1;           // 列表分页请求
+    FrontPermit frontPermit = 2;
 }
 
 message Response{
-    FrontPermit frontPermit = 1;
-    repeated FrontPermit frontPermits = 2;
-    int64 total = 3;
-    bool valid = 4;
+    bool valid = 1;
+    int64 total = 2;
+    FrontPermit frontPermit = 3;
+    repeated FrontPermit frontPermits = 4;
 }

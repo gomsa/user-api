@@ -7,35 +7,21 @@ import (
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/util/log"
 
-	"github.com/gomsa/tools/uitl"
-	"github.com/gomsa/user/client"
-	casbinPB "github.com/gomsa/user/proto/casbin"
-	userPB "github.com/gomsa/user/proto/user"
+	client "github.com/gomsa/tools/k8s/client"
 
+	casbinPB "github.com/gomsa/user-api/proto/casbin"
 	pb "github.com/gomsa/user-api/proto/user"
 	"github.com/gomsa/user-api/providers/redis"
 )
 
 // User 用户结构
 type User struct {
+	ServiceName string
 }
 
 // Exist 用户是否存在
-func (srv *User) Exist(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
-	user := &userPB.User{}
-	err = uitl.Data2Data(req, user)
-	if err != nil {
-		return err
-	}
-	userRes, err := client.User.Exist(ctx, user)
-	if err != nil {
-		return err
-	}
-	err = uitl.Data2Data(userRes, res)
-	if err != nil {
-		return err
-	}
-	return err
+func (srv *User) Exist(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	return client.Call(ctx, srv.ServiceName, "Users.Exist", req.User, res)
 }
 
 // MobileBuild 绑定手机
@@ -56,19 +42,12 @@ func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Respo
 	meta, _ := metadata.FromContext(ctx)
 	if userID, ok := meta["user_id"]; ok {
 		// 验证通过 更新用户绑定手机和用户信息 req.User
-		user := &userPB.User{}
 		req.User.Id = userID
-		err = uitl.Data2Data(req.User, user)
+		err = client.Call(ctx, srv.ServiceName, "Users.Update", req, res)
 		if err != nil {
-			return err
-		}
-		userRes, err := client.User.Update(ctx, user)
-		if err != nil {
-			res.Valid = false
 			err = errors.New("绑定手机时,更新用户信息失败")
 			return err
 		}
-		res.Valid = userRes.Valid
 	} else {
 		res.Valid = false
 		err = errors.New("绑定手机时,未找到用户ID")
@@ -79,22 +58,14 @@ func (srv *User) MobileBuild(ctx context.Context, req *pb.Request, res *pb.Respo
 }
 
 // SelfUpdate 用户通过 token 自己更新数据 只可以更改 用户名、昵称、头像
-func (srv *User) SelfUpdate(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
+func (srv *User) SelfUpdate(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	// meta["user_id"] 通过 meta 获取用户 id --- So this function needs token to use
 	meta, _ := metadata.FromContext(ctx)
 	if userID, ok := meta["user_id"]; ok {
-		user := &userPB.User{
-			Id:       userID,
-			Username: req.Username,
-			Name:     req.Name,
-			Avatar:   req.Avatar,
-		}
-		userRes, err := client.User.Update(ctx, user)
+		req.User.Id = userID
+		err = client.Call(ctx, srv.ServiceName, "Users.Update", req, res)
 		if err != nil {
-			return err
-		}
-		err = uitl.Data2Data(userRes, res)
-		if err != nil {
+			err = errors.New("更新用户信息失败")
 			return err
 		}
 	} else {
@@ -112,37 +83,35 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 	}
 	if userID, ok := meta["user_id"]; ok {
 		// 获取用户信息
-		userRes, err := client.User.Get(ctx, &userPB.User{
-			Id: userID,
-		})
+		req.User.Id = userID
+		err = client.Call(ctx, srv.ServiceName, "Users.Get", req, res)
 		if err != nil {
 			return err
 		}
-		userRes.User.Password = ""
-		err = uitl.Data2Data(userRes, res)
-		if err != nil {
-			return err
-		}
+		res.User.Password = ""
 		// 获取角色信息
-		casbinRes, err := client.Casbin.GetRoles(ctx, &casbinPB.Request{
+
+		rolesRes := &casbinPB.Response{}
+		err = client.Call(ctx, srv.ServiceName, "Casbin.GetRoles", &casbinPB.Request{
 			Label: userID,
-		})
+		}, rolesRes)
 		if err != nil {
 			return err
 		}
 		// 获取前端权限
 		frontPermit := []string{}
-		for _, roles := range casbinRes.Roles {
-			frontPermitRes, err := client.Casbin.GetRoles(ctx, &casbinPB.Request{
+		for _, roles := range rolesRes.Roles {
+			frontPermitRes := &casbinPB.Response{}
+			err = client.Call(ctx, srv.ServiceName, "Casbin.GetRoles", &casbinPB.Request{
 				Label: roles,
-			})
+			}, frontPermitRes)
 			if err != nil {
 				return err
 			}
 			frontPermit = append(frontPermit, frontPermitRes.Roles...)
 		}
 		res.FrontPermits = frontPermit
-		res.Roles = casbinRes.Roles
+		res.Roles = rolesRes.Roles
 	} else {
 		return errors.New("Empty userID")
 	}
@@ -150,96 +119,34 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 }
 
 // List 用户列表
-func (srv *User) List(ctx context.Context, req *pb.ListQuery, res *pb.Response) (err error) {
-	query := &userPB.ListQuery{}
-	err = uitl.Data2Data(req, query)
-	if err != nil {
-		return err
-	}
-	userRes, err := client.User.List(ctx, query)
-	if err != nil {
-		return err
-	}
-	err = uitl.Data2Data(userRes, res)
-	if err != nil {
-		return err
-	}
-	return err
+func (srv *User) List(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	return client.Call(ctx, srv.ServiceName, "User.List", req, res)
 }
 
 // Get 获取用户
 func (srv *User) Get(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
-	user := &userPB.User{}
-	err = uitl.Data2Data(req, user)
-	if err != nil {
-		return err
-	}
-	userRes, err := client.User.Get(ctx, user)
-	if err != nil {
-		return err
-	}
-	userRes.User.Password = ""
-	err = uitl.Data2Data(userRes, res)
-	if err != nil {
-		return err
-	}
+	err = client.Call(ctx, srv.ServiceName, "User.Get", req, res)
+	res.User.Password = ""
 	return err
 }
 
 // Create 创建用户
-func (srv *User) Create(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
-	user := &userPB.User{}
-	err = uitl.Data2Data(req, user)
-	if err != nil {
-		return err
-	}
+func (srv *User) Create(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
 	meta, _ := metadata.FromContext(ctx)
-	user.Origin = meta["service"]
-	userRes, err := client.User.Create(ctx, user)
-	if err != nil {
-		return err
-	}
-	userRes.User.Password = ""
-	err = uitl.Data2Data(userRes, res)
-	if err != nil {
-		return err
-	}
+	req.User.Origin = meta["service"]
+	err = client.Call(ctx, srv.ServiceName, "User.Create", req, res)
+	res.User.Password = ""
 	return err
 }
 
 // Update 更新用户
-func (srv *User) Update(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
-	user := &userPB.User{}
-	err = uitl.Data2Data(req, user)
-	if err != nil {
-		return err
-	}
-	userRes, err := client.User.Update(ctx, user)
-	if err != nil {
-		return err
-	}
-	err = uitl.Data2Data(userRes, res)
-	if err != nil {
-		return err
-	}
-	return err
+func (srv *User) Update(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	return client.Call(ctx, srv.ServiceName, "User.Update", req, res)
 }
 
 // Delete 删除用户
-func (srv *User) Delete(ctx context.Context, req *pb.User, res *pb.Response) (err error) {
-	user := &userPB.User{
-		Id: req.Id,
-	}
-	if err != nil {
-		return err
-	}
-	userRes, err := client.User.Delete(ctx, user)
-	if err != nil {
-		return err
-	}
-	err = uitl.Data2Data(userRes, res)
-	if err != nil {
-		return err
-	}
-	return err
+func (srv *User) Delete(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
+	return client.Call(ctx, srv.ServiceName, "User.Delete", &pb.User{
+		Id: req.User.Id,
+	}, res)
 }
