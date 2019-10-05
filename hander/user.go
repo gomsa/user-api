@@ -125,9 +125,10 @@ func (srv *User) List(ctx context.Context, req *pb.Request, res *pb.Response) (e
 
 // Get 获取用户
 func (srv *User) Get(ctx context.Context, req *pb.Request, res *pb.Response) (err error) {
-	req.User.Origin = "123"
 	err = client.Call(ctx, srv.ServiceName, "Users.Get", req, res)
-	res.User.Password = ""
+	if res.User != nil {
+		res.User.Password = ""
+	}
 	return err
 }
 
@@ -136,7 +137,9 @@ func (srv *User) Create(ctx context.Context, req *pb.Request, res *pb.Response) 
 	meta, _ := metadata.FromContext(ctx)
 	req.User.Origin = meta["service"]
 	err = client.Call(ctx, srv.ServiceName, "Users.Create", req, res)
-	// res.User.Password = "123a"
+	if res.User != nil {
+		res.User.Password = ""
+	}
 	return err
 }
 
