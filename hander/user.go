@@ -138,7 +138,7 @@ func (srv *User) Create(ctx context.Context, req *pb.Request, res *pb.Response) 
 	log.Log("aaa2", req)
 	err = client.Call(ctx, srv.ServiceName, "User.Create", req, res)
 	log.Log("aaa3", req, res)
-	res.User.Password = "123a"
+	// res.User.Password = "123a"
 	log.Log("aaa4", srv.ServiceName, req, res)
 	return err
 }
