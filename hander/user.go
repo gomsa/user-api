@@ -135,8 +135,9 @@ func (srv *User) Create(ctx context.Context, req *pb.Request, res *pb.Response) 
 	meta, _ := metadata.FromContext(ctx)
 	log.Log("aaa1", req)
 	req.User.Origin = meta["service"]
-	log.Log("aaa", req)
+	log.Log("aaa2", req)
 	err = client.Call(ctx, srv.ServiceName, "User.Create", req, res)
+	log.Log("aaa3", req, res)
 	res.User.Password = ""
 	return err
 }
