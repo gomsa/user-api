@@ -21,7 +21,7 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/gomsa/tools v0.0.0-20191004080503-11b0a4088fa1
+# github.com/gomsa/tools v0.0.0-20191005004032-c91f7091ab55
 github.com/gomsa/tools/config
 github.com/gomsa/tools/k8s/client
 github.com/gomsa/tools/env
@@ -97,6 +97,7 @@ github.com/micro/go-micro/plugin
 github.com/micro/go-micro/registry
 github.com/micro/go-micro/transport
 github.com/micro/go-micro/client/grpc
+github.com/micro/go-micro/server/grpc
 github.com/micro/go-micro/client/pool
 github.com/micro/go-micro/codec
 github.com/micro/go-micro/codec/bytes
@@ -110,7 +111,6 @@ github.com/micro/go-micro/util/buf
 github.com/micro/go-micro/util/addr
 github.com/micro/go-micro/util/net
 github.com/micro/go-micro/util/socket
-github.com/micro/go-micro/server/grpc
 github.com/micro/go-micro/registry/cache
 github.com/micro/go-micro/util/tls
 github.com/micro/go-micro/broker/http
@@ -140,8 +140,10 @@ github.com/micro/go-micro/transport/grpc/proto
 # github.com/micro/go-plugins v1.1.2-0.20190710094942-bf407858372c
 github.com/micro/go-plugins/client/selector/static
 github.com/micro/go-plugins/registry/kubernetes
+github.com/micro/go-plugins/broker/grpc
 github.com/micro/go-plugins/registry/kubernetes/client
 github.com/micro/go-plugins/registry/kubernetes/client/watch
+github.com/micro/go-plugins/broker/grpc/proto
 github.com/micro/go-plugins/registry/kubernetes/client/api
 # github.com/micro/mdns v0.3.0
 github.com/micro/mdns
