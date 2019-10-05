@@ -2,7 +2,7 @@ stages:
 - name: Build
   steps:
   - runScriptConfig:
-      image: tetafro/golang-gcc:1.11-alpine
+      image: bigrocs/golang-gcc:1.12
       shellScript: |-
         mkdir -p /go/src/github.com/gomsa
         ln -s `pwd` /go/src/github.com/gomsa/user-api
