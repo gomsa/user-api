@@ -4,7 +4,6 @@ import (
 	"context"
 
 	client "github.com/gomsa/tools/k8s/client"
-	"github.com/micro/go-micro/util/log"
 
 	pb "github.com/gomsa/user-api/proto/auth"
 )
@@ -17,9 +16,7 @@ type Auth struct {
 // Auth 授权认证
 // 返回token
 func (srv *Auth) Auth(ctx context.Context, req *pb.Request, res *pb.Request) (err error) {
-	log.Log(srv.ServiceName, "Auth.Auth", req, res)
 	err = client.Call(ctx, srv.ServiceName, "Auth.Auth", req, res)
-	log.Log(res, err)
 	return err
 }
 
