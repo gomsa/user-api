@@ -83,6 +83,9 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 	}
 	if userID, ok := meta["user_id"]; ok {
 		// 获取用户信息
+		if req.User == nil {
+			req.User = &pb.User{}
+		}
 		req.User.Id = userID
 		err = client.Call(ctx, srv.ServiceName, "Users.Get", req, res)
 		if err != nil {
@@ -92,7 +95,6 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 			res.User.Password = ""
 		}
 		// 获取角色信息
-
 		rolesRes := &casbinPB.Response{}
 		err = client.Call(ctx, srv.ServiceName, "Casbin.GetRoles", &casbinPB.Request{
 			Label: userID,

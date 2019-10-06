@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/micro/go-micro/metadata"
+
 	"github.com/gomsa/user-api/hander"
 	userPB "github.com/gomsa/user-api/proto/user"
 )
@@ -40,6 +42,19 @@ func TestUserGet(t *testing.T) {
 	}
 	res := &userPB.Response{}
 	err := h.Get(context.TODO(), req, res)
+	// fmt.Println(req, res, err)
+	t.Log(req, res, err)
+}
+
+func TestUserInfo(t *testing.T) {
+	h := hander.User{}
+	req := &userPB.Request{}
+	res := &userPB.Response{}
+	meta := map[string]string{
+		"user_id": "fed9c9a5-c03f-4d8d-be7c-95b9f24c9299",
+	}
+	ctx := metadata.NewContext(context.TODO(), meta)
+	err := h.Info(ctx, req, res)
 	fmt.Println(req, res, err)
 	t.Log(req, res, err)
 }
