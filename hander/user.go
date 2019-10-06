@@ -88,7 +88,9 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		if err != nil {
 			return err
 		}
-		res.User.Password = ""
+		if res.User != nil {
+			res.User.Password = ""
+		}
 		// 获取角色信息
 
 		rolesRes := &casbinPB.Response{}
