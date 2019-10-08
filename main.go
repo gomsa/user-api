@@ -15,6 +15,7 @@ import (
 	permissionPB "github.com/gomsa/user-api/proto/permission"
 	rolePB "github.com/gomsa/user-api/proto/role"
 	userPB "github.com/gomsa/user-api/proto/user"
+	healthPB "github.com/gomsa/user-api/proto/health"
 
 	"github.com/gomsa/user/client"
 	m "github.com/gomsa/user/middleware"
@@ -47,6 +48,9 @@ func main() {
 
 	// 权限管理服务实现
 	casbinPB.RegisterCasbinHandler(srv.Server(), &hander.Casbin{ServiceName})
+
+	healthPB.RegisterHealthHandler(srv.Server(), &hander.Health{})
+	
 
 	// Run the server
 	if err := srv.Run(); err != nil {
