@@ -6,7 +6,6 @@ import (
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
-	"github.com/micro/go-micro/util/log"
 
 	client "github.com/gomsa/tools/k8s/client"
 
@@ -41,7 +40,6 @@ func (srv *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				err := client.Call(ctx, srv.UserService, "Auth.ValidateToken", &authPb.Request{
 					Token: token,
 				}, authRes)
-
 				if err != nil || authRes.Valid == false {
 					return err
 				}
@@ -50,15 +48,11 @@ func (srv *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				meta["service"] = req.Service()
 				meta["method"] = req.Method()
 				ctx = metadata.NewContext(ctx, meta)
-				log.Log(req)
-				log.Log(srv.IsPolicy(req))
 				if srv.IsPolicy(req) {
 					casbinRes := &authPb.Response{}
 					err := client.Call(ctx, srv.UserService, "Casbin.Validate", &casbinPb.Request{}, casbinRes)
-
-					log.Log(1, casbinRes, err)
 					if err != nil || casbinRes.Valid == false {
-						return errors.New("Casbin Authentication failed")
+						return err
 					}
 				}
 			} else {
