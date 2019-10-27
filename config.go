@@ -5,6 +5,12 @@ import (
 )
 
 // Conf 配置
+// 	Service // 服务名称
+//	Method // 方法
+//	Auth // 是否认证授权
+//	Policy // 是否认证权限
+//	Name // 权限名称
+//	Description // 权限解释
 var Conf config.Config = config.Config{
 	Service: "user-api",
 	Version: "latest",
