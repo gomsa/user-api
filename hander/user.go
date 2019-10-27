@@ -103,19 +103,21 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 			return err
 		}
 		// 获取前端权限
-		frontPermit := []string{}
-		for _, roles := range rolesRes.Roles {
-			frontPermitRes := &casbinPB.Response{}
-			err = client.Call(ctx, srv.ServiceName, "Casbin.GetRoles", &casbinPB.Request{
-				Label: roles,
-			}, frontPermitRes)
-			if err != nil {
-				return err
+		if rolesRes.Roles == nil {
+			frontPermit := []string{}
+			for _, roles := range rolesRes.Roles {
+				frontPermitRes := &casbinPB.Response{}
+				err = client.Call(ctx, srv.ServiceName, "Casbin.GetRoles", &casbinPB.Request{
+					Label: roles,
+				}, frontPermitRes)
+				if err != nil {
+					return err
+				}
+				frontPermit = append(frontPermit, frontPermitRes.Roles...)
 			}
-			frontPermit = append(frontPermit, frontPermitRes.Roles...)
+			res.FrontPermits = frontPermit
+			res.Roles = rolesRes.Roles
 		}
-		res.FrontPermits = frontPermit
-		res.Roles = rolesRes.Roles
 	} else {
 		return errors.New("Empty userID")
 	}
