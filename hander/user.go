@@ -103,7 +103,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 			return err
 		}
 		// 获取前端权限
-		if rolesRes.Roles == nil {
+		if rolesRes.Roles != nil {
 			frontPermit := []string{}
 			for _, roles := range rolesRes.Roles {
 				frontPermitRes := &casbinPB.Response{}
@@ -113,7 +113,9 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 				if err != nil {
 					return err
 				}
-				frontPermit = append(frontPermit, frontPermitRes.Roles...)
+				if frontPermitRes.Roles != nil {
+					frontPermit = append(frontPermit, frontPermitRes.Roles...)
+				}
 			}
 			res.FrontPermits = frontPermit
 			res.Roles = rolesRes.Roles
