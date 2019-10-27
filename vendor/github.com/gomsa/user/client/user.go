@@ -18,11 +18,15 @@ type User struct {
 func (srv *User) SyncPermission(permission []config.Permission) error {
 	for _, p := range permission {
 		if p.Policy {
-			req := permissionPB.Permission{}
-			req.Service = p.Service
-			req.Method = p.Method
-			req.Name = p.Name
-			req.Description = p.Description
+			per := &permissionPB.Permission{}
+			per.Service = p.Service
+			per.Method = p.Method
+			per.Name = p.Name
+			per.Description = p.Description
+
+			req := &permissionPB.Request{
+				Permission: per,
+			}
 			err := client.Call(context.TODO(), srv.ServiceName, "Permission.UpdateOrCreate", req, nil)
 			if err != nil {
 				return err
