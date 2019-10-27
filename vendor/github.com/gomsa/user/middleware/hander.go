@@ -3,10 +3,10 @@ package middleware
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
+	"github.com/micro/go-micro/util/log"
 
 	client "github.com/gomsa/tools/k8s/client"
 
@@ -50,11 +50,13 @@ func (srv *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				meta["service"] = req.Service()
 				meta["method"] = req.Method()
 				ctx = metadata.NewContext(ctx, meta)
+				log.Log(req)
+				log.Log(srv.IsPolicy(req))
 				if srv.IsPolicy(req) {
 					casbinRes := &authPb.Response{}
 					err := client.Call(ctx, srv.UserService, "Casbin.Validate", &casbinPb.Request{}, casbinRes)
 
-					fmt.Println(1, casbinRes, err)
+					log.Log(1, casbinRes, err)
 					if err != nil || casbinRes.Valid == false {
 						return errors.New("Casbin Authentication failed")
 					}
