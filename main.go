@@ -2,6 +2,7 @@ package main
 
 import (
 	// 公共引入
+	"fmt"
 	"os"
 
 	k8s "github.com/micro/examples/kubernetes/go/micro"
@@ -12,22 +13,22 @@ import (
 	authPB "github.com/gomsa/user-api/proto/auth"
 	casbinPB "github.com/gomsa/user-api/proto/casbin"
 	frontPermitPB "github.com/gomsa/user-api/proto/frontPermit"
+	healthPB "github.com/gomsa/user-api/proto/health"
 	permissionPB "github.com/gomsa/user-api/proto/permission"
 	rolePB "github.com/gomsa/user-api/proto/role"
 	userPB "github.com/gomsa/user-api/proto/user"
-	healthPB "github.com/gomsa/user-api/proto/health"
 
 	"github.com/gomsa/user/client"
 	m "github.com/gomsa/user/middleware"
 )
 
 func main() {
-	ServiceName := os.Getenv("USER_NAME")
+	UserService := os.Getenv("USER_NAME")
 
 	// 设置权限
 	h := m.Handler{
 		Permissions: Conf.Permissions,
-		UserService: ServiceName,
+		UserService: UserService,
 	}
 	srv := k8s.NewService(
 		micro.Name(Conf.Service),
@@ -36,28 +37,28 @@ func main() {
 	)
 	srv.Init()
 
-	userPB.RegisterUsersHandler(srv.Server(), &hander.User{ServiceName})
+	userPB.RegisterUsersHandler(srv.Server(), &hander.User{UserService})
 
-	authPB.RegisterAuthHandler(srv.Server(), &hander.Auth{ServiceName})
+	authPB.RegisterAuthHandler(srv.Server(), &hander.Auth{UserService})
 
-	frontPermitPB.RegisterFrontPermitsHandler(srv.Server(), &hander.FrontPermit{ServiceName})
+	frontPermitPB.RegisterFrontPermitsHandler(srv.Server(), &hander.FrontPermit{UserService})
 
-	permissionPB.RegisterPermissionsHandler(srv.Server(), &hander.Permission{ServiceName})
+	permissionPB.RegisterPermissionsHandler(srv.Server(), &hander.Permission{UserService})
 
-	rolePB.RegisterRolesHandler(srv.Server(), &hander.Role{ServiceName})
+	rolePB.RegisterRolesHandler(srv.Server(), &hander.Role{UserService})
 
 	// 权限管理服务实现
-	casbinPB.RegisterCasbinHandler(srv.Server(), &hander.Casbin{ServiceName})
+	casbinPB.RegisterCasbinHandler(srv.Server(), &hander.Casbin{UserService})
 
 	healthPB.RegisterHealthHandler(srv.Server(), &hander.Health{})
-	
 
 	// Run the server
 	if err := srv.Run(); err != nil {
 		log.Log(err)
 	}
 	// 同步权限
-	user := &client.User{ServiceName}
+	user := &client.User{UserService}
+	fmt.Println(Conf.Permissions)
 	if err := user.SyncPermission(Conf.Permissions); err != nil {
 		log.Log(err)
 	}
