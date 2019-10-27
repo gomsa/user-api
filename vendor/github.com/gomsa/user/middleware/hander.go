@@ -42,23 +42,21 @@ func (srv *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 					Token: token,
 				}, authRes)
 
-				fmt.Println(1, authRes, err)
 				if err != nil || authRes.Valid == false {
 					return err
 				}
-
-				fmt.Println(2)
 				// 设置用户 id
 				meta["user_id"] = authRes.User.Id
 				meta["service"] = req.Service()
 				meta["method"] = req.Method()
 				ctx = metadata.NewContext(ctx, meta)
-				fmt.Println(3)
 				if srv.IsPolicy(req) {
 					casbinRes := &authPb.Response{}
 					err := client.Call(ctx, srv.UserService, "Casbin.Validate", &casbinPb.Request{}, casbinRes)
+
+					fmt.Println(1, casbinRes, err)
 					if err != nil || casbinRes.Valid == false {
-						return err
+						return errors.New("Casbin Authentication failed")
 					}
 				}
 			} else {
