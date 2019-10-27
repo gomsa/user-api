@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/server"
@@ -40,14 +41,19 @@ func (srv *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				err := client.Call(ctx, srv.UserService, "Auth.ValidateToken", &authPb.Request{
 					Token: token,
 				}, authRes)
+
+				fmt.Println(1, authRes)
 				if err != nil || authRes.Valid == false {
 					return err
 				}
+
+				fmt.Println(2)
 				// 设置用户 id
 				meta["user_id"] = authRes.User.Id
 				meta["service"] = req.Service()
 				meta["method"] = req.Method()
 				ctx = metadata.NewContext(ctx, meta)
+				fmt.Println(3)
 				if srv.IsPolicy(req) {
 					casbinRes := &authPb.Response{}
 					err := client.Call(ctx, srv.UserService, "Casbin.Validate", &casbinPb.Request{}, casbinRes)
