@@ -27,7 +27,7 @@ func (srv *User) SyncPermission(permission []config.Permission) error {
 			req := &permissionPB.Request{
 				Permission: per,
 			}
-			err := client.Call(context.TODO(), srv.ServiceName, "Permission.UpdateOrCreate", req, nil)
+			err := client.Call(context.TODO(), srv.ServiceName, "Permissions.UpdateOrCreate", req, nil)
 			if err != nil {
 				return err
 			}
