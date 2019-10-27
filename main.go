@@ -2,7 +2,7 @@ package main
 
 import (
 	// 公共引入
-	"fmt"
+
 	"os"
 
 	k8s "github.com/micro/examples/kubernetes/go/micro"
@@ -58,7 +58,7 @@ func main() {
 	}
 	// 同步权限
 	user := &client.User{UserService}
-	fmt.Println(Conf.Permissions)
+	log.Log(Conf.Permissions)
 	if err := user.SyncPermission(Conf.Permissions); err != nil {
 		log.Log(err)
 	}
