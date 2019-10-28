@@ -18,16 +18,18 @@ type User struct {
 
 // SyncPermission 同步权限
 func (srv *User) SyncPermission(permissions []config.Permission) error {
+	log.Log(`a`, permissions, 1)
+	fmt.Println(`a`, permissions, 2)
 	for _, p := range permissions {
 		if p.Policy {
-			permission := permissionPB.Permission{}
+			permission := &permissionPB.Permission{}
 			permission.Service = p.Service
 			permission.Method = p.Method
 			permission.Name = p.Name
 			permission.Description = p.Description
 
 			req := &permissionPB.Request{
-				Permission: &permission,
+				Permission: permission,
 			}
 			log.Log(req, 1)
 			fmt.Println(req, 2)
