@@ -3,6 +3,7 @@ package hander
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/micro/go-micro/metadata"
 	"github.com/micro/go-micro/util/log"
@@ -81,6 +82,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 	if !ok {
 		return errors.New("no auth meta-data found in request")
 	}
+	fmt.Println(meta)
 	if userID, ok := meta["user_id"]; ok {
 		// 获取用户信息
 		if req.User == nil {
@@ -91,6 +93,7 @@ func (srv *User) Info(ctx context.Context, req *pb.Request, res *pb.Response) (e
 		if err != nil {
 			return err
 		}
+		fmt.Println(res)
 		if res.User != nil {
 			res.User.Password = ""
 		}

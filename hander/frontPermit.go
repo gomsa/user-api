@@ -33,7 +33,7 @@ func (srv *FrontPermit) UpdateOrCreate(ctx context.Context, req *pb.Request, res
 	err = client.Call(ctx, srv.ServiceName, "Casbin.UpdatePermissions", &casbinPB.Request{
 		Role:        req.FrontPermit.App + "_" + req.FrontPermit.Service + "_" + req.FrontPermit.Method,
 		Permissions: permissions,
-	}, nil)
+	}, &casbinPB.Response{})
 	if err != nil {
 		return err
 	}
