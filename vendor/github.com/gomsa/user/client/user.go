@@ -6,7 +6,6 @@ import (
 
 	"github.com/gomsa/tools/config"
 	client "github.com/gomsa/tools/k8s/client"
-	"github.com/micro/go-micro/util/log"
 
 	permissionPB "github.com/gomsa/user/proto/permission"
 )
@@ -20,7 +19,7 @@ type User struct {
 func (srv *User) SyncPermission(permissions []config.Permission) error {
 	for _, p := range permissions {
 		if p.Policy {
-			log.Log(1)
+			fmt.Println(1)
 			permission := &permissionPB.Permission{}
 			permission.Service = p.Service
 			permission.Method = p.Method
@@ -32,11 +31,12 @@ func (srv *User) SyncPermission(permissions []config.Permission) error {
 			}
 			fmt.Println(2, req)
 			err := client.Call(context.TODO(), srv.ServiceName, "Permissions.UpdateOrCreate", req, nil)
+			fmt.Println(3, err)
 			if err != nil {
-				fmt.Println(3, err)
+				fmt.Println(4, err)
 				return err
 			}
-			fmt.Println(4)
+			fmt.Println(5)
 		}
 	}
 	return nil
