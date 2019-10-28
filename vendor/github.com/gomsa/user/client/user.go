@@ -5,6 +5,7 @@ import (
 
 	"github.com/gomsa/tools/config"
 	client "github.com/gomsa/tools/k8s/client"
+	"github.com/micro/go-micro/util/log"
 
 	permissionPB "github.com/gomsa/user/proto/permission"
 )
@@ -27,6 +28,7 @@ func (srv *User) SyncPermission(permissions []config.Permission) error {
 			req := &permissionPB.Request{
 				Permission: &permission,
 			}
+			log.Log(req)
 			err := client.Call(context.TODO(), srv.ServiceName, "Permissions.UpdateOrCreate", req, nil)
 			if err != nil {
 				return err
