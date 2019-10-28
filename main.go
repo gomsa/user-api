@@ -58,7 +58,6 @@ func main() {
 	}
 	// 同步权限
 	user := &client.User{UserService}
-	log.Log(Conf.Permissions)
 	if err := user.SyncPermission(Conf.Permissions); err != nil {
 		log.Log(err)
 	}

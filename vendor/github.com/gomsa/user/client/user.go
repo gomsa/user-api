@@ -24,8 +24,9 @@ func (srv *User) SyncPermission(permissions []*PB.Permission) error {
 		}
 		fmt.Println(2)
 		err := client.Call(context.TODO(), srv.ServiceName, "Permissions.UpdateOrCreate", req, nil)
-		fmt.Println(3)
+		fmt.Println(3, err)
 		if err != nil {
+			fmt.Println(3-1, err)
 			return err
 		}
 		fmt.Println(4)
