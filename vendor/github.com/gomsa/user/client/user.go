@@ -23,6 +23,7 @@ func (srv *User) SyncPermission(permissions []*PB.Permission) error {
 		if err != nil {
 			return err
 		}
+		time.Sleep(1 * time.Second)
 	}
 	return nil
 }
