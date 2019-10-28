@@ -15,17 +15,17 @@ type User struct {
 }
 
 // SyncPermission 同步权限
-func (srv *User) SyncPermission(permission []config.Permission) error {
-	for _, p := range permission {
+func (srv *User) SyncPermission(permissions []*config.Permission) error {
+	for _, p := range permissions {
 		if p.Policy {
-			per := &permissionPB.Permission{}
-			per.Service = p.Service
-			per.Method = p.Method
-			per.Name = p.Name
-			per.Description = p.Description
+			permission := permissionPB.Permission{}
+			permission.Service = p.Service
+			permission.Method = p.Method
+			permission.Name = p.Name
+			permission.Description = p.Description
 
 			req := &permissionPB.Request{
-				Permission: per,
+				Permission: &permission,
 			}
 			err := client.Call(context.TODO(), srv.ServiceName, "Permissions.UpdateOrCreate", req, nil)
 			if err != nil {
