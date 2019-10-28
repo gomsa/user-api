@@ -28,17 +28,16 @@ message Permission {
     string method = 3;
     string name = 4;
     string description = 5;
-    string created_at = 6;
-    string updated_at = 7;
+    bool auth = 6;
+    bool policy = 7;
+    string created_at = 8;
+    string updated_at = 9;
 }
 
 message ListQuery{
     int64 limit=1; //返回数量
     int64 page=2; //页面
     string sort=3; // 排序
-    string service = 4;
-    string method = 5;
-    string name = 6;
 }
 
 message Request{

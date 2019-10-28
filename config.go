@@ -1,8 +1,15 @@
 package main
 
 import (
-	"github.com/gomsa/tools/config"
+	PB "github.com/gomsa/user/proto/permission"
 )
+
+// Config 配置
+type Config struct {
+	Service     string
+	Version     string
+	Permissions []*PB.Permission
+}
 
 // Conf 配置
 // 	Service // 服务名称
@@ -11,10 +18,10 @@ import (
 //	Policy // 是否认证权限
 //	Name // 权限名称
 //	Description // 权限解释
-var Conf config.Config = config.Config{
+var Conf Config = Config{
 	Service: "user-api",
 	Version: "latest",
-	Permissions: []config.Permission{
+	Permissions: []*PB.Permission{
 		// 授权管理
 		{Service: "user-api", Method: "Auth.Auth", Auth: false, Policy: false, Name: "用户授权", Description: "用户登录授权返回 token 权限。"},
 		{Service: "user-api", Method: "Auth.ValidateToken", Auth: false, Policy: false, Name: "权限认证", Description: "权限相关认证权限。"},

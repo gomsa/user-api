@@ -7,7 +7,7 @@ require (
 	github.com/gogo/protobuf v1.3.1
 	github.com/golang/protobuf v1.3.2
 	github.com/gomsa/tools v0.0.0-20191027032723-670231029646
-	github.com/gomsa/user v0.0.0-20191027094407-90b722d47b07
+	github.com/gomsa/user v0.0.0-20191028024132-b80f7c6e05a7
 	github.com/micro/examples v0.2.0
 	github.com/micro/go-micro v1.14.0
 )
