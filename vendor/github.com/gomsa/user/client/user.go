@@ -15,7 +15,7 @@ type User struct {
 }
 
 // SyncPermission 同步权限
-func (srv *User) SyncPermission(permissions []*config.Permission) error {
+func (srv *User) SyncPermission(permissions []config.Permission) error {
 	for _, p := range permissions {
 		if p.Policy {
 			permission := permissionPB.Permission{}
