@@ -18,10 +18,9 @@ type User struct {
 
 // SyncPermission 同步权限
 func (srv *User) SyncPermission(permissions []config.Permission) error {
-	log.Log(`a`, permissions, 1)
-	fmt.Println(`a`, permissions, 2)
 	for _, p := range permissions {
 		if p.Policy {
+			log.Log(1)
 			permission := &permissionPB.Permission{}
 			permission.Service = p.Service
 			permission.Method = p.Method
@@ -31,12 +30,13 @@ func (srv *User) SyncPermission(permissions []config.Permission) error {
 			req := &permissionPB.Request{
 				Permission: permission,
 			}
-			log.Log(req, 1)
-			fmt.Println(req, 2)
+			fmt.Println(2, req)
 			err := client.Call(context.TODO(), srv.ServiceName, "Permissions.UpdateOrCreate", req, nil)
 			if err != nil {
+				fmt.Println(3, err)
 				return err
 			}
+			fmt.Println(4)
 		}
 	}
 	return nil
