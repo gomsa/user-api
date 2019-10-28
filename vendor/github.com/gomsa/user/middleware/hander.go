@@ -9,9 +9,9 @@ import (
 
 	client "github.com/gomsa/tools/k8s/client"
 
-	PB "github.com/gomsa/user/proto/permission"
 	authPb "github.com/gomsa/user/proto/auth"
 	casbinPb "github.com/gomsa/user/proto/casbin"
+	PB "github.com/gomsa/user/proto/permission"
 )
 
 // Handler 处理器
@@ -50,10 +50,11 @@ func (srv *Handler) Wrapper(fn server.HandlerFunc) server.HandlerFunc {
 				meta["method"] = req.Method()
 				ctx = metadata.NewContext(ctx, meta)
 				if srv.IsPolicy(req) {
+					// 通过 meta user_id 验证权限
 					casbinRes := &authPb.Response{}
 					err := client.Call(ctx, srv.UserService, "Casbin.Validate", &casbinPb.Request{}, casbinRes)
 					if err != nil || casbinRes.Valid == false {
-						return err
+						return errors.New("Permission denied")
 					}
 				}
 			} else {

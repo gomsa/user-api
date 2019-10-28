@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	client "github.com/gomsa/tools/k8s/client"
 
@@ -20,7 +19,6 @@ func (srv *User) SyncPermission(permissions []*PB.Permission) error {
 		req := &PB.Request{
 			Permission: p,
 		}
-		fmt.Println(req)
 		err := client.Call(context.TODO(), srv.ServiceName, "Permissions.UpdateOrCreate", req, nil)
 		if err != nil {
 			return err
